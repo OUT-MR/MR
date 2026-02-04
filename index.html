@@ -3,767 +3,87 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BUILD A PLATE – Plate by plate.</title>
-  <meta name="description" content="Välj en rätt. Välj Duo, Par, Trio, Squad eller Plato Mode. Bygg tillsammans. Betala enkelt." />
-
+  <title>BUILD A PLATE</title>
   <style>
     :root{
-      --bg:#F6F2EA;
-      --card:#FFFFFF;
-      --ink:#0F2A22;
-      --muted:#4A5A55;
-      --line:#DDD5C8;
-      --radius:22px;
-      --shadow: 0 12px 26px rgba(0,0,0,.07);
-      --max:1160px;
+      --bg:#F6F2EA; --card:#fff; --ink:#0F2A22; --muted:#4A5A55; --line:#DDD5C8;
+      --radius:22px; --shadow:0 12px 26px rgba(0,0,0,.07); --max:1160px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-      line-height:1.35;
-    }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:14px 14px 70px}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink);line-height:1.35}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding:14px 14px 70px}
 
-    /* NAV (Trustpilot-style) */
     .nav{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:10px 12px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      position:sticky;
-      top:10px;
-      z-index:50;
+      background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow);
+      padding:10px 12px; display:flex; align-items:center; gap:12px; position:sticky; top:10px; z-index:50;
     }
-    .brand{display:flex; align-items:center; gap:10px; flex:none}
-    .mark{
-      width:40px; height:40px;
-      border:2px solid var(--ink);
-      border-radius:999px;
-      position:relative;
-      flex:none;
-      background:transparent;
-    }
-    .mark:after{
-      content:"";
-      position:absolute;
-      width:11px; height:11px;
-      border:2px solid var(--ink);
-      border-left:0; border-bottom:0;
-      right:7px; top:7px;
-      transform:rotate(45deg);
-      border-radius:2px;
-    }
-    .brandtext{display:flex; flex-direction:column; gap:2px}
-    .name{font-weight:850; letter-spacing:.06em; font-size:13px}
-    .tag{font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+    .brand{display:flex;align-items:center;gap:10px;flex:none}
+    .mark{width:40px;height:40px;border:2px solid var(--ink);border-radius:999px;position:relative;flex:none}
+    .mark:after{content:"";position:absolute;width:11px;height:11px;border:2px solid var(--ink);border-left:0;border-bottom:0;right:7px;top:7px;transform:rotate(45deg);border-radius:2px}
+    .name{font-weight:850;letter-spacing:.06em;font-size:13px}
+    .tag{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
     .search{
-      flex:1;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      background:#fff;
-      min-width:160px;
+      flex:1; display:flex; align-items:center; gap:8px; border:1px solid var(--line);
+      border-radius:999px; padding:8px 12px; background:#fff; min-width:160px;
     }
-    .mag{
-      width:18px; height:18px;
-      border:2px solid var(--muted);
-      border-radius:999px;
-      position:relative;
-      flex:none;
-      opacity:.7;
-    }
-    .mag:after{
-      content:"";
-      position:absolute;
-      width:9px; height:2px;
-      background:var(--muted);
-      right:-7px; bottom:-2px;
-      transform:rotate(45deg);
-      border-radius:2px;
-      opacity:.7;
-    }
-    .search input{
-      width:100%;
-      border:0;
-      outline:none;
-      font-size:14px;
-      background:transparent;
-      color:var(--ink);
-    }
+    .mag{width:18px;height:18px;border:2px solid var(--muted);border-radius:999px;position:relative;opacity:.7;flex:none}
+    .mag:after{content:"";position:absolute;width:9px;height:2px;background:var(--muted);right:-7px;bottom:-2px;transform:rotate(45deg);border-radius:2px;opacity:.7}
+    .search input{width:100%;border:0;outline:none;font-size:14px;background:transparent;color:var(--ink)}
 
-    .navlinks{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:none;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .link{
-      font-size:13px;
-      color:var(--muted);
-      padding:8px 10px;
-      border-radius:999px;
-    }
-    .link:hover{background:rgba(15,42,34,.06); color:var(--ink)}
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid var(--line);
-      padding:9px 12px;
-      border-radius:999px;
-      font-weight:750;
-      font-size:13px;
-      background:var(--card);
-      cursor:pointer;
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn.primary{
-      background:var(--ink);
-      border-color:var(--ink);
-      color:#fff;
-      box-shadow:none;
-    }
-
-    /* LAYOUT */
-    .spacer{height:14px}
-    .panel{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
+    .panel{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
     .pad{padding:18px}
-    .section{margin-top:14px}
-    .sectionhead{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-      margin:8px 2px 10px;
-    }
-    .sectionhead h2{margin:0; font-size:16px; letter-spacing:.02em}
-    .sectionhead p{margin:0; color:var(--muted); font-size:13px}
+    h1{margin:0 0 6px;font-size:28px;letter-spacing:-.02em}
+    .mini{margin:0;color:var(--muted);font-size:13px}
 
-    /* HERO (Featured dish) */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:12px;
-      align-items:stretch;
-    }
-    h1{margin:0 0 10px; font-size:40px; letter-spacing:-.02em}
-    .lead{margin:0; color:var(--muted); font-size:15px}
-    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
-    .chip{
-      border:1px solid var(--line);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      background:transparent;
-    }
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .filter{border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 10px;border-radius:999px;font-size:13px;cursor:pointer}
+    .filter.active{background:var(--ink);border-color:var(--ink);color:#fff}
 
-    .feature{
-      position:relative;
-      min-height:260px;
-      display:flex;
-      align-items:flex-end;
-    }
-    .feature img{
-      width:100%;
-      height:100%;
-      min-height:260px;
-      object-fit:cover;
-      display:block;
-      filter:saturate(.95) contrast(.98);
-    }
-    .overlay{
-      position:absolute;
-      left:12px; right:12px; bottom:12px;
-      background:rgba(255,255,255,.86);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      backdrop-filter: blur(6px);
-    }
-    .overlay strong{font-size:14px}
-    .overlay span{font-size:12px; color:var(--muted)}
+    .grid{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .dish{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow);display:block}
+    .dish img{width:100%;height:280px;object-fit:cover;display:block}
+    .dish .content{padding:12px 14px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .dish h3{margin:0;font-size:15px}
+    .dish .cat{font-size:12px;color:var(--muted)}
 
-    /* Filters */
-    .filters{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .filter{
-      border:1px solid var(--line);
-      background:transparent;
-      color:var(--ink);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      cursor:pointer;
-    }
-    .filter.active{
-      background:var(--ink);
-      border-color:var(--ink);
-      color:#fff;
-    }
-
-    /* Dish cards (big image, minimal text, 1 action) */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    .dish{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      overflow:hidden;
-      background:var(--card);
-      box-shadow:var(--shadow);
-      cursor:pointer;
-      display:flex;
-      flex-direction:column;
-    }
-    .dish img{
-      width:100%;
-      height:250px;
-      object-fit:cover;
-      display:block;
-    }
-    .dish .content{
-      padding:12px 14px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .dish h3{margin:0; font-size:15px}
-    .dish .mini{font-size:12px; color:var(--muted)}
-    .dish .pick{box-shadow:none}
-
-    /* Plato Mode banner (icons, less text) */
-    .platoRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .iconPill{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 10px;
-      font-size:13px;
-      background:transparent;
-    }
-    .ico{
-      width:18px; height:18px;
-      border:2px solid var(--ink);
-      border-radius:999px;
-      position:relative;
-      flex:none;
-    }
-    .ico.slash:after{
-      content:"";
-      position:absolute;
-      left:50%; top:-3px;
-      width:2px; height:24px;
-      background:var(--ink);
-      transform:translateX(-50%) rotate(45deg);
-      border-radius:2px;
-    }
-    .note{
-      margin-top:10px;
-      padding:12px;
-      border-radius:16px;
-      border:1px dashed var(--line);
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* Checkout stepper */
-    .stepsTop{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:10px;
-    }
-    .stepDots{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .dot{
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 10px;
-      font-size:13px;
-      color:var(--muted);
-      background:transparent;
-    }
-    .dot.active{
-      border-color:var(--ink);
-      color:var(--ink);
-    }
-    .dot.done{
-      background:rgba(15,42,34,.06);
-      color:var(--ink);
-    }
-
-    .checkout{
-      display:grid;
-      grid-template-columns: 1fr .9fr;
-      gap:12px;
-      align-items:start;
-    }
-    .stack{display:flex; flex-direction:column; gap:10px}
-    .field{display:flex; flex-direction:column; gap:6px}
-    label{font-size:12px; color:var(--muted)}
-    input, select{
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-size:14px;
-      outline:none;
-    }
-    .row{display:flex; gap:8px; flex-wrap:wrap}
-    .pack{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      cursor:pointer;
-      background:transparent;
-    }
-    .pack strong{font-size:14px}
-    .pack small{color:var(--muted)}
-    .pack.active{
-      border-color:var(--ink);
-      box-shadow: 0 0 0 2px rgba(15,42,34,.08) inset;
-    }
-    .pack input{width:18px; height:18px}
-
-    .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:6px;
-    }
-    .ghost{
-      border:1px solid var(--line);
-      background:transparent;
-      box-shadow:none;
-    }
-
-    .summary{
-      padding:12px;
-      border-radius:16px;
-      border:1px dashed var(--line);
-      color:var(--muted);
-      font-size:13px;
-    }
-    .infoRow{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top:8px;
-    }
-    .info{
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:13px;
-      background:transparent;
-    }
-    .iBtn{
-      width:30px; height:30px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      font-weight:800;
-      color:var(--muted);
-    }
-    .tooltip{
-      display:none;
-      margin-top:8px;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:#fff;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* Footer */
-    .footer{
-      margin-top:18px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:13px;
-      padding-top:16px;
-      border-top:1px solid var(--line);
-    }
-
-    @media (max-width: 980px){
-      .nav{position:static}
-      .hero{grid-template-columns:1fr}
-      h1{font-size:32px}
-      .grid{grid-template-columns:1fr}
-      .checkout{grid-template-columns:1fr}
-      .navlinks .link{display:none}
-    }
+    .footer{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;padding-top:14px;border-top:1px solid var(--line)}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}.nav{position:static}}
   </style>
 </head>
-
 <body>
   <div class="wrap">
-
-    <!-- NAV -->
-    <header class="nav" aria-label="Toppmeny">
+    <header class="nav">
       <a class="brand" href="#">
         <div class="mark" aria-hidden="true"></div>
-        <div class="brandtext">
+        <div>
           <div class="name">BUILD A PLATE</div>
           <div class="tag">Plate by plate.</div>
         </div>
       </a>
 
-      <div class="search" role="search" aria-label="Sök">
+      <div class="search" role="search">
         <div class="mag" aria-hidden="true"></div>
         <input id="searchInput" type="search" placeholder="Sök efter en rätt..." autocomplete="off" />
       </div>
-
-      <div class="navlinks">
-        <a class="link" href="#ratter">Kategorier</a>
-        <a class="link" href="#platomode">Plato Mode</a>
-        <a class="link" href="#checkout">Boka</a>
-        <button class="btn" id="loginBtn" type="button">Logga in</button>
-        <button class="btn primary" id="bizBtn" type="button">För företag</button>
-      </div>
     </header>
 
-    <div class="spacer"></div>
-
-    <!-- HERO -->
-    <section class="hero" aria-label="Intro">
-      <div class="panel pad">
-        <h1>Bygg rätten. Tillsammans.</h1>
-        <p class="lead">Bild först. Välj rätt. Välj paket. Betala.</p>
-
-        <div class="chips">
-          <div class="chip">Leverans: Västmanlands län</div>
-          <div class="chip">Duo · Par · Trio · Squad</div>
-          <div class="chip">Plato Mode (3)</div>
-        </div>
-
-        <div class="actions" style="margin-top:14px">
-          <a class="btn primary" href="#ratter">Se rätter</a>
-          <a class="btn ghost" href="#checkout">Boka steg för steg</a>
-        </div>
-      </div>
-
-      <div class="panel feature" aria-label="Featured dish">
-        <img id="featureImg" src="" alt="Featured dish" />
-        <div class="overlay">
-          <div>
-            <strong id="featureName">Featured</strong><br/>
-            <span>Tryck för att välja</span>
-          </div>
-          <button class="btn primary" id="featurePickBtn" type="button">Välj</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- RÄTTER -->
-    <section class="section" id="ratter" aria-label="Rätter">
-      <div class="sectionhead">
-        <div>
-          <h2>Rätter</h2>
-          <p>Välj en rätt för att gå vidare.</p>
-        </div>
-        <p id="resultText"></p>
-      </div>
+    <section class="panel pad">
+      <h1>Rätter</h1>
+      <p class="mini">Klicka en rätt. Välj paket och Plato Mode på nästa sida.</p>
 
       <div class="filters" id="filterBar"></div>
       <div class="grid" id="dishGrid"></div>
     </section>
 
-    <!-- PLATO MODE -->
-    <section class="section" id="platomode" aria-label="Plato Mode">
-      <div class="sectionhead">
-        <div>
-          <h2>Plato Mode</h2>
-          <p>Kommunikationsutmaning. Endast Trio (3).</p>
-        </div>
-      </div>
-
-      <div class="panel pad">
-        <div class="platoRow">
-          <div class="iconPill"><span class="ico slash" aria-hidden="true"></span>Kan inte se</div>
-          <div class="iconPill"><span class="ico slash" aria-hidden="true"></span>Kan inte prata</div>
-          <div class="iconPill"><span class="ico slash" aria-hidden="true"></span>Kan inte höra</div>
-        </div>
-
-        <div class="note">
-          Säkerhet: Ingen blindfold nära kniv, spis, ugn eller kokande vatten. En person är alltid Safety Lead.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHECKOUT -->
-    <section class="section" id="checkout" aria-label="Checkout">
-      <div class="sectionhead">
-        <div>
-          <h2>Boka steg för steg</h2>
-          <p>4 steg. Rätt → Paket → Leverans → Betala</p>
-        </div>
-      </div>
-
-      <div class="checkout">
-        <!-- LEFT: Steps -->
-        <div class="panel pad">
-          <div class="stepsTop">
-            <div class="stepDots" id="stepDots"></div>
-            <div class="info" id="stepTitle">Steg 1 av 4</div>
-          </div>
-
-          <!-- STEP 1 -->
-          <div class="stack" id="step1">
-            <div class="summary" id="step1Summary">Välj en rätt under “Rätter”.</div>
-            <div class="actions">
-              <a class="btn primary" href="#ratter">Välj rätt</a>
-              <button class="btn ghost" id="toStep2a" type="button">Nästa</button>
-            </div>
-          </div>
-
-          <!-- STEP 2 -->
-          <div class="stack" id="step2" style="display:none">
-            <div class="summary" id="chosenDishLine">Rätt: —</div>
-
-            <div class="field">
-              <label>Paket</label>
-
-              <div class="pack" data-pack="duo">
-                <div>
-                  <strong>Duo</strong><br/>
-                  <small>2 personer</small>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center">
-                  <strong>399</strong>
-                  <input type="radio" name="pack" />
-                </div>
-              </div>
-
-              <div class="pack" data-pack="par">
-                <div>
-                  <strong>Par</strong><br/>
-                  <small>2 personer</small>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center">
-                  <strong>449</strong>
-                  <input type="radio" name="pack" />
-                </div>
-              </div>
-
-              <div class="pack" data-pack="trio">
-                <div>
-                  <strong>Trio</strong><br/>
-                  <small>3 personer</small>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center">
-                  <strong>499</strong>
-                  <input type="radio" name="pack" />
-                </div>
-              </div>
-
-              <div class="pack" data-pack="squad">
-                <div>
-                  <strong>Squad</strong><br/>
-                  <small>4 personer</small>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center">
-                  <strong>599</strong>
-                  <input type="radio" name="pack" />
-                </div>
-              </div>
-
-              <div class="pack" data-pack="plato">
-                <div>
-                  <strong>Plato Mode</strong><br/>
-                  <small>Trio (3) + kommunikationsutmaning</small>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center">
-                  <strong>549</strong>
-                  <input type="radio" name="pack" />
-                </div>
-              </div>
-            </div>
-
-            <div class="actions">
-              <button class="btn ghost" id="backTo1" type="button">Tillbaka</button>
-              <button class="btn primary" id="toStep3" type="button">Nästa</button>
-            </div>
-          </div>
-
-          <!-- STEP 3 -->
-          <div class="stack" id="step3" style="display:none">
-            <div class="summary" id="step3Summary">Fyll i uppgifter.</div>
-
-            <div class="row">
-              <div class="field" style="flex:1; min-width:220px">
-                <label>Namn</label>
-                <input id="name" type="text" placeholder="Ditt namn" />
-              </div>
-              <div class="field" style="flex:1; min-width:220px">
-                <label>Telefon</label>
-                <input id="phone" type="text" placeholder="+46..." />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field" style="flex:1; min-width:220px">
-                <label>Leverans eller hämtning</label>
-                <select id="method">
-                  <option value="leverans">Leverans</option>
-                  <option value="hamtning">Hämtning</option>
-                </select>
-              </div>
-              <div class="field" style="flex:1; min-width:220px">
-                <label>Datum och tid</label>
-                <input id="datetime" type="text" placeholder="t.ex. Lör 18:00" />
-              </div>
-            </div>
-
-            <div class="field" id="addressWrap">
-              <label>Adress (för leverans)</label>
-              <input id="address" type="text" placeholder="Gata, postnummer, ort" />
-            </div>
-
-            <div class="infoRow">
-              <div class="info">Område: Västmanlands län</div>
-              <button class="iBtn" id="areaInfo" type="button">i</button>
-            </div>
-            <div class="tooltip" id="areaTip">
-              Exempel på orter: Västerås, Köping, Arboga, Hallstahammar, Kungsör, Sala, Fagersta.
-            </div>
-
-            <div class="actions">
-              <button class="btn ghost" id="backTo2" type="button">Tillbaka</button>
-              <button class="btn primary" id="toStep4" type="button">Nästa</button>
-            </div>
-          </div>
-
-          <!-- STEP 4 -->
-          <div class="stack" id="step4" style="display:none">
-            <div class="summary" id="finalSummary">Sammanfattning</div>
-
-            <div class="actions">
-              <button class="btn ghost" id="backTo3" type="button">Tillbaka</button>
-              <button class="btn primary" id="payBtn" type="button">Gå till betalning</button>
-              <button class="btn ghost" id="copyBtn" type="button">Kopiera order</button>
-            </div>
-
-            <div class="note" style="margin-top:10px">
-              Efter betalning: spara kvittot. Vi matchar din betalning med din ordertext.
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT: Live summary -->
-        <aside class="panel pad">
-          <div class="sectionhead" style="margin:0 0 10px">
-            <h2>Din order</h2>
-            <p id="liveStatus">Välj en rätt.</p>
-          </div>
-
-          <div class="summary" id="liveSummary">—</div>
-
-          <div class="spacer"></div>
-
-          <div class="sectionhead" style="margin:0 0 10px">
-            <h2>Kontakt</h2>
-            <p>Byt till ditt riktiga.</p>
-          </div>
-          <div class="summary">
-            E-post: <strong id="emailText">buildaplate.team@gmail.com</strong><br/>
-            Telefon: <strong>+46 XX XXX XX XX</strong>
-          </div>
-
-          <div class="spacer"></div>
-
-          <div class="sectionhead" style="margin:0 0 10px">
-            <h2>Instagram</h2>
-            <p>Öppnas i ny flik.</p>
-          </div>
-          <button class="btn" id="igBtn" type="button">Öppna Instagram</button>
-        </aside>
-      </div>
-    </section>
-
     <footer class="footer">
       <div>© <span id="y"></span> BUILD A PLATE</div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <a class="btn ghost" href="#ratter">Rätter</a>
-        <a class="btn ghost" href="#platomode">Plato Mode</a>
-        <a class="btn ghost" href="#checkout">Boka</a>
-      </div>
+      <div>Leverans: Västmanlands län</div>
     </footer>
-
   </div>
 
   <script>
-    // ====== ÄNDRA HÄR ======
-    const ORDER_EMAIL = "buildaplate.team@gmail.com";
-    const INSTAGRAM_URL = "#"; // lägg din riktiga länk
-
-    // Stripe Payment Links (lägg in dina riktiga länkar)
-    const PAY_LINKS = {
-      duo:   "#",
-      par:   "#",
-      trio:  "#",
-      squad: "#",
-      plato: "#"
-    };
-
-    // Tips: byt bilder till egna filer i repo:
-    // assets/dishes/truffle.jpg osv.
     const DISHES = [
       { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
       { id:"cacio", name:"Cacio e Pepe", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
@@ -779,356 +99,63 @@
       { id:"halloumi", name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1200x800/?halloumi,salad" }
     ];
 
-    const PACKS = {
-      duo:   { label:"Duo", people:2, price:399 },
-      par:   { label:"Par", people:2, price:449 },
-      trio:  { label:"Trio", people:3, price:499 },
-      squad: { label:"Squad", people:4, price:599 },
-      plato: { label:"Plato Mode", people:3, price:549 }
-    };
-    // =======================
+    const FILTERS = ["Alla","Pasta","Nordic","Sushi","Veg"];
+    let active = "Alla";
 
-    // Elements
     const y = document.getElementById("y");
-    const emailText = document.getElementById("emailText");
-    const searchInput = document.getElementById("searchInput");
     const filterBar = document.getElementById("filterBar");
-    const dishGrid = document.getElementById("dishGrid");
-    const resultText = document.getElementById("resultText");
+    const grid = document.getElementById("dishGrid");
+    const searchInput = document.getElementById("searchInput");
 
-    const featureImg = document.getElementById("featureImg");
-    const featureName = document.getElementById("featureName");
-    const featurePickBtn = document.getElementById("featurePickBtn");
-
-    const stepDots = document.getElementById("stepDots");
-    const stepTitle = document.getElementById("stepTitle");
-
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const step3 = document.getElementById("step3");
-    const step4 = document.getElementById("step4");
-
-    const step1Summary = document.getElementById("step1Summary");
-    const chosenDishLine = document.getElementById("chosenDishLine");
-    const step3Summary = document.getElementById("step3Summary");
-    const finalSummary = document.getElementById("finalSummary");
-
-    const toStep2a = document.getElementById("toStep2a");
-    const backTo1 = document.getElementById("backTo1");
-    const toStep3 = document.getElementById("toStep3");
-    const backTo2 = document.getElementById("backTo2");
-    const toStep4 = document.getElementById("toStep4");
-    const backTo3 = document.getElementById("backTo3");
-    const payBtn = document.getElementById("payBtn");
-    const copyBtn = document.getElementById("copyBtn");
-
-    const nameEl = document.getElementById("name");
-    const phoneEl = document.getElementById("phone");
-    const methodEl = document.getElementById("method");
-    const datetimeEl = document.getElementById("datetime");
-    const addressWrap = document.getElementById("addressWrap");
-    const addressEl = document.getElementById("address");
-
-    const areaInfo = document.getElementById("areaInfo");
-    const areaTip = document.getElementById("areaTip");
-
-    const liveStatus = document.getElementById("liveStatus");
-    const liveSummary = document.getElementById("liveSummary");
-    const igBtn = document.getElementById("igBtn");
-
-    // State
-    let activeFilter = "Alla";
-    let selectedDish = null;
-    let selectedPack = null;
-    let step = 1;
-
-    // Init
     y.textContent = new Date().getFullYear();
-    emailText.textContent = ORDER_EMAIL;
-
-    // Filters
-    const FILTERS = ["Alla", "Pasta", "Nordic", "Sushi", "Veg"];
 
     function renderFilters(){
       filterBar.innerHTML = "";
       FILTERS.forEach(f => {
         const b = document.createElement("button");
-        b.className = "filter" + (f === activeFilter ? " active" : "");
+        b.className = "filter" + (f === active ? " active" : "");
         b.type = "button";
         b.textContent = f;
-        b.addEventListener("click", () => {
-          activeFilter = f;
-          renderFilters();
-          renderDishes();
-        });
+        b.onclick = () => { active = f; renderFilters(); renderGrid(); };
         filterBar.appendChild(b);
       });
     }
 
-    // Dishes
-    function dishMatches(d, q){
-      const ql = (q || "").trim().toLowerCase();
-      const okText = !ql || d.name.toLowerCase().includes(ql);
-      const okCat = activeFilter === "Alla" || d.cat === activeFilter;
+    function matches(d){
+      const q = (searchInput.value || "").trim().toLowerCase();
+      const okText = !q || d.name.toLowerCase().includes(q);
+      const okCat = active === "Alla" || d.cat === active;
       return okText && okCat;
     }
 
-    function renderDishes(){
-      const q = searchInput.value || "";
-      const list = DISHES.filter(d => dishMatches(d, q));
+    function renderGrid(){
+      const list = DISHES.filter(matches);
+      grid.innerHTML = "";
 
-      dishGrid.innerHTML = "";
       list.forEach(d => {
-        const card = document.createElement("div");
-        card.className = "dish";
-        card.innerHTML = `
+        const a = document.createElement("a");
+        a.className = "dish";
+        a.href = `dish.html?id=${encodeURIComponent(d.id)}`; // går till rätt-sidan
+        a.innerHTML = `
           <img src="${d.img}" alt="${d.name}">
           <div class="content">
             <div>
               <h3>${d.name}</h3>
-              <div class="mini">${d.cat}</div>
+              <div class="cat">${d.cat}</div>
             </div>
-            <button class="btn primary pick" type="button">Välj</button>
+            <div class="cat">Öppna →</div>
           </div>
         `;
-
-        const img = card.querySelector("img");
-        img.onerror = () => { img.src = "https://source.unsplash.com/1200x800/?minimal,food"; };
-
-        card.addEventListener("click", () => selectDish(d));
-        card.querySelector("button").addEventListener("click", (e) => {
-          e.stopPropagation();
-          selectDish(d);
-        });
-
-        dishGrid.appendChild(card);
-      });
-
-      resultText.textContent = list.length ? `${list.length} rätter` : "Inga träffar";
-    }
-
-    // Featured dish
-    function setFeatured(d){
-      featureImg.src = d.img;
-      featureName.textContent = d.name;
-      featurePickBtn.onclick = () => selectDish(d);
-      featureImg.onerror = () => { featureImg.src = "https://source.unsplash.com/1400x900/?minimal,food"; };
-    }
-
-    // Select dish
-    function selectDish(d){
-      selectedDish = d;
-      setFeatured(d);
-
-      step1Summary.textContent = `Vald rätt: ${d.name}`;
-      chosenDishLine.textContent = `Rätt: ${d.name}`;
-      liveStatus.textContent = "Välj paket.";
-      updateLiveSummary();
-
-      // Auto-advance till steg 2
-      goStep(2);
-      location.hash = "#checkout";
-    }
-
-    // Packs
-    function bindPackCards(){
-      document.querySelectorAll(".pack").forEach(p => {
-        const key = p.getAttribute("data-pack");
-        const radio = p.querySelector("input[type='radio']");
-        radio.addEventListener("change", () => {
-          if(radio.checked) choosePack(key);
-        });
-        p.addEventListener("click", () => {
-          radio.checked = true;
-          choosePack(key);
-        });
+        const img = a.querySelector("img");
+        img.onerror = () => img.src = "https://source.unsplash.com/1200x800/?minimal,food";
+        grid.appendChild(a);
       });
     }
 
-    function choosePack(key){
-      selectedPack = key;
+    searchInput.addEventListener("input", renderGrid);
 
-      document.querySelectorAll(".pack").forEach(p => {
-        p.classList.toggle("active", p.getAttribute("data-pack") === key);
-        p.querySelector("input").checked = p.getAttribute("data-pack") === key;
-      });
-
-      liveStatus.textContent = "Fyll i leverans.";
-      updateLiveSummary();
-    }
-
-    // Stepper UI
-    const STEP_LABELS = ["Rätt", "Paket", "Leverans", "Betala"];
-
-    function renderStepDots(){
-      stepDots.innerHTML = "";
-      for(let i=1;i<=4;i++){
-        const s = document.createElement("div");
-        s.className = "dot" + (i === step ? " active" : "") + (i < step ? " done" : "");
-        s.textContent = `${i}. ${STEP_LABELS[i-1]}`;
-        stepDots.appendChild(s);
-      }
-      stepTitle.textContent = `Steg ${step} av 4`;
-    }
-
-    function showStepPanels(){
-      step1.style.display = step === 1 ? "" : "none";
-      step2.style.display = step === 2 ? "" : "none";
-      step3.style.display = step === 3 ? "" : "none";
-      step4.style.display = step === 4 ? "" : "none";
-    }
-
-    function goStep(n){
-      step = n;
-      renderStepDots();
-      showStepPanels();
-      updateLiveSummary();
-    }
-
-    // Validation
-    function canGoStep2(){
-      return !!selectedDish;
-    }
-    function canGoStep3(){
-      return !!selectedDish && !!selectedPack;
-    }
-    function canGoStep4(){
-      if(!canGoStep3()) return false;
-      if(!nameEl.value.trim()) return false;
-      if(!phoneEl.value.trim()) return false;
-      if(!datetimeEl.value.trim()) return false;
-      if(methodEl.value === "leverans" && !addressEl.value.trim()) return false;
-      return true;
-    }
-
-    // Step buttons
-    toStep2a.addEventListener("click", () => {
-      if(!canGoStep2()){ alert("Välj en rätt först."); return; }
-      goStep(2);
-    });
-
-    backTo1.addEventListener("click", () => goStep(1));
-
-    toStep3.addEventListener("click", () => {
-      if(!canGoStep3()){ alert("Välj paket."); return; }
-      step3Summary.textContent = `Rätt: ${selectedDish.name} · Paket: ${PACKS[selectedPack].label}`;
-      goStep(3);
-    });
-
-    backTo2.addEventListener("click", () => goStep(2));
-
-    toStep4.addEventListener("click", () => {
-      if(!canGoStep4()){
-        alert("Fyll i namn, telefon, datum/tid och adress (om leverans).");
-        return;
-      }
-      finalSummary.textContent = buildOrderText();
-      goStep(4);
-    });
-
-    backTo3.addEventListener("click", () => goStep(3));
-
-    // Delivery method toggle
-    function syncAddress(){
-      const isDelivery = methodEl.value === "leverans";
-      addressWrap.style.display = isDelivery ? "" : "none";
-    }
-    methodEl.addEventListener("change", () => {
-      syncAddress();
-      updateLiveSummary();
-    });
-
-    // Area tooltip
-    areaInfo.addEventListener("click", () => {
-      areaTip.style.display = (areaTip.style.display === "block") ? "none" : "block";
-    });
-
-    // Live summary
-    function buildOrderText(){
-      const dish = selectedDish ? selectedDish.name : "—";
-      const pack = selectedPack ? PACKS[selectedPack].label : "—";
-      const price = selectedPack ? PACKS[selectedPack].price : "—";
-      const people = selectedPack ? PACKS[selectedPack].people : "—";
-      const method = methodEl.value === "leverans" ? "Leverans" : "Hämtning";
-      const address = methodEl.value === "leverans" ? (addressEl.value.trim() || "—") : "—";
-      return [
-        `Rätt: ${dish}`,
-        `Paket: ${pack} (${people})`,
-        `Pris: ${price}`,
-        `Namn: ${nameEl.value.trim() || "—"}`,
-        `Telefon: ${phoneEl.value.trim() || "—"}`,
-        `Datum/tid: ${datetimeEl.value.trim() || "—"}`,
-        `Metod: ${method}`,
-        `Adress: ${address}`,
-        `Område: Västmanlands län`
-      ].join("\n");
-    }
-
-    function updateLiveSummary(){
-      liveSummary.textContent = buildOrderText();
-
-      // steg-regler
-      if(step === 2 && !canGoStep2()) goStep(1);
-      if(step === 3 && !canGoStep3()) goStep(2);
-      if(step === 4 && !canGoStep4()) goStep(3);
-    }
-
-    [nameEl, phoneEl, datetimeEl, addressEl].forEach(el => {
-      el.addEventListener("input", updateLiveSummary);
-    });
-
-    // Copy order
-    copyBtn.addEventListener("click", async () => {
-      const text = buildOrderText();
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("Kopierat.");
-      }catch{
-        alert("Kunde inte kopiera. Markera texten manuellt i rutan till höger.");
-      }
-    });
-
-    // Pay
-    payBtn.addEventListener("click", () => {
-      if(!canGoStep4()){
-        alert("Fyll i alla uppgifter först.");
-        return;
-      }
-      const link = selectedPack ? PAY_LINKS[selectedPack] : "#";
-      if(!link || link === "#"){
-        alert("Lägg in din Stripe Payment Link i PAY_LINKS för detta paket.");
-        return;
-      }
-      // Kunden har ordertexten i kopiera-knappen. Betalning öppnas.
-      window.open(link, "_blank");
-    });
-
-    // Search
-    searchInput.addEventListener("input", renderDishes);
-    searchInput.addEventListener("keydown", (e) => {
-      if(e.key === "Enter") location.hash = "#ratter";
-    });
-
-    // Nav buttons
-    document.getElementById("loginBtn").addEventListener("click", () => alert("Logga in kommer senare."));
-    document.getElementById("bizBtn").addEventListener("click", () => alert("För företag kommer senare."));
-
-    // Instagram
-    igBtn.addEventListener("click", () => {
-      if(INSTAGRAM_URL === "#"){
-        alert("Lägg din Instagram-länk i INSTAGRAM_URL.");
-        return;
-      }
-      window.open(INSTAGRAM_URL, "_blank");
-    });
-
-    // Start
     renderFilters();
-    bindPackCards();
-    syncAddress();
-    setFeatured(DISHES[0]);
-    renderDishes();
-    goStep(1);
+    renderGrid();
   </script>
 </body>
 </html>
