@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BUILD A PLATE – Plate by plate.</title>
+  <meta name="description" content="En box med färdigportionerade ingredienser. Du bygger rätten själv. Västerås. Plate by plate." />
+  <style>
+    :root{
+      --bg:#F6F2EA;      /* beige */
+      --paper:#FFFFFF;   /* white */
+      --ink:#0F2A22;     /* deep green */
+      --muted:#4A5A55;
+      --line:#DDD5C8;
+      --radius:18px;
+      --max:980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:26px 18px 70px}
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:12px 0 18px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none}
+    .mark{
+      width:44px; height:44px; border:2px solid var(--ink);
+      border-radius:999px; position:relative; flex:none;
+      background:transparent;
+    }
+    .mark:after{
+      content:""; position:absolute; width:12px; height:12px;
+      border:2px solid var(--ink);
+      border-left:0; border-bottom:0;
+      right:8px; top:8px; transform:rotate(45deg);
+      border-radius:2px;
+    }
+    .name{font-weight:700; letter-spacing:.06em}
+    .tag{font-size:12px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      border:2px solid var(--ink);
+      padding:10px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:650;
+      background:var(--paper);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .hero{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:start;
+    }
+    h1{margin:0 0 10px; font-size:40px; letter-spacing:-.02em}
+    .lead{margin:0 0 18px; font-size:16px; color:var(--muted)}
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;
+    }
+    .pill{
+      border:1px solid var(--line);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      background:transparent;
+    }
+    .card{
+      background:transparent;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+    }
+    .card h3{margin:0 0 10px; font-size:16px}
+    .card p{margin:0; color:var(--muted)}
+    .section{margin-top:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .section .card{min-height:138px}
+    .plato{
+      display:flex; align-items:center; gap:12px; margin-top:14px;
+      padding-top:14px; border-top:1px dashed var(--line);
+    }
+    .face{
+      width:52px; height:52px; border:2px solid var(--ink);
+      border-radius:999px; position:relative; flex:none;
+      background:transparent;
+    }
+    .eye{position:absolute; width:6px; height:6px; border:2px solid var(--ink); border-radius:999px; top:18px}
+    .eye.l{left:16px} .eye.r{right:16px}
+    .smile{position:absolute; left:50%; top:30px; width:16px; height:10px;
+      border:2px solid var(--ink); border-top:0; border-left:0; border-right:0;
+      transform:translateX(-50%); border-radius:0 0 12px 12px;
+    }
+    .two{
+      margin-top:18px;
+      display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    }
+    .list{margin:10px 0 0; padding-left:16px; color:var(--muted)}
+    .list li{margin:6px 0}
+    .footer{
+      margin-top:22px;
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+      color:var(--muted); font-size:13px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+    }
+    .smallbtn{
+      border:1px solid var(--line); padding:8px 10px; border-radius:999px; text-decoration:none;
+      background:var(--paper);
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .section{grid-template-columns:1fr}
+      .two{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="#">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <div class="name">BUILD A PLATE</div>
+          <div class="tag">Plate by plate.</div>
+        </div>
+      </a>
+
+      <a class="btn" href="#bestall">Boka box</a>
+    </header>
+
+    <main class="hero">
+      <div class="grid">
+        <div>
+          <h1>Bygg en rätt. En box. En ritual.</h1>
+          <p class="lead">
+            Du får alla ingredienser till en specifik rätt. Allt är färdigportionerat och organiserat.
+            Du lagar inget i förväg. Du bygger rätten själv, steg för steg.
+          </p>
+
+          <div class="mini" aria-label="Snabb info">
+            <div class="pill">Västerås</div>
+            <div class="pill">Utan abonnemang</div>
+            <div class="pill">399–599 SEK</div>
+            <div class="pill">Inga matbilder</div>
+          </div>
+
+          <div class="plato">
+            <div class="face" aria-hidden="true">
+              <span class="eye l"></span><span class="eye r"></span><span class="smile"></span>
+            </div>
+            <div>
+              <strong>Plato</strong><br/>
+              <span class="lead" style="margin:0; font-size:14px;">
+                En lugn guide på receptkortet. Start. Symboler. Slut.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="bestall">
+          <h3>Beställ</h3>
+          <p>Den här knappen kopplar vi till din betalningslänk när du är redo.</p>
+          <div style="height:10px"></div>
+
+          <!-- BYT LÄNKEN NÄR DU HAR STRIPE -->
+          <a class="btn" href="#" onclick="alert('Byt denna länk till din betalningslänk.'); return false;">
+            Boka box
+          </a>
+
+          <ul class="list">
+            <li>Hämtning eller leverans (bestäms per släpp).</li>
+            <li>Allergeninfo står på boxen.</li>
+            <li>Begränsade släpp lokalt.</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="section" aria-label="Så funkar det">
+        <div class="card">
+          <h3>1. Öppna</h3>
+          <p>Allt ligger i ordning. Du ser flödet direkt.</p>
+        </div>
+        <div class="card">
+          <h3>2. Bygg</h3>
+          <p>Receptkortet guidar med kort text och symboler.</p>
+        </div>
+        <div class="card">
+          <h3>3. Plating</h3>
+          <p>Du avslutar med finish. Du serverar som en upplevelse.</p>
+        </div>
+      </section>
+
+      <section class="two" aria-label="Innehåll och kontakt">
+        <div class="card">
+          <h3>I boxen</h3>
+          <ul class="list">
+            <li>Alla ingredienser till en specifik rätt.</li>
+            <li>Receptkort med Plato.</li>
+            <li>Tydlig intern struktur och etiketter.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Kontakt</h3>
+          <ul class="list">
+            <li>E-post: <a href="mailto:hello@buildaplate.se">hello@buildaplate.se</a> (byt om du inte har domän än)</li>
+            <li>Telefon: +46 XX XXX XX XX</li>
+            <li>Plats: Västerås</li>
+          </ul>
+          <div style="height:10px"></div>
+          <a class="smallbtn" href="#" onclick="navigator.clipboard.writeText('hello@buildaplate.se'); alert('Kopierat: hello@buildaplate.se'); return false;">Kopiera mail</a>
+        </div>
+      </section>
+
+      <div class="footer">
+        <div>© <span id="y"></span> BUILD A PLATE</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <a class="smallbtn" href="#" onclick="alert('Lägg din Instagram-länk här.'); return false;">Instagram</a>
+          <a class="smallbtn" href="#" onclick="alert('Lägg villkor här senare.'); return false;">Villkor</a>
+          <a class="smallbtn" href="#" onclick="alert('Lägg integritet här senare.'); return false;">Integritet</a>
+        </div>
+      </div>
+
+      <script>
+        document.getElementById("y").textContent = new Date().getFullYear();
+      </script>
+    </main>
+  </div>
+</body>
+</html>
