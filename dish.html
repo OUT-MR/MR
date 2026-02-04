@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BUILD A PLATE – Menu</title>
+  <style>
+    :root{
+      --bg:#F6F2EA;
+      --card:#FFFFFF;
+      --ink:#0F2A22;
+      --muted:#4A5A55;
+      --line:#DDD5C8;
+      --radius:22px;
+      --shadow: 0 12px 26px rgba(0,0,0,.07);
+      --max:1160px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.35;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 14px 70px}
+
+    .nav{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:sticky;
+      top:10px;
+      z-index:50;
+    }
+    .brand{display:flex; align-items:center; gap:10px; flex:none}
+    .mark{
+      width:40px; height:40px;
+      border:2px solid var(--ink);
+      border-radius:999px;
+      position:relative;
+      flex:none;
+    }
+    .mark:after{
+      content:"";
+      position:absolute;
+      width:11px; height:11px;
+      border:2px solid var(--ink);
+      border-left:0; border-bottom:0;
+      right:7px; top:7px;
+      transform:rotate(45deg);
+      border-radius:2px;
+    }
+    .name{font-weight:850; letter-spacing:.06em; font-size:13px}
+    .tag{font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+
+    .search{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 12px;
+      background:#fff;
+      min-width:160px;
+    }
+    .mag{
+      width:18px; height:18px;
+      border:2px solid var(--muted);
+      border-radius:999px;
+      position:relative;
+      flex:none;
+      opacity:.7;
+    }
+    .mag:after{
+      content:"";
+      position:absolute;
+      width:9px; height:2px;
+      background:var(--muted);
+      right:-7px; bottom:-2px;
+      transform:rotate(45deg);
+      border-radius:2px;
+      opacity:.7;
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:none;
+      font-size:14px;
+      background:transparent;
+      color:var(--ink);
+    }
+
+    .panel{
+      margin-top:12px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .pad{padding:18px}
+    h1{margin:0 0 6px; font-size:28px; letter-spacing:-.02em}
+    .mini{margin:0; color:var(--muted); font-size:13px}
+
+    .filters{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .filter{
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--ink);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .filter.active{
+      background:var(--ink);
+      border-color:var(--ink);
+      color:#fff;
+    }
+
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .dish{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:var(--card);
+      box-shadow:var(--shadow);
+      display:block;
+    }
+    .dish img{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+      display:block;
+    }
+    .dish .content{
+      padding:12px 14px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .dish h3{margin:0; font-size:15px}
+    .dish .cat{font-size:12px; color:var(--muted)}
+
+    .footer{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:14px;
+      border-top:1px solid var(--line);
+    }
+
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="#">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <div class="name">BUILD A PLATE</div>
+          <div class="tag">Plate by plate.</div>
+        </div>
+      </a>
+
+      <div class="search" role="search">
+        <div class="mag" aria-hidden="true"></div>
+        <input id="searchInput" type="search" placeholder="Sök efter en rätt..." autocomplete="off" />
+      </div>
+    </header>
+
+    <section class="panel pad">
+      <h1>Rätter</h1>
+      <p class="mini">Klicka en rätt. Den öppnas i ett nytt fönster.</p>
+
+      <div class="filters" id="filterBar"></div>
+      <div class="grid" id="dishGrid"></div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span id="y"></span> BUILD A PLATE</div>
+      <div>Leverans: Västmanlands län</div>
+    </footer>
+  </div>
+
+  <script>
+    const DISHES = [
+      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
+      { id:"cacio",   name:"Cacio e Pepe",            cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
+      { id:"vodka",   name:"Vodka Pasta + burrata",   cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
+      { id:"meatballs",name:"Köttbullar 2.0",         cat:"Nordic",img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
+      { id:"steak",   name:"Biff + chimichurri",      cat:"Nordic",img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
+      { id:"salmon",  name:"Lax + misosmör",          cat:"Nordic",img:"https://source.unsplash.com/1200x800/?salmon,miso" },
+      { id:"temaki",  name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1200x800/?temaki,sushi" },
+      { id:"poke",    name:"Poke Bowl",               cat:"Sushi", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
+      { id:"halloumi",name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1200x800/?halloumi,salad" }
+    ];
+
+    const FILTERS = ["Alla","Pasta","Nordic","Sushi","Veg"];
+    let active = "Alla";
+
+    const y = document.getElementById("y");
+    const filterBar = document.getElementById("filterBar");
+    const grid = document.getElementById("dishGrid");
+    const searchInput = document.getElementById("searchInput");
+
+    y.textContent = new Date().getFullYear();
+
+    function renderFilters(){
+      filterBar.innerHTML = "";
+      FILTERS.forEach(f => {
+        const b = document.createElement("button");
+        b.className = "filter" + (f === active ? " active" : "");
+        b.type = "button";
+        b.textContent = f;
+        b.onclick = () => { active = f; renderFilters(); renderGrid(); };
+        filterBar.appendChild(b);
+      });
+    }
+
+    function matches(d){
+      const q = (searchInput.value || "").trim().toLowerCase();
+      const okText = !q || d.name.toLowerCase().includes(q);
+      const okCat = active === "Alla" || d.cat === active;
+      return okText && okCat;
+    }
+
+    function renderGrid(){
+      const list = DISHES.filter(matches);
+      grid.innerHTML = "";
+
+      list.forEach(d => {
+        const a = document.createElement("a");
+        a.className = "dish";
+        a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
+        a.target = "_blank";
+        a.rel = "noopener";
+
+        a.innerHTML = `
+          <img src="${d.img}" alt="${d.name}">
+          <div class="content">
+            <div>
+              <h3>${d.name}</h3>
+              <div class="cat">${d.cat}</div>
+            </div>
+            <div class="cat">Öppna →</div>
+          </div>
+        `;
+        const img = a.querySelector("img");
+        img.onerror = () => img.src = "https://source.unsplash.com/1200x800/?minimal,food";
+
+        grid.appendChild(a);
+      });
+    }
+
+    searchInput.addEventListener("input", renderGrid);
+
+    renderFilters();
+    renderGrid();
+  </script>
+</body>
+</html>
