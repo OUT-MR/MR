@@ -54,6 +54,7 @@
       font-weight:650;
       background:var(--card);
       box-shadow: var(--shadow);
+      cursor:pointer;
     }
     .btn:hover{transform:translateY(-1px)}
     .btn:active{transform:translateY(0)}
@@ -125,7 +126,7 @@
     }
     .dish img{
       width:100%;
-      height:170px;
+      height:180px;
       object-fit:cover;
       display:block;
     }
@@ -148,7 +149,7 @@
       margin-top:8px;
     }
     label{font-size:12px; color:var(--muted)}
-    input, select{
+    input[type="text"]{
       padding:12px 12px;
       border-radius:12px;
       border:1px solid var(--line);
@@ -207,19 +208,18 @@
 
     <section class="hero" aria-label="Intro">
       <div class="panel pad">
-        <h1>Bygg boxen. Bygg rätten.</h1>
+        <h1>Bygg rätten. Tillsammans.</h1>
         <p class="lead">
-          Färdigportionerat. Organiserat. Du bygger själv. Ensam eller tillsammans.
+          Välj en rätt. Välj Duo, Trio eller Squad. Bygg steg för steg.
         </p>
         <div class="chips">
-          <div class="chip">Västerås</div>
-          <div class="chip">399–599 SEK</div>
-          <div class="chip">Duo / Crew</div>
+          <div class="chip">Leverans: Västmanlands län</div>
+          <div class="chip">Duo · Trio · Squad</div>
           <div class="chip">Plato Mode</div>
         </div>
         <div class="row" style="margin-top:14px;">
           <a class="btn primary" href="#ratter">Se rätter</a>
-          <a class="btn" href="#platomode">Plato Mode</a>
+          <a class="btn" href="#bestall">Boka</a>
         </div>
       </div>
 
@@ -235,9 +235,8 @@
       <div class="sectionhead">
         <div>
           <h2>Rätter</h2>
-          <p>Välj en. Vi gör resten enkelt.</p>
+          <p>Bild först. Klicka “Välj”.</p>
         </div>
-        <p>Klicka “Välj” för att fylla beställningen.</p>
       </div>
 
       <div class="grid" id="dishGrid"></div>
@@ -259,10 +258,6 @@
           <span class="pill">En kan inte höra</span>
         </div>
 
-        <p class="lead" style="margin-top:10px">
-          I boxen kan du ha ett Sinnes-kit. Syn och hörsel kan blockeras. “Kan inte prata” markeras med band eller kort.
-        </p>
-
         <div class="summary">
           Säkerhet: Ingen blindfold nära kniv, spis, ugn eller kokande vatten. En person är alltid Safety Lead.
         </div>
@@ -273,8 +268,8 @@
     <section class="section" id="bestall" aria-label="Beställ">
       <div class="sectionhead">
         <div>
-          <h2>Beställ</h2>
-          <p>Välj rätt. Välj antal. Skicka.</p>
+          <h2>Boka</h2>
+          <p>Välj rätt och paket.</p>
         </div>
       </div>
 
@@ -285,47 +280,57 @@
             <input id="dish" type="text" placeholder="Välj en rätt ovan" readonly />
           </div>
 
-          <div class="row">
-            <div class="toggle">
-              <input id="duo" type="radio" name="size" checked />
-              <label for="duo" style="margin:0;color:inherit">Duo (2 pers)</label>
-            </div>
-            <div class="toggle">
-              <input id="crew" type="radio" name="size" />
-              <label for="crew" style="margin:0;color:inherit">Crew (4 pers)</label>
-            </div>
-            <div class="toggle">
-              <input id="extra" type="checkbox" />
-              <label for="extra" style="margin:0;color:inherit">+1 portion</label>
-            </div>
-          </div>
+          <div class="field">
+            <label>Paket</label>
 
-          <div class="row">
-            <div class="toggle">
-              <input id="plato" type="checkbox" />
-              <label for="plato" style="margin:0;color:inherit">Plato Mode</label>
+            <div class="row" id="packageRow">
+              <div class="toggle">
+                <input id="p_duo" type="radio" name="pack" checked />
+                <label for="p_duo" style="margin:0;color:inherit">Duo</label>
+              </div>
+
+              <div class="toggle">
+                <input id="p_par" type="radio" name="pack" />
+                <label for="p_par" style="margin:0;color:inherit">Par</label>
+              </div>
+
+              <div class="toggle">
+                <input id="p_trio" type="radio" name="pack" />
+                <label for="p_trio" style="margin:0;color:inherit">Trio</label>
+              </div>
+
+              <div class="toggle">
+                <input id="p_squad" type="radio" name="pack" />
+                <label for="p_squad" style="margin:0;color:inherit">Squad</label>
+              </div>
+
+              <div class="toggle">
+                <input id="p_plato" type="radio" name="pack" />
+                <label for="p_plato" style="margin:0;color:inherit">Plato Mode</label>
+              </div>
             </div>
           </div>
 
           <div class="summary" id="summary">Välj en rätt för att se sammanfattning.</div>
 
           <div class="row" style="margin-top:12px;">
-            <a class="btn primary" href="#" id="orderBtn">Skicka beställning</a>
+            <a class="btn primary" href="#" id="orderBtn">Skicka bokning</a>
             <a class="btn" href="#" id="igBtn">Instagram</a>
           </div>
         </div>
 
         <div class="panel pad">
-          <h2 style="margin:0 0 10px; font-size:18px">Kontakt</h2>
+          <h2 style="margin:0 0 10px; font-size:18px">Leverans</h2>
           <div class="meta">
-            <span class="pill">Mail</span>
-            <span class="pill">Telefon</span>
-            <span class="pill">Västerås</span>
+            <span class="pill">Västmanlands län</span>
+            <span class="pill">Hämtning eller leverans</span>
           </div>
-          <p class="lead" style="margin-top:10px">
-            Byt till dina riktiga uppgifter när du är klar.
-          </p>
 
+          <div class="summary" style="margin-top:10px">
+            Vi levererar i hela Västmanlands län. Du väljer datum och tid i bokningen.
+          </div>
+
+          <h2 style="margin:14px 0 10px; font-size:18px">Kontakt</h2>
           <div class="summary">
             E-post: <strong id="emailText">buildaplate.team@gmail.com</strong><br/>
             Telefon: <strong>+46 XX XXX XX XX</strong>
@@ -339,31 +344,36 @@
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
         <a class="btn" style="box-shadow:none" href="#ratter">Rätter</a>
         <a class="btn" style="box-shadow:none" href="#platomode">Plato Mode</a>
-        <a class="btn" style="box-shadow:none" href="#bestall">Beställ</a>
+        <a class="btn" style="box-shadow:none" href="#bestall">Boka</a>
       </div>
     </footer>
   </div>
 
   <script>
-    // 1) Ändra mail och insta här
+    // Ändra här
     const ORDER_EMAIL = "buildaplate.team@gmail.com";
     const INSTAGRAM_URL = "#"; // lägg din riktiga länk
 
-    // 2) Rätter (bilder är placeholders)
+    // Paket (priser syns bara i beställningssammanfattningen)
+    const PACKAGES = [
+      { key:"duo",  label:"Duo",       people:2, price:399, plato:false },
+      { key:"par",  label:"Par",       people:2, price:449, plato:false },
+      { key:"trio", label:"Trio",      people:3, price:499, plato:false },
+      { key:"squad",label:"Squad",     people:4, price:599, plato:false },
+      { key:"plato",label:"Plato Mode",people:3, price:549, plato:true  }
+    ];
+
+    // Rätter (bilder är placeholders tills ni har egna)
     const DISHES = [
-      { name:"Tagliatelle al Tartufo", time:"35 min", vibe:"Premium pasta", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
-      { name:"Cacio e Pepe", time:"20 min", vibe:"Minimal klassiker", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
-      { name:"Vodka Pasta + burrata", time:"30 min", vibe:"Bold + creamy", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
-
-      { name:"Köttbullar 2.0", time:"45 min", vibe:"Nordic plate", img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
-      { name:"Biff + chimichurri", time:"45 min", vibe:"Steak night", img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
-      { name:"Lax + misosmör", time:"35 min", vibe:"Glaze + finish", img:"https://source.unsplash.com/1200x800/?salmon,miso" },
-
-      { name:"Temaki Kit (tillagat protein)", time:"40 min", vibe:"Sushi-känsla", img:"https://source.unsplash.com/1200x800/?temaki,sushi" },
-      { name:"Poke Bowl", time:"25 min", vibe:"Build a bowl", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
-
-      { name:"Halloumi bowl + chimichurri", time:"25 min", vibe:"Veg premium", img:"https://source.unsplash.com/1200x800/?halloumi,salad" },
-      { name:"Rostad blomkål + tahini", time:"35 min", vibe:"Clean + crunchy", img:"https://source.unsplash.com/1200x800/?roasted,cauliflower,tahini" }
+      { name:"Tagliatelle al Tartufo", time:"35 min", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
+      { name:"Cacio e Pepe", time:"20 min", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
+      { name:"Vodka Pasta + burrata", time:"30 min", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
+      { name:"Köttbullar 2.0", time:"45 min", img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
+      { name:"Biff + chimichurri", time:"45 min", img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
+      { name:"Lax + misosmör", time:"35 min", img:"https://source.unsplash.com/1200x800/?salmon,miso" },
+      { name:"Temaki Kit (tillagat protein)", time:"40 min", img:"https://source.unsplash.com/1200x800/?temaki,sushi" },
+      { name:"Poke Bowl", time:"25 min", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
+      { name:"Halloumi bowl + chimichurri", time:"25 min", img:"https://source.unsplash.com/1200x800/?halloumi,salad" }
     ];
 
     const dishGrid = document.getElementById("dishGrid");
@@ -372,24 +382,27 @@
     const orderBtn = document.getElementById("orderBtn");
     const igBtn = document.getElementById("igBtn");
 
-    const duo = document.getElementById("duo");
-    const crew = document.getElementById("crew");
-    const extra = document.getElementById("extra");
-    const plato = document.getElementById("plato");
+    const radios = {
+      duo:  document.getElementById("p_duo"),
+      par:  document.getElementById("p_par"),
+      trio: document.getElementById("p_trio"),
+      squad:document.getElementById("p_squad"),
+      plato:document.getElementById("p_plato")
+    };
 
     document.getElementById("y").textContent = new Date().getFullYear();
     document.getElementById("emailText").textContent = ORDER_EMAIL;
 
-    function servingsText(){
-      const base = crew.checked ? 4 : 2;
-      const total = base + (extra.checked ? 1 : 0);
-      return total + " personer";
+    function selectedPackage(){
+      const key = Object.keys(radios).find(k => radios[k].checked) || "duo";
+      return PACKAGES.find(p => p.key === key) || PACKAGES[0];
     }
 
     function updateSummary(){
       const d = dishInput.value || "Ingen rätt vald";
-      const mode = plato.checked ? "Plato Mode: På" : "Plato Mode: Av";
-      summary.textContent = d + " · " + servingsText() + " · " + mode;
+      const p = selectedPackage();
+      const platoText = p.plato ? "Plato Mode: På" : "Plato Mode: Av";
+      summary.textContent = `${d} · ${p.label} (${p.people}) · ${p.price} SEK · ${platoText}`;
     }
 
     function selectDish(name){
@@ -410,10 +423,6 @@
               <h3>${d.name}</h3>
               <span class="pill">${d.time}</span>
             </div>
-            <div class="meta">
-              <span class="pill">${d.vibe}</span>
-              <span class="pill">Duo / Crew</span>
-            </div>
             <div class="actions">
               <button class="btn primary" type="button">Välj</button>
               <a class="btn" href="#platomode">Plato Mode</a>
@@ -426,21 +435,19 @@
     }
 
     function buildMailto(){
-      const chosen = dishInput.value || "Ingen rätt vald";
-      const size = crew.checked ? "Crew (4)" : "Duo (2)";
-      const addOne = extra.checked ? "Ja" : "Nej";
-      const mode = plato.checked ? "På" : "Av";
+      const chosenDish = dishInput.value || "Ingen rätt vald";
+      const p = selectedPackage();
 
-      const subject = encodeURIComponent("Beställning – BUILD A PLATE");
+      const subject = encodeURIComponent("Bokning – BUILD A PLATE");
       const body = encodeURIComponent(
-        `Rätt: ${chosen}\nStorlek: ${size}\n+1 portion: ${addOne}\nPlato Mode: ${mode}\n\nNamn:\nTelefon:\nÖnskat datum/tid:\nLeverans eller hämtning:\n`
+        `Rätt: ${chosenDish}\nPaket: ${p.label}\nAntal: ${p.people}\nPris: ${p.price} SEK\nPlato Mode: ${p.plato ? "På" : "Av"}\nOmråde: Västmanlands län\n\nNamn:\nTelefon:\nAdress (om leverans):\nÖnskat datum/tid:\nLeverans eller hämtning:\n`
       );
 
       return `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
     }
 
-    // Event listeners
-    [duo, crew, extra, plato].forEach(el => el.addEventListener("change", updateSummary));
+    // Listeners
+    Object.values(radios).forEach(r => r.addEventListener("change", updateSummary));
 
     orderBtn.addEventListener("click", (e) => {
       e.preventDefault();
