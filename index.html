@@ -4,16 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BUILD A PLATE – Plate by plate.</title>
-  <meta name="description" content="En box med färdigportionerade ingredienser. Du bygger rätten själv. Västerås. Plate by plate." />
+  <meta name="description" content="Box-upplevelse med ingredienser och recept. Välj rätt. Bygg tillsammans. Plato Mode." />
+
   <style>
     :root{
       --bg:#F6F2EA;      /* beige */
-      --paper:#FFFFFF;   /* white */
+      --card:#FFFFFF;    /* white */
       --ink:#0F2A22;     /* deep green */
       --muted:#4A5A55;
       --line:#DDD5C8;
       --radius:18px;
-      --max:980px;
+      --shadow: 0 10px 24px rgba(0,0,0,.06);
+      --max:1100px;
     }
     *{box-sizing:border-box}
     body{
@@ -21,19 +23,18 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
       background:var(--bg);
       color:var(--ink);
-      line-height:1.45;
+      line-height:1.4;
     }
     a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:26px 18px 70px}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px 16px 70px}
     .top{
       display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding:12px 0 18px;
+      padding:10px 0 18px;
     }
     .brand{display:flex; align-items:center; gap:12px; text-decoration:none}
     .mark{
       width:44px; height:44px; border:2px solid var(--ink);
       border-radius:999px; position:relative; flex:none;
-      background:transparent;
     }
     .mark:after{
       content:""; position:absolute; width:12px; height:12px;
@@ -42,93 +43,155 @@
       right:8px; top:8px; transform:rotate(45deg);
       border-radius:2px;
     }
-    .name{font-weight:700; letter-spacing:.06em}
+    .name{font-weight:750; letter-spacing:.06em}
     .tag{font-size:12px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      border:2px solid var(--ink);
+      border:1px solid var(--line);
       padding:10px 14px;
       border-radius:999px;
       text-decoration:none;
       font-weight:650;
-      background:var(--paper);
+      background:var(--card);
+      box-shadow: var(--shadow);
     }
     .btn:hover{transform:translateY(-1px)}
     .btn:active{transform:translateY(0)}
+    .btn.primary{
+      border-color:var(--ink);
+      background:var(--ink);
+      color:#fff;
+      box-shadow:none;
+    }
+
+    /* HERO */
     .hero{
-      background:var(--paper);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:stretch;
+      margin-top:6px;
+    }
+    .panel{
+      background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:28px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
-      align-items:start;
-    }
-    h1{margin:0 0 10px; font-size:40px; letter-spacing:-.02em}
-    .lead{margin:0 0 18px; font-size:16px; color:var(--muted)}
-    .mini{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;
-    }
-    .pill{
+    .panel.pad{padding:18px}
+    h1{margin:0 0 10px; font-size:42px; letter-spacing:-.02em}
+    .lead{margin:0 0 14px; color:var(--muted); font-size:15px}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .chip{
       border:1px solid var(--line);
       padding:8px 10px;
       border-radius:999px;
       font-size:13px;
       background:transparent;
     }
-    .card{
-      background:transparent;
+    .heroimg{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      min-height:260px;
+      filter:saturate(.95) contrast(.98);
+    }
+
+    /* SECTION */
+    .section{margin-top:16px}
+    .sectionhead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin:10px 2px 10px;
+    }
+    .sectionhead h2{margin:0; font-size:18px; letter-spacing:.02em}
+    .sectionhead p{margin:0; color:var(--muted); font-size:13px}
+
+    /* DISH GRID */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .dish{
+      background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:18px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:320px;
     }
-    .card h3{margin:0 0 10px; font-size:16px}
-    .card p{margin:0; color:var(--muted)}
-    .section{margin-top:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-    .section .card{min-height:138px}
-    .plato{
-      display:flex; align-items:center; gap:12px; margin-top:14px;
-      padding-top:14px; border-top:1px dashed var(--line);
+    .dish img{
+      width:100%;
+      height:170px;
+      object-fit:cover;
+      display:block;
     }
-    .face{
-      width:52px; height:52px; border:2px solid var(--ink);
-      border-radius:999px; position:relative; flex:none;
+    .dish .content{padding:14px; display:flex; flex-direction:column; gap:10px; flex:1}
+    .dish .title{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
+    .dish h3{margin:0; font-size:16px}
+    .meta{display:flex; gap:8px; flex-wrap:wrap; color:var(--muted); font-size:12px}
+    .pill{border:1px solid var(--line); padding:6px 8px; border-radius:999px}
+    .dish .actions{display:flex; gap:8px; margin-top:auto}
+    .dish .actions .btn{flex:1; box-shadow:none}
+
+    /* ORDER */
+    .order{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .field{
+      display:flex; flex-direction:column; gap:6px;
+      margin-top:8px;
+    }
+    label{font-size:12px; color:var(--muted)}
+    input, select{
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:14px;
+      outline:none;
+    }
+    .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .toggle{
+      display:flex; align-items:center; gap:10px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
       background:transparent;
     }
-    .eye{position:absolute; width:6px; height:6px; border:2px solid var(--ink); border-radius:999px; top:18px}
-    .eye.l{left:16px} .eye.r{right:16px}
-    .smile{position:absolute; left:50%; top:30px; width:16px; height:10px;
-      border:2px solid var(--ink); border-top:0; border-left:0; border-right:0;
-      transform:translateX(-50%); border-radius:0 0 12px 12px;
+    .toggle input{width:18px; height:18px}
+    .summary{
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      border:1px dashed var(--line);
+      color:var(--muted);
+      font-size:13px;
     }
-    .two{
-      margin-top:18px;
-      display:grid; grid-template-columns:1fr 1fr; gap:14px;
-    }
-    .list{margin:10px 0 0; padding-left:16px; color:var(--muted)}
-    .list li{margin:6px 0}
+
+    /* FOOTER */
     .footer{
-      margin-top:22px;
+      margin-top:18px;
       display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
       color:var(--muted); font-size:13px;
-      padding-top:18px;
+      padding-top:16px;
       border-top:1px solid var(--line);
     }
-    .smallbtn{
-      border:1px solid var(--line); padding:8px 10px; border-radius:999px; text-decoration:none;
-      background:var(--paper);
-    }
-    @media (max-width: 900px){
-      .grid{grid-template-columns:1fr}
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
       h1{font-size:34px}
-      .section{grid-template-columns:1fr}
-      .two{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .order{grid-template-columns:1fr}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="top">
@@ -139,107 +202,266 @@
           <div class="tag">Plate by plate.</div>
         </div>
       </a>
-
-      <a class="btn" href="#bestall">Boka box</a>
+      <a class="btn primary" href="#bestall">Boka</a>
     </header>
 
-    <main class="hero">
-      <div class="grid">
+    <section class="hero" aria-label="Intro">
+      <div class="panel pad">
+        <h1>Bygg boxen. Bygg rätten.</h1>
+        <p class="lead">
+          Färdigportionerat. Organiserat. Du bygger själv. Ensam eller tillsammans.
+        </p>
+        <div class="chips">
+          <div class="chip">Västerås</div>
+          <div class="chip">399–599 SEK</div>
+          <div class="chip">Duo / Crew</div>
+          <div class="chip">Plato Mode</div>
+        </div>
+        <div class="row" style="margin-top:14px;">
+          <a class="btn primary" href="#ratter">Se rätter</a>
+          <a class="btn" href="#platomode">Plato Mode</a>
+        </div>
+      </div>
+
+      <div class="panel" aria-label="Hero image">
+        <img class="heroimg"
+             src="https://source.unsplash.com/1200x800/?minimal,plating,food"
+             alt="Minimal plating" />
+      </div>
+    </section>
+
+    <!-- RÄTTER -->
+    <section class="section" id="ratter" aria-label="Rätter">
+      <div class="sectionhead">
         <div>
-          <h1>Bygg en rätt. En box. En ritual.</h1>
-          <p class="lead">
-            Du får alla ingredienser till en specifik rätt. Allt är färdigportionerat och organiserat.
-            Du lagar inget i förväg. Du bygger rätten själv, steg för steg.
+          <h2>Rätter</h2>
+          <p>Välj en. Vi gör resten enkelt.</p>
+        </div>
+        <p>Klicka “Välj” för att fylla beställningen.</p>
+      </div>
+
+      <div class="grid" id="dishGrid"></div>
+    </section>
+
+    <!-- PLATO MODE -->
+    <section class="section" id="platomode" aria-label="Plato Mode">
+      <div class="sectionhead">
+        <div>
+          <h2>Plato Mode</h2>
+          <p>Kommunikationsutmaning för 3 personer.</p>
+        </div>
+      </div>
+
+      <div class="panel pad">
+        <div class="meta">
+          <span class="pill">En kan inte se</span>
+          <span class="pill">En kan inte prata</span>
+          <span class="pill">En kan inte höra</span>
+        </div>
+
+        <p class="lead" style="margin-top:10px">
+          I boxen kan du ha ett Sinnes-kit. Syn och hörsel kan blockeras. “Kan inte prata” markeras med band eller kort.
+        </p>
+
+        <div class="summary">
+          Säkerhet: Ingen blindfold nära kniv, spis, ugn eller kokande vatten. En person är alltid Safety Lead.
+        </div>
+      </div>
+    </section>
+
+    <!-- BESTÄLL -->
+    <section class="section" id="bestall" aria-label="Beställ">
+      <div class="sectionhead">
+        <div>
+          <h2>Beställ</h2>
+          <p>Välj rätt. Välj antal. Skicka.</p>
+        </div>
+      </div>
+
+      <div class="order">
+        <div class="panel pad">
+          <div class="field">
+            <label for="dish">Vald rätt</label>
+            <input id="dish" type="text" placeholder="Välj en rätt ovan" readonly />
+          </div>
+
+          <div class="row">
+            <div class="toggle">
+              <input id="duo" type="radio" name="size" checked />
+              <label for="duo" style="margin:0;color:inherit">Duo (2 pers)</label>
+            </div>
+            <div class="toggle">
+              <input id="crew" type="radio" name="size" />
+              <label for="crew" style="margin:0;color:inherit">Crew (4 pers)</label>
+            </div>
+            <div class="toggle">
+              <input id="extra" type="checkbox" />
+              <label for="extra" style="margin:0;color:inherit">+1 portion</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="toggle">
+              <input id="plato" type="checkbox" />
+              <label for="plato" style="margin:0;color:inherit">Plato Mode</label>
+            </div>
+          </div>
+
+          <div class="summary" id="summary">Välj en rätt för att se sammanfattning.</div>
+
+          <div class="row" style="margin-top:12px;">
+            <a class="btn primary" href="#" id="orderBtn">Skicka beställning</a>
+            <a class="btn" href="#" id="igBtn">Instagram</a>
+          </div>
+        </div>
+
+        <div class="panel pad">
+          <h2 style="margin:0 0 10px; font-size:18px">Kontakt</h2>
+          <div class="meta">
+            <span class="pill">Mail</span>
+            <span class="pill">Telefon</span>
+            <span class="pill">Västerås</span>
+          </div>
+          <p class="lead" style="margin-top:10px">
+            Byt till dina riktiga uppgifter när du är klar.
           </p>
 
-          <div class="mini" aria-label="Snabb info">
-            <div class="pill">Västerås</div>
-            <div class="pill">Utan abonnemang</div>
-            <div class="pill">399–599 SEK</div>
-            <div class="pill">Inga matbilder</div>
-          </div>
-
-          <div class="plato">
-            <div class="face" aria-hidden="true">
-              <span class="eye l"></span><span class="eye r"></span><span class="smile"></span>
-            </div>
-            <div>
-              <strong>Plato</strong><br/>
-              <span class="lead" style="margin:0; font-size:14px;">
-                En lugn guide på receptkortet. Start. Symboler. Slut.
-              </span>
-            </div>
+          <div class="summary">
+            E-post: <strong id="emailText">buildaplate.team@gmail.com</strong><br/>
+            Telefon: <strong>+46 XX XXX XX XX</strong>
           </div>
         </div>
-
-        <div class="card" id="bestall">
-          <h3>Beställ</h3>
-          <p>Den här knappen kopplar vi till din betalningslänk när du är redo.</p>
-          <div style="height:10px"></div>
-
-          <!-- BYT LÄNKEN NÄR DU HAR STRIPE -->
-          <a class="btn" href="#" onclick="alert('Byt denna länk till din betalningslänk.'); return false;">
-            Boka box
-          </a>
-
-          <ul class="list">
-            <li>Hämtning eller leverans (bestäms per släpp).</li>
-            <li>Allergeninfo står på boxen.</li>
-            <li>Begränsade släpp lokalt.</li>
-          </ul>
-        </div>
       </div>
+    </section>
 
-      <section class="section" aria-label="Så funkar det">
-        <div class="card">
-          <h3>1. Öppna</h3>
-          <p>Allt ligger i ordning. Du ser flödet direkt.</p>
-        </div>
-        <div class="card">
-          <h3>2. Bygg</h3>
-          <p>Receptkortet guidar med kort text och symboler.</p>
-        </div>
-        <div class="card">
-          <h3>3. Plating</h3>
-          <p>Du avslutar med finish. Du serverar som en upplevelse.</p>
-        </div>
-      </section>
-
-      <section class="two" aria-label="Innehåll och kontakt">
-        <div class="card">
-          <h3>I boxen</h3>
-          <ul class="list">
-            <li>Alla ingredienser till en specifik rätt.</li>
-            <li>Receptkort med Plato.</li>
-            <li>Tydlig intern struktur och etiketter.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Kontakt</h3>
-          <ul class="list">
-            <li>E-post: <a href="mailto:hello@buildaplate.se">hello@buildaplate.se</a> (byt om du inte har domän än)</li>
-            <li>Telefon: +46 XX XXX XX XX</li>
-            <li>Plats: Västerås</li>
-          </ul>
-          <div style="height:10px"></div>
-          <a class="smallbtn" href="#" onclick="navigator.clipboard.writeText('hello@buildaplate.se'); alert('Kopierat: hello@buildaplate.se'); return false;">Kopiera mail</a>
-        </div>
-      </section>
-
-      <div class="footer">
-        <div>© <span id="y"></span> BUILD A PLATE</div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a class="smallbtn" href="#" onclick="alert('Lägg din Instagram-länk här.'); return false;">Instagram</a>
-          <a class="smallbtn" href="#" onclick="alert('Lägg villkor här senare.'); return false;">Villkor</a>
-          <a class="smallbtn" href="#" onclick="alert('Lägg integritet här senare.'); return false;">Integritet</a>
-        </div>
+    <footer class="footer">
+      <div>© <span id="y"></span> BUILD A PLATE</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a class="btn" style="box-shadow:none" href="#ratter">Rätter</a>
+        <a class="btn" style="box-shadow:none" href="#platomode">Plato Mode</a>
+        <a class="btn" style="box-shadow:none" href="#bestall">Beställ</a>
       </div>
-
-      <script>
-        document.getElementById("y").textContent = new Date().getFullYear();
-      </script>
-    </main>
+    </footer>
   </div>
+
+  <script>
+    // 1) Ändra mail och insta här
+    const ORDER_EMAIL = "buildaplate.team@gmail.com";
+    const INSTAGRAM_URL = "#"; // lägg din riktiga länk
+
+    // 2) Rätter (bilder är placeholders)
+    const DISHES = [
+      { name:"Tagliatelle al Tartufo", time:"35 min", vibe:"Premium pasta", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
+      { name:"Cacio e Pepe", time:"20 min", vibe:"Minimal klassiker", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
+      { name:"Vodka Pasta + burrata", time:"30 min", vibe:"Bold + creamy", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
+
+      { name:"Köttbullar 2.0", time:"45 min", vibe:"Nordic plate", img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
+      { name:"Biff + chimichurri", time:"45 min", vibe:"Steak night", img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
+      { name:"Lax + misosmör", time:"35 min", vibe:"Glaze + finish", img:"https://source.unsplash.com/1200x800/?salmon,miso" },
+
+      { name:"Temaki Kit (tillagat protein)", time:"40 min", vibe:"Sushi-känsla", img:"https://source.unsplash.com/1200x800/?temaki,sushi" },
+      { name:"Poke Bowl", time:"25 min", vibe:"Build a bowl", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
+
+      { name:"Halloumi bowl + chimichurri", time:"25 min", vibe:"Veg premium", img:"https://source.unsplash.com/1200x800/?halloumi,salad" },
+      { name:"Rostad blomkål + tahini", time:"35 min", vibe:"Clean + crunchy", img:"https://source.unsplash.com/1200x800/?roasted,cauliflower,tahini" }
+    ];
+
+    const dishGrid = document.getElementById("dishGrid");
+    const dishInput = document.getElementById("dish");
+    const summary = document.getElementById("summary");
+    const orderBtn = document.getElementById("orderBtn");
+    const igBtn = document.getElementById("igBtn");
+
+    const duo = document.getElementById("duo");
+    const crew = document.getElementById("crew");
+    const extra = document.getElementById("extra");
+    const plato = document.getElementById("plato");
+
+    document.getElementById("y").textContent = new Date().getFullYear();
+    document.getElementById("emailText").textContent = ORDER_EMAIL;
+
+    function servingsText(){
+      const base = crew.checked ? 4 : 2;
+      const total = base + (extra.checked ? 1 : 0);
+      return total + " personer";
+    }
+
+    function updateSummary(){
+      const d = dishInput.value || "Ingen rätt vald";
+      const mode = plato.checked ? "Plato Mode: På" : "Plato Mode: Av";
+      summary.textContent = d + " · " + servingsText() + " · " + mode;
+    }
+
+    function selectDish(name){
+      dishInput.value = name;
+      updateSummary();
+      location.hash = "#bestall";
+    }
+
+    function renderDishes(){
+      dishGrid.innerHTML = "";
+      DISHES.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "dish";
+        card.innerHTML = `
+          <img src="${d.img}" alt="${d.name}">
+          <div class="content">
+            <div class="title">
+              <h3>${d.name}</h3>
+              <span class="pill">${d.time}</span>
+            </div>
+            <div class="meta">
+              <span class="pill">${d.vibe}</span>
+              <span class="pill">Duo / Crew</span>
+            </div>
+            <div class="actions">
+              <button class="btn primary" type="button">Välj</button>
+              <a class="btn" href="#platomode">Plato Mode</a>
+            </div>
+          </div>
+        `;
+        card.querySelector("button").addEventListener("click", () => selectDish(d.name));
+        dishGrid.appendChild(card);
+      });
+    }
+
+    function buildMailto(){
+      const chosen = dishInput.value || "Ingen rätt vald";
+      const size = crew.checked ? "Crew (4)" : "Duo (2)";
+      const addOne = extra.checked ? "Ja" : "Nej";
+      const mode = plato.checked ? "På" : "Av";
+
+      const subject = encodeURIComponent("Beställning – BUILD A PLATE");
+      const body = encodeURIComponent(
+        `Rätt: ${chosen}\nStorlek: ${size}\n+1 portion: ${addOne}\nPlato Mode: ${mode}\n\nNamn:\nTelefon:\nÖnskat datum/tid:\nLeverans eller hämtning:\n`
+      );
+
+      return `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
+    }
+
+    // Event listeners
+    [duo, crew, extra, plato].forEach(el => el.addEventListener("change", updateSummary));
+
+    orderBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if(!dishInput.value){
+        alert("Välj en rätt först.");
+        return;
+      }
+      window.location.href = buildMailto();
+    });
+
+    igBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if(INSTAGRAM_URL === "#"){
+        alert("Lägg din Instagram-länk i koden (INSTAGRAM_URL).");
+        return;
+      }
+      window.open(INSTAGRAM_URL, "_blank");
+    });
+
+    renderDishes();
+    updateSummary();
+  </script>
 </body>
 </html>
