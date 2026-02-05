@@ -14,12 +14,15 @@
       --line:rgba(11,15,13,.12);
       --accent:#0F2A22;
 
+      /* NY: premium bakgrund */
+      --bgGreen:#0F2A22;         /* mörk grön vägg */
+      --floor:#C9B28D;           /* kartong / kraftpapper */
+      --floor2:#B89E77;          /* lite mörkare kant */
+      --bgImg:url("assets/plate-bg.png");
+
       --gap:2px;
       --pad:12px;
       --barH:52px;
-
-      /* din bakgrund */
-      --plateBg:url("assets/plate-bg.png");
     }
 
     *{box-sizing:border-box}
@@ -53,14 +56,12 @@
 
       transition: background .22s ease, color .22s ease, border-color .22s ease, backdrop-filter .22s ease;
     }
-
     .bar:not(.scrolled):hover{
       background:rgba(246,242,234,.92);
       color:var(--ink);
       border-bottom:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
-
     .bar.scrolled{
       background:rgba(246,242,234,.92);
       color:var(--ink);
@@ -115,7 +116,7 @@
       display:none;
     }
 
-    /* HERO VIDEO */
+    /* HERO */
     .hero{
       position:relative;
       height:100vh;
@@ -240,38 +241,59 @@
       padding:0;
       background:var(--bg);
     }
+
+    /* NY: varje kort får “LV-studio” bakgrund */
     .item{
       display:block;
       background:#fff;
+      border:0;
     }
-
-    /* ======= HÄR LIGGER DIN BAKGRUND PÅ VARJE RÄTT ======= */
     .img{
       width:100%;
       aspect-ratio: 3 / 4;
       overflow:hidden;
 
-      background-image: var(--plateBg);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      /* basen */
+      position:relative;
+      background:
+        /* vägg: din bild */
+        var(--bgImg) center/cover no-repeat,
+        /* fallback om bilden inte laddar */
+        linear-gradient(180deg, rgba(15,42,34,.98), rgba(15,42,34,.92));
 
-      padding:28px 22px 26px;
       display:flex;
-      align-items:center;
-      justify-content:center;
+      align-items:flex-end;
     }
+
+    /* golv (kraftpapper) längst ner */
+    .img::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:34%;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 25%,
+        rgba(201,178,141,.92) 55%,
+        rgba(184,158,119,.96) 100%
+      );
+      pointer-events:none;
+      mix-blend-mode:normal;
+    }
+
+    /* själva maträtten ligger över bakgrunden */
     .img img{
+      position:relative;
+      z-index:2;
       width:100%;
       height:100%;
-      object-fit:contain;
+      object-fit:cover;
       display:block;
-      filter: drop-shadow(0 18px 30px rgba(0,0,0,.25));
       transform:scale(1.01);
       transition:transform .25s ease;
     }
     .item:hover .img img{transform:scale(1.05)}
-    /* ====================================================== */
 
     .label{
       padding:10px 12px 12px;
@@ -379,7 +401,7 @@
     .rowItem span{font-size:12px;color:var(--muted)}
     .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
-    /* SEARCH FULL OVERLAY */
+    /* SEARCH FULL OVERLAY (LV style) */
     .searchFull{
       position:absolute;
       inset:0;
@@ -438,7 +460,6 @@
 </head>
 
 <body>
-  <!-- HEADER -->
   <header class="bar" id="bar">
     <div class="barSide">
       <button class="iconBtn" id="menuBtn" aria-label="Menu">
@@ -459,7 +480,7 @@
     </div>
 
     <div class="barSide" style="justify-content:flex-end">
-      <a class="contact" href="mailto:hello@buildaplate.se">Contact us</a>
+      <a class="contact" href="contact.html">Contact us</a>
 
       <button class="iconBtn" id="loginBtn" aria-label="Login">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -480,7 +501,6 @@
     </div>
   </header>
 
-  <!-- HERO VIDEO -->
   <section class="hero" id="top">
     <video id="heroVideo" autoplay muted loop playsinline poster="assets/hero.jpg">
       <source src="assets/hero.mp4" type="video/mp4" />
@@ -498,7 +518,6 @@
     </div>
   </section>
 
-  <!-- LIST -->
   <div class="sectionTop" id="ratter">
     <h2 class="title">Rätter</h2>
     <p class="meta" id="resultMeta"></p>
@@ -515,7 +534,7 @@
     <div>Plate by plate.</div>
   </footer>
 
-  <!-- MENU DRAWER -->
+  <!-- MENU DRAWER (LEFT) -->
   <div class="overlay" id="menuOverlay">
     <div class="drawer drawerLeft" role="dialog" aria-label="Menu">
       <div class="sheetTop">
@@ -544,7 +563,7 @@
     </div>
   </div>
 
-  <!-- CART DRAWER -->
+  <!-- CART DRAWER (RIGHT) -->
   <div class="overlay" id="bagOverlay">
     <div class="drawer drawerRight" role="dialog" aria-label="Cart">
       <div class="sheetTop">
@@ -618,7 +637,6 @@
     const q = document.getElementById("q");
     const searchList = document.getElementById("searchList");
     const searchCount = document.getElementById("searchCount");
-
     function openSearch(){
       openOverlay(searchOverlay);
       q.value = "";
@@ -633,7 +651,7 @@
     document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
     bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
 
-    document.getElementById("loginBtn").onclick = () => alert("Logga in kommer snart.");
+    document.getElementById("loginBtn").onclick = () => window.location.href = "login.html";
 
     const CART_KEY = "bap_cart_v1";
     function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
@@ -672,7 +690,6 @@
         const a = document.createElement("a");
         a.className = "item";
         a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
-        a.target = "_blank";
         a.rel = "noopener";
 
         a.innerHTML = `
@@ -683,9 +700,8 @@
           </div>
         `;
 
-        const im = a.querySelector("img");
+        const im = a.querySelector(".img img");
         im.onerror = () => im.src = "assets/hero.jpg";
-
         grid.appendChild(a);
       });
     }
@@ -732,7 +748,7 @@
           </div>
           <div style="color:rgba(11,15,13,.5)">→</div>
         `;
-        row.onclick = () => window.open(`dish.html?id=${encodeURIComponent(d.id)}`, "_blank", "noopener");
+        row.onclick = () => { window.location.href = `dish.html?id=${encodeURIComponent(d.id)}`; };
         const im = row.querySelector("img");
         im.onerror = () => im.src = "assets/hero.jpg";
         searchList.appendChild(row);
@@ -742,7 +758,6 @@
 
     const bagList = document.getElementById("bagList");
     const bagEmpty = document.getElementById("bagEmpty");
-
     function renderBag(){
       const cart = getCart();
       bagEmpty.style.display = cart.length ? "none" : "block";
@@ -762,7 +777,7 @@
 
         row.addEventListener("click", (e) => {
           if(e.target.tagName.toLowerCase() === "button") return;
-          window.open(`dish.html?id=${encodeURIComponent(it.id)}`, "_blank", "noopener");
+          window.location.href = `dish.html?id=${encodeURIComponent(it.id)}`;
         });
 
         row.querySelector("button").addEventListener("click", () => {
