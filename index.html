@@ -17,6 +17,9 @@
       --gap:2px;
       --pad:12px;
       --barH:52px;
+
+      /* din bakgrund */
+      --plateBg:url("assets/plate-bg.png");
     }
 
     *{box-sizing:border-box}
@@ -31,7 +34,6 @@
     }
     a{color:inherit;text-decoration:none}
     button{font-family:inherit}
-    :focus-visible{outline:2px solid rgba(11,15,13,.35); outline-offset:2px; border-radius:10px}
 
     /* HEADER */
     .bar{
@@ -51,12 +53,14 @@
 
       transition: background .22s ease, color .22s ease, border-color .22s ease, backdrop-filter .22s ease;
     }
+
     .bar:not(.scrolled):hover{
       background:rgba(246,242,234,.92);
       color:var(--ink);
       border-bottom:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
+
     .bar.scrolled{
       background:rgba(246,242,234,.92);
       color:var(--ink);
@@ -76,18 +80,13 @@
       white-space:nowrap;
     }
 
-    .contactBtn{
+    .contact{
       font-size:12px;
       letter-spacing:.02em;
       opacity:.92;
       white-space:nowrap;
-      background:transparent;
-      border:0;
-      color:inherit;
-      cursor:pointer;
-      padding:0;
     }
-    .contactBtn:hover{text-decoration:underline}
+    .contact:hover{text-decoration:underline}
 
     .iconBtn{
       width:36px; height:36px;
@@ -116,7 +115,7 @@
       display:none;
     }
 
-    /* HERO */
+    /* HERO VIDEO */
     .hero{
       position:relative;
       height:100vh;
@@ -132,12 +131,14 @@
       display:block;
     }
     .hero img{display:none}
+
     .hero::after{
       content:"";
       position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(0,0,0,.26), rgba(0,0,0,.12) 45%, rgba(0,0,0,.38));
       pointer-events:none;
     }
+
     .heroText{
       position:absolute;
       left:0; right:0;
@@ -183,7 +184,7 @@
       border-color:#fff;
     }
 
-    /* SECTION */
+    /* SECTION HEADER */
     .sectionTop{
       padding:12px var(--pad) 8px;
       display:flex;
@@ -226,7 +227,7 @@
       border-color:var(--ink);
     }
 
-    /* GRID */
+    /* FULL-BLEED GRID */
     .bleed{
       width:100vw;
       margin-left:calc(50% - 50vw);
@@ -239,22 +240,39 @@
       padding:0;
       background:var(--bg);
     }
-    .item{display:block;background:#fff}
+    .item{
+      display:block;
+      background:#fff;
+    }
+
+    /* ======= HÄR LIGGER DIN BAKGRUND PÅ VARJE RÄTT ======= */
     .img{
       width:100%;
       aspect-ratio: 3 / 4;
       overflow:hidden;
-      background:#ddd;
+
+      background-image: var(--plateBg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      padding:28px 22px 26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
     .img img{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit:contain;
       display:block;
+      filter: drop-shadow(0 18px 30px rgba(0,0,0,.25));
       transform:scale(1.01);
       transition:transform .25s ease;
     }
     .item:hover .img img{transform:scale(1.05)}
+    /* ====================================================== */
+
     .label{
       padding:10px 12px 12px;
       border-top:1px solid var(--line);
@@ -284,25 +302,12 @@
     }
     .overlay.open{display:block}
 
-    .x{
-      width:38px; height:38px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:transparent;
-      cursor:pointer;
-      color:var(--ink);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:16px;
-    }
-
-    /* MENU DRAWER */
+    /* DRAWERS */
     .drawer{
       position:absolute;
       top:0;
       height:100%;
-      width:min(560px, 100%);
+      width:min(520px, 100%);
       background:rgba(246,242,234,.98);
       padding:16px;
       overflow:auto;
@@ -315,7 +320,13 @@
       border-right:1px solid var(--line);
       transform:translateX(-100%);
     }
+    .drawerRight{
+      right:0;
+      border-left:1px solid var(--line);
+      transform:translateX(100%);
+    }
     .overlay.open .drawerLeft{transform:translateX(0)}
+    .overlay.open .drawerRight{transform:translateX(0)}
 
     .sheetTop{
       display:flex;
@@ -326,16 +337,34 @@
       border-bottom:1px solid var(--line);
       margin-bottom:12px;
     }
+    .x{
+      width:36px; height:36px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:transparent;
+      cursor:pointer;
+      color:var(--ink);
+    }
 
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:14px;
+      outline:none;
+      color:var(--ink);
+    }
     .list{display:flex; flex-direction:column; gap:10px; margin-top:12px}
     .rowItem{
       display:flex;
       gap:10px;
       align-items:center;
-      padding:12px;
+      padding:10px;
       border-radius:14px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.70);
+      background:rgba(255,255,255,.6);
       cursor:pointer;
     }
     .thumb{
@@ -350,351 +379,66 @@
     .rowItem span{font-size:12px;color:var(--muted)}
     .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
-    /* ===== LV SEARCH ===== */
-    #searchOverlay{background:rgba(246,242,234,.98)}
-    #searchOverlay .searchFull{
+    /* SEARCH FULL OVERLAY */
+    .searchFull{
       position:absolute;
       inset:0;
-      background:transparent;
+      background:rgba(246,242,234,.98);
       color:var(--ink);
-      padding:18px 16px 24px;
+      padding:16px;
       overflow:auto;
       opacity:0;
       transform: translateY(-6px);
       transition: opacity .18s ease, transform .18s ease;
     }
-    #searchOverlay.open .searchFull{
+    .overlay.open .searchFull{
       opacity:1;
       transform: translateY(0);
     }
-
-    .lvTop{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      padding:10px 0 16px;
-      border-bottom:1px solid var(--line);
-      margin-bottom:16px;
-      max-width:1280px;
-      margin-left:auto;
-      margin-right:auto;
-    }
-    .lvTopMid{display:flex; justify-content:center}
-    .lvTopRight{display:flex; justify-content:flex-end}
-    .lvLogo{color:var(--ink)}
-    .lvBody{
-      max-width:1280px;
-      margin:0 auto;
-      padding-bottom:26px;
-    }
-    .lvInput{
-      width:100%;
-      padding:16px 18px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-size:14px;
-      outline:none;
-      color:var(--ink);
-    }
-    .lvTrending{margin-top:14px}
-    .lvTrendTitle{
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin:0 0 10px;
-      text-align:center;
-    }
-    .lvTrendChips{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-    .lvChip{
-      border:0;
-      background:transparent;
-      cursor:pointer;
-      font-size:12px;
-      color:var(--ink);
-      padding:6px 4px;
-      border-radius:999px;
-      text-decoration:underline;
-      text-underline-offset:4px;
-      opacity:.9;
-    }
-    .lvChip:hover{opacity:1}
-    .lvMeta{
-      margin-top:16px;
-      font-size:12px;
-      color:var(--muted);
-      text-align:left;
-    }
-    .lvGrid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:10px;
-    }
-    .lvCard{
-      display:block;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:16px;
-      overflow:hidden;
-    }
-    .lvImg{
-      aspect-ratio: 4 / 5;
-      overflow:hidden;
-      background:#ddd;
-    }
-    .lvImg img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform:scale(1.01);
-      transition:transform .25s ease;
-    }
-    .lvCard:hover .lvImg img{transform:scale(1.05)}
-    .lvLabel{
-      padding:12px 14px 14px;
-      border-top:1px solid var(--line);
-      background:rgba(246,242,234,.55);
-    }
-    .lvLabel .cat{
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin:0 0 6px;
-    }
-    .lvLabel .name{
-      margin:0;
-      font-size:13px;
-      font-weight:650;
-      letter-spacing:.02em;
-    }
-
-    /* ===== CONTACT MODAL ===== */
-    .modalWrap{
-      position:absolute;
-      inset:0;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:18px;
-    }
-    .modal{
-      width:min(920px, 100%);
-      background:rgba(246,242,234,.98);
-      border:1px solid var(--line);
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.18);
-    }
-    .modalTop{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-    }
-    .modalTopLeft{display:flex; align-items:center; gap:10px}
-    .backLink{
-      font-size:12px;
-      color:var(--muted);
-      text-decoration:underline;
-      text-underline-offset:4px;
-      background:transparent;
-      border:0;
-      cursor:pointer;
-      padding:0;
-    }
-    .modalBody{
-      padding:18px 16px 22px;
-      max-width:720px;
-      margin:0 auto;
-    }
-    .modalTitle{
-      margin:0 0 10px;
-      font-size:14px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-    .modalIntro{
-      margin:0 0 14px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.55;
-    }
-    .contactList{display:flex; flex-direction:column; gap:10px}
-    .contactRow{
+    .searchTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:12px 12px;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:rgba(255,255,255,.70);
+      padding:6px 0 12px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:12px;
     }
-    .contactLeft{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      min-width:0;
-    }
-    .contactIc{
-      width:30px;height:30px;
-      border-radius:10px;
-      border:1px solid var(--line);
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex:none;
-    }
-    .contactTxt{min-width:0}
-    .contactTxt b{
-      display:block;
-      font-size:13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .contactTxt span{
-      display:block;
+    .searchTitle{
       font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-    }
-    .contactGo{
-      font-size:12px;
-      color:var(--muted);
-      text-decoration:underline;
-      text-underline-offset:4px;
-      white-space:nowrap;
-    }
-    .modalDivider{height:1px;background:var(--line);margin:16px 0}
-    .modalSmall{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:center;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .modalSmall a{text-decoration:underline; text-underline-offset:4px}
-
-    /* ===== BAG LV ===== */
-    .drawerRight{
-      right:0;
-      border-left:1px solid var(--line);
-      transform:translateX(100%);
-    }
-    .overlay.open .drawerRight{transform:translateX(0)}
-    .bagTitle{
-      font-size:12px;
-      letter-spacing:.18em;
+      letter-spacing:.14em;
       text-transform:uppercase;
-      color:var(--muted);
       margin:0;
     }
-    .bagMeta{
-      margin:8px 0 0;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .bagItems{display:flex; flex-direction:column; gap:10px; margin-top:12px}
-    .bagRow{
-      display:grid;
-      grid-template-columns: 90px 1fr auto;
-      gap:12px;
-      align-items:center;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:rgba(255,255,255,.70);
-    }
-    .bagImg{
-      width:90px;
-      aspect-ratio: 4 / 5;
-      border-radius:12px;
-      overflow:hidden;
-      background:#ddd;
-      border:1px solid var(--line);
-    }
-    .bagImg img{width:100%;height:100%;object-fit:cover;display:block}
-    .bagInfo b{display:block;font-size:13px}
-    .bagInfo span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
-    .bagActions{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
-    .removeBtn{
-      width:38px;height:38px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:transparent;
-      cursor:pointer;
-    }
-    .bagFooter{
-      margin-top:14px;
+
+    /* FOOT */
+    .foot{
+      padding:18px var(--pad) 40px;
       border-top:1px solid var(--line);
-      padding-top:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .bagTotal{
+      color:var(--muted);
+      font-size:12px;
       display:flex;
       justify-content:space-between;
-      font-size:13px;
-      color:var(--ink);
-    }
-    .bagCTA{
-      border-radius:999px;
-      padding:12px 14px;
-      font-weight:650;
-      font-size:13px;
-      border:1px solid var(--ink);
-      background:var(--ink);
-      color:#fff;
-      cursor:pointer;
-      width:100%;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    @media (min-width: 1400px){
-      .grid{grid-template-columns:repeat(5,1fr)}
-      .lvGrid{grid-template-columns:repeat(5,1fr)}
-    }
-    @media (max-width:1100px){
-      .grid{grid-template-columns:repeat(3,1fr)}
-      .lvGrid{grid-template-columns:repeat(3,1fr)}
-    }
+    @media (max-width:1100px){ .grid{grid-template-columns:repeat(3,1fr)} }
     @media (max-width:820px){
       .headline{font-size:34px}
       .grid{grid-template-columns:repeat(2,1fr)}
-      .lvGrid{grid-template-columns:repeat(2,1fr)}
       .barSide{min-width:auto}
-      .contactBtn{display:none}
+      .contact{display:none}
     }
     @media (max-width:520px){
       .grid{grid-template-columns:1fr}
-      .lvGrid{grid-template-columns:1fr}
       .hero{min-height:620px}
-      .lvTop{grid-template-columns: 1fr auto auto}
-      .lvTopMid{justify-content:flex-start}
-      .modalWrap{padding:10px}
-      .modalBody{padding:14px 12px 16px}
-      .modalTop{padding:12px 12px}
-      .bagRow{grid-template-columns:70px 1fr auto}
-      .bagImg{width:70px}
     }
   </style>
 </head>
 
 <body>
+  <!-- HEADER -->
   <header class="bar" id="bar">
     <div class="barSide">
       <button class="iconBtn" id="menuBtn" aria-label="Menu">
@@ -715,14 +459,14 @@
     </div>
 
     <div class="barSide" style="justify-content:flex-end">
-      <button class="contactBtn" id="contactBtn" type="button">Contact us</button>
+      <a class="contact" href="mailto:hello@buildaplate.se">Contact us</a>
 
-      <a class="iconBtn" href="login.html" aria-label="Login">
+      <button class="iconBtn" id="loginBtn" aria-label="Login">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
           <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-      </a>
+      </button>
 
       <span class="iconWrap">
         <button class="iconBtn" id="bagBtn" aria-label="Cart">
@@ -736,6 +480,7 @@
     </div>
   </header>
 
+  <!-- HERO VIDEO -->
   <section class="hero" id="top">
     <video id="heroVideo" autoplay muted loop playsinline poster="assets/hero.jpg">
       <source src="assets/hero.mp4" type="video/mp4" />
@@ -753,6 +498,7 @@
     </div>
   </section>
 
+  <!-- LIST -->
   <div class="sectionTop" id="ratter">
     <h2 class="title">Rätter</h2>
     <p class="meta" id="resultMeta"></p>
@@ -764,6 +510,12 @@
     <div class="grid" id="grid"></div>
   </div>
 
+  <footer class="foot">
+    <div>© <span id="y"></span> BUILD A PLATE</div>
+    <div>Plate by plate.</div>
+  </footer>
+
+  <!-- MENU DRAWER -->
   <div class="overlay" id="menuOverlay">
     <div class="drawer drawerLeft" role="dialog" aria-label="Menu">
       <div class="sheetTop">
@@ -778,136 +530,57 @@
     </div>
   </div>
 
+  <!-- SEARCH FULL OVERLAY -->
   <div class="overlay" id="searchOverlay">
     <div class="searchFull" role="dialog" aria-label="Search">
-      <div class="lvTop">
-        <div></div>
-        <div class="lvTopMid"><div class="logo lvLogo">BUILD A PLATE</div></div>
-        <div class="lvTopRight"><button class="x" id="searchClose" aria-label="Close">✕</button></div>
+      <div class="searchTop">
+        <p class="searchTitle">Search</p>
+        <button class="x" id="searchClose" aria-label="Close">✕</button>
       </div>
 
-      <div class="lvBody">
-        <input class="lvInput" id="q" type="search" placeholder="Sök..." autocomplete="off" />
-        <div class="lvTrending">
-          <div class="lvTrendTitle">Trending searches</div>
-          <div class="lvTrendChips" id="trendChips"></div>
-        </div>
-
-        <div class="lvMeta" id="searchCount"></div>
-        <div class="lvGrid" id="searchGrid"></div>
-      </div>
+      <input class="input" id="q" type="search" placeholder="Sök rätt..." autocomplete="off" />
+      <div class="muted" id="searchCount"></div>
+      <div class="list" id="searchList"></div>
     </div>
   </div>
 
-  <div class="overlay" id="contactOverlay">
-    <div class="modalWrap" role="dialog" aria-label="Contact us">
-      <div class="modal">
-        <div class="modalTop">
-          <div class="modalTopLeft">
-            <button class="backLink" id="contactBack" type="button">Back</button>
-          </div>
-          <div class="lvTopMid"><div class="logo lvLogo">BUILD A PLATE</div></div>
-          <div class="lvTopRight"><button class="x" id="contactClose" aria-label="Close">✕</button></div>
-        </div>
-
-        <div class="modalBody">
-          <div class="modalTitle">Contact us</div>
-          <p class="modalIntro">Välj det som känns enklast. Vi svarar så snabbt vi kan.</p>
-
-          <div class="contactList">
-            <div class="contactRow">
-              <div class="contactLeft">
-                <div class="contactIc">📞</div>
-                <div class="contactTxt">
-                  <b>Telefon</b>
-                  <span>+46 70 000 00 00</span>
-                </div>
-              </div>
-              <a class="contactGo" href="tel:+46700000000">Call</a>
-            </div>
-
-            <div class="contactRow">
-              <div class="contactLeft">
-                <div class="contactIc">✉️</div>
-                <div class="contactTxt">
-                  <b>Email</b>
-                  <span>hello@buildaplate.se</span>
-                </div>
-              </div>
-              <a class="contactGo" href="mailto:hello@buildaplate.se">Email</a>
-            </div>
-
-            <div class="contactRow">
-              <div class="contactLeft">
-                <div class="contactIc">📷</div>
-                <div class="contactTxt">
-                  <b>Instagram</b>
-                  <span>@buildaplate</span>
-                </div>
-              </div>
-              <a class="contactGo" href="https://instagram.com/buildaplate" target="_blank" rel="noopener">Open</a>
-            </div>
-          </div>
-
-          <div class="modalDivider"></div>
-
-          <div class="modalSmall">
-            <span>Need help?</span>
-            <a href="#ratter" onclick="document.getElementById('contactOverlay').classList.remove('open');document.documentElement.style.overflow=''">Se rätter</a>
-            <a href="login.html">Login</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- CART DRAWER -->
   <div class="overlay" id="bagOverlay">
-    <div class="drawer drawerRight" role="dialog" aria-label="Bag">
+    <div class="drawer drawerRight" role="dialog" aria-label="Cart">
       <div class="sheetTop">
-        <div>
-          <p class="bagTitle">Your bag</p>
-          <p class="bagMeta" id="bagMeta">—</p>
-        </div>
+        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Cart</b>
         <button class="x" id="bagClose" aria-label="Close">✕</button>
       </div>
 
-      <div class="muted" id="bagEmpty">Din bag är tom.</div>
-      <div class="bagItems" id="bagItems"></div>
-
-      <div class="bagFooter" id="bagFooter" style="display:none">
-        <div class="bagTotal">
-          <span>Total</span>
-          <span id="bagTotal">—</span>
-        </div>
-        <button class="bagCTA" type="button" id="bagCTA">View your bag</button>
-      </div>
+      <div class="muted" id="bagEmpty">Din cart är tom.</div>
+      <div class="list" id="bagList"></div>
+      <p class="muted" style="margin-top:14px">Klicka en item för att öppna produkten.</p>
     </div>
   </div>
 
   <script>
     const DISHES = [
-      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
-      { id:"cacio",   name:"Cacio e Pepe",          cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
-      { id:"vodka",   name:"Vodka Pasta + burrata", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
-      { id:"meatballs", name:"Köttbullar 2.0",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
-      { id:"steak",     name:"Biff + chimichurri",  cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
-      { id:"salmon",    name:"Lax + misosmör",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
+      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
+      { id:"cacio", name:"Cacio e Pepe", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
+      { id:"vodka", name:"Vodka Pasta + burrata", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
+      { id:"meatballs", name:"Köttbullar 2.0", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
+      { id:"steak", name:"Biff + chimichurri", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
+      { id:"salmon", name:"Lax + misosmör", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
       { id:"temaki", name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?temaki,sushi" },
-      { id:"poke",   name:"Poke Bowl",                      cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
-      { id:"halloumi", name:"Halloumi bowl + chimichurri",  cat:"Veg",   img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
+      { id:"poke", name:"Poke Bowl", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
+      { id:"halloumi", name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
     ];
 
     const FILTERS = ["Alla","Pasta","Nordic","Sushi","Veg"];
     let active = "Alla";
-    const TRENDING = ["Pasta","Nordic","Sushi","Veg","Tartufo","Burrata"];
 
-    // Sticky header
+    document.getElementById("y").textContent = new Date().getFullYear();
+
     const bar = document.getElementById("bar");
     function syncBar(){ bar.classList.toggle("scrolled", window.scrollY > 20); }
     window.addEventListener("scroll", syncBar, { passive:true });
     syncBar();
 
-    // Hero fallback
     const v = document.getElementById("heroVideo");
     const heroImg = document.getElementById("heroImg");
     function showFallback(){
@@ -920,52 +593,51 @@
     v.addEventListener("emptied", () => { if(!v.currentSrc) showFallback(); });
     setTimeout(() => { if(!v.currentSrc) showFallback(); }, 800);
 
-    // Scroll to dishes
     document.getElementById("goRatter").onclick = () => {
       document.getElementById("ratter").scrollIntoView({behavior:"smooth"});
     };
 
-    // Overlays
     const menuOverlay = document.getElementById("menuOverlay");
     const searchOverlay = document.getElementById("searchOverlay");
     const bagOverlay = document.getElementById("bagOverlay");
-    const contactOverlay = document.getElementById("contactOverlay");
 
-    function anyOpen(){
-      return menuOverlay.classList.contains("open") ||
-             searchOverlay.classList.contains("open") ||
-             bagOverlay.classList.contains("open") ||
-             contactOverlay.classList.contains("open");
-    }
-    function lockScroll(){ document.documentElement.style.overflow = "hidden"; }
-    function unlockScroll(){ if(!anyOpen()) document.documentElement.style.overflow = ""; }
-    function openOverlay(el){ el.classList.add("open"); lockScroll(); }
-    function closeOverlay(el){ el.classList.remove("open"); unlockScroll(); }
+    function openOverlay(el){ el.classList.add("open"); }
+    function closeOverlay(el){ el.classList.remove("open"); }
 
     window.addEventListener("keydown", (e) => {
       if(e.key !== "Escape") return;
       closeOverlay(menuOverlay);
       closeOverlay(searchOverlay);
       closeOverlay(bagOverlay);
-      closeOverlay(contactOverlay);
     });
 
-    // Menu
     document.getElementById("menuBtn").onclick = () => { renderMenuCats(); openOverlay(menuOverlay); };
     document.getElementById("menuClose").onclick = () => closeOverlay(menuOverlay);
     menuOverlay.addEventListener("click", (e) => { if(e.target === menuOverlay) closeOverlay(menuOverlay); });
 
-    // Contact
-    document.getElementById("contactBtn").onclick = () => openOverlay(contactOverlay);
-    document.getElementById("contactClose").onclick = () => closeOverlay(contactOverlay);
-    document.getElementById("contactBack").onclick = () => closeOverlay(contactOverlay);
-    contactOverlay.addEventListener("click", (e) => { if(e.target === contactOverlay) closeOverlay(contactOverlay); });
+    const q = document.getElementById("q");
+    const searchList = document.getElementById("searchList");
+    const searchCount = document.getElementById("searchCount");
 
-    // Cart storage
+    function openSearch(){
+      openOverlay(searchOverlay);
+      q.value = "";
+      renderSearch("");
+      q.focus();
+    }
+    document.getElementById("searchBtn").onclick = openSearch;
+    document.getElementById("openSearch2").onclick = openSearch;
+    document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
+
+    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
+    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
+    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
+
+    document.getElementById("loginBtn").onclick = () => alert("Logga in kommer snart.");
+
     const CART_KEY = "bap_cart_v1";
     function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
     function setCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderBagBadge(); }
-
     function renderBagBadge(){
       const n = getCart().length;
       const b = document.getElementById("bagCount");
@@ -974,68 +646,6 @@
     }
     renderBagBadge();
 
-    function calcTotal(cart){
-      const nums = cart.map(it => Number(it && it.price));
-      const hasAnyPrice = nums.some(n => Number.isFinite(n) && n > 0);
-      if(!hasAnyPrice) return { hasPrice:false, total:0 };
-      const total = nums.reduce((s,n)=> s + (Number.isFinite(n) ? n : 0), 0);
-      return { hasPrice:true, total: Math.round(total) };
-    }
-
-    // Search (LV)
-    const q = document.getElementById("q");
-    const searchCount = document.getElementById("searchCount");
-    const searchGrid = document.getElementById("searchGrid");
-    const trendChips = document.getElementById("trendChips");
-
-    function renderTrending(){
-      trendChips.innerHTML = "";
-      TRENDING.forEach(t => {
-        const b = document.createElement("button");
-        b.className = "lvChip";
-        b.type = "button";
-        b.textContent = t;
-        b.onclick = () => { q.value = t; renderSearch(t); q.focus(); };
-        trendChips.appendChild(b);
-      });
-    }
-
-    function openSearch(){
-      openOverlay(searchOverlay);
-      q.value = "";
-      renderTrending();
-      renderSearch("");
-      q.focus();
-    }
-    document.getElementById("searchBtn").onclick = openSearch;
-    document.getElementById("openSearch2").onclick = openSearch;
-    document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
-
-    function renderSearch(text){
-      const qv = (text || "").trim().toLowerCase();
-      const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
-      searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
-      searchGrid.innerHTML = "";
-
-      list.slice(0, 30).forEach(d => {
-        const a = document.createElement("a");
-        a.className = "lvCard";
-        a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
-        a.innerHTML = `
-          <div class="lvImg"><img src="${d.img}" alt="${d.name}"></div>
-          <div class="lvLabel">
-            <p class="cat">${d.cat}</p>
-            <p class="name">${d.name}</p>
-          </div>
-        `;
-        const im = a.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-        searchGrid.appendChild(a);
-      });
-    }
-    q.addEventListener("input", () => renderSearch(q.value));
-
-    // Filters
     const filterBar = document.getElementById("filterBar");
     function renderFilters(){
       filterBar.innerHTML = "";
@@ -1049,7 +659,6 @@
       });
     }
 
-    // Grid
     const grid = document.getElementById("grid");
     const resultMeta = document.getElementById("resultMeta");
     function matches(d){ return active === "Alla" || d.cat === active; }
@@ -1057,12 +666,15 @@
     function renderGrid(){
       const list = DISHES.filter(matches);
       resultMeta.textContent = `${list.length} rätter`;
-      grid.innerHTML = "";
 
+      grid.innerHTML = "";
       list.forEach(d => {
         const a = document.createElement("a");
         a.className = "item";
         a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
+        a.target = "_blank";
+        a.rel = "noopener";
+
         a.innerHTML = `
           <div class="img"><img src="${d.img}" alt="${d.name}"></div>
           <div class="label">
@@ -1070,13 +682,14 @@
             <p class="name">${d.name}</p>
           </div>
         `;
+
         const im = a.querySelector("img");
         im.onerror = () => im.src = "assets/hero.jpg";
+
         grid.appendChild(a);
       });
     }
 
-    // Menu cats
     const menuCats = document.getElementById("menuCats");
     function renderMenuCats(){
       menuCats.innerHTML = "";
@@ -1101,42 +714,55 @@
       });
     }
 
-    // Bag
-    const bagItems = document.getElementById("bagItems");
+    function renderSearch(text){
+      const qv = (text || "").trim().toLowerCase();
+      const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
+
+      searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
+      searchList.innerHTML = "";
+
+      list.slice(0, 40).forEach(d => {
+        const row = document.createElement("div");
+        row.className = "rowItem";
+        row.innerHTML = `
+          <div class="thumb"><img src="${d.img}" alt=""></div>
+          <div style="flex:1">
+            <b>${d.name}</b><br/>
+            <span>${d.cat}</span>
+          </div>
+          <div style="color:rgba(11,15,13,.5)">→</div>
+        `;
+        row.onclick = () => window.open(`dish.html?id=${encodeURIComponent(d.id)}`, "_blank", "noopener");
+        const im = row.querySelector("img");
+        im.onerror = () => im.src = "assets/hero.jpg";
+        searchList.appendChild(row);
+      });
+    }
+    q.addEventListener("input", () => renderSearch(q.value));
+
+    const bagList = document.getElementById("bagList");
     const bagEmpty = document.getElementById("bagEmpty");
-    const bagFooter = document.getElementById("bagFooter");
-    const bagMeta = document.getElementById("bagMeta");
-    const bagTotalEl = document.getElementById("bagTotal");
 
     function renderBag(){
       const cart = getCart();
-      bagMeta.textContent = cart.length ? `${cart.length} items` : `0 items`;
       bagEmpty.style.display = cart.length ? "none" : "block";
-      bagFooter.style.display = cart.length ? "block" : "none";
-      bagItems.innerHTML = "";
-
-      const t = calcTotal(cart);
-      bagTotalEl.textContent = t.hasPrice ? `${t.total} SEK` : "—";
+      bagList.innerHTML = "";
 
       cart.forEach((it, idx) => {
         const row = document.createElement("div");
-        row.className = "bagRow";
+        row.className = "rowItem";
         row.innerHTML = `
-          <div class="bagImg"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
-          <div class="bagInfo">
-            <b>${it.name || "Rätt"}</b>
+          <div class="thumb"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
+          <div style="flex:1">
+            <b>${it.name || "Rätt"}</b><br/>
             <span>${it.pack || "Ej vald"}</span>
           </div>
-          <div class="bagActions">
-            <button class="removeBtn" type="button" aria-label="Remove">✕</button>
-          </div>
+          <button class="x" type="button" aria-label="Remove">✕</button>
         `;
-
-        row.querySelector("img").onerror = (e) => { e.target.src = "assets/hero.jpg"; };
 
         row.addEventListener("click", (e) => {
           if(e.target.tagName.toLowerCase() === "button") return;
-          window.location.href = `dish.html?id=${encodeURIComponent(it.id)}`;
+          window.open(`dish.html?id=${encodeURIComponent(it.id)}`, "_blank", "noopener");
         });
 
         row.querySelector("button").addEventListener("click", () => {
@@ -1145,21 +771,15 @@
           renderBag();
         });
 
-        bagItems.appendChild(row);
+        const im = row.querySelector("img");
+        im.onerror = () => im.src = "assets/hero.jpg";
+
+        bagList.appendChild(row);
       });
 
       renderBagBadge();
     }
 
-    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
-    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
-    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
-
-    document.getElementById("bagCTA").onclick = () => {
-      alert("Checkout kommer snart.");
-    };
-
-    // Start
     renderFilters();
     renderGrid();
   </script>
