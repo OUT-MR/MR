@@ -4,58 +4,120 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BUILD A PLATE</title>
+
   <style>
     :root{
       --bg:#F6F2EA;
       --ink:#0B0F0D;
-      --muted:rgba(11,15,13,.65);
+      --muted:rgba(11,15,13,.62);
       --line:rgba(11,15,13,.12);
-      --card:#FFFFFF;
       --accent:#0F2A22;
-      --radius:14px;
+
+      --pad:12px;
+      --barH:52px;
+
+      --radius:16px;
       --max:1200px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
       background:var(--bg);
       color:var(--ink);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     a{color:inherit;text-decoration:none}
     button{font-family:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px 60px}
+    :focus-visible{outline:2px solid rgba(11,15,13,.35); outline-offset:2px; border-radius:10px}
 
-    /* Header */
-    .header{
-      position:sticky;
-      top:0;
-      z-index:50;
+    /* ===== HEADER (same as index) ===== */
+    .bar{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:var(--barH);
+      z-index:60;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:14px 18px;
+      padding:0 var(--pad);
+
+      background:transparent;
+      color:#fff;
+      border-bottom:0;
+      backdrop-filter:none;
+
+      transition: background .22s ease, color .22s ease, border-color .22s ease, backdrop-filter .22s ease;
+    }
+    .bar:not(.scrolled):hover{
       background:rgba(246,242,234,.92);
+      color:var(--ink);
       border-bottom:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
-    .hleft,.hright{display:flex; align-items:center; gap:14px; min-width:220px}
-    .hcenter{display:flex; align-items:center; justify-content:center; flex:1}
-    .logo{letter-spacing:.22em;font-weight:700;font-size:13px;text-transform:uppercase}
-    .iconBtn{
-      width:36px;height:36px;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:999px;
-      display:inline-flex;align-items:center;justify-content:center;
+    .bar.scrolled{
+      background:rgba(246,242,234,.92);
+      color:var(--ink);
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
     }
-    .iconBtn:hover{background:rgba(11,15,13,.06)}
-    .badge{
-      position:absolute; transform:translate(10px,-10px);
-      background:var(--accent); color:#fff; font-size:11px; padding:2px 6px; border-radius:999px;
-      border:2px solid rgba(246,242,234,.92);
-    }
-    .iconWrap{position:relative; display:inline-flex}
 
-    /* Layout */
+    .barSide{display:flex; align-items:center; gap:10px; min-width:180px}
+    .barMid{flex:1; display:flex; justify-content:center}
+    .logo{
+      letter-spacing:.22em;
+      font-weight:700;
+      font-size:12px;
+      text-transform:uppercase;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .contactBtn{
+      font-size:12px;
+      letter-spacing:.02em;
+      opacity:.92;
+      white-space:nowrap;
+      background:transparent;
+      border:0;
+      color:inherit;
+      cursor:pointer;
+      padding:0;
+    }
+    .contactBtn:hover{text-decoration:underline}
+
+    .iconBtn{
+      width:36px; height:36px;
+      display:inline-flex;
+      align-items:center; justify-content:center;
+      border:0;
+      background:transparent;
+      color:inherit;
+      cursor:pointer;
+      border-radius:999px;
+    }
+    .iconBtn:hover{background:rgba(255,255,255,.10)}
+    .bar.scrolled .iconBtn:hover,
+    .bar:not(.scrolled):hover .iconBtn:hover{background:rgba(11,15,13,.06)}
+
+    .iconWrap{position:relative; display:inline-flex}
+    .badge{
+      position:absolute;
+      transform: translate(10px,-10px);
+      background:var(--accent);
+      color:#fff;
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:999px;
+      border:2px solid rgba(246,242,234,.92);
+      display:none;
+    }
+
+    /* ===== PAGE ===== */
+    .topSpacer{height:calc(var(--barH) + 12px)}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px 60px}
     .main{
       display:grid;
       grid-template-columns: 1.2fr .8fr;
@@ -70,7 +132,7 @@
       background:#ddd;
       border:1px solid var(--line);
       position:sticky;
-      top:78px;
+      top:calc(var(--barH) + 14px);
     }
     .media img{
       width:100%;
@@ -105,7 +167,6 @@
 
     .divider{height:1px; background:var(--line); margin:14px 0}
 
-    /* Steps (tight, no long scroll) */
     .stepTitle{
       margin:0 0 10px;
       font-size:12px;
@@ -183,7 +244,7 @@
       background:rgba(255,255,255,.60);
     }
 
-    /* Overlays */
+    /* ===== OVERLAYS base ===== */
     .overlay{
       position:fixed;
       inset:0;
@@ -192,16 +253,277 @@
       z-index:80;
     }
     .overlay.open{display:block}
-    .sheet{
+
+    .x{
+      width:38px; height:38px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:transparent;
+      cursor:pointer;
+      color:var(--ink);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+    }
+
+    /* ===== LV SEARCH (white overlay) ===== */
+    #searchOverlay{background:rgba(246,242,234,.98)}
+    #searchOverlay .searchFull{
       position:absolute;
-      top:0; right:0;
-      width:min(520px, 100%);
+      inset:0;
+      background:transparent;
+      color:var(--ink);
+      padding:18px 16px 24px;
+      overflow:auto;
+      opacity:0;
+      transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    #searchOverlay.open .searchFull{
+      opacity:1;
+      transform: translateY(0);
+    }
+    .lvTop{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      padding:10px 0 16px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:16px;
+      max-width:1280px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .lvTopMid{display:flex; justify-content:center}
+    .lvTopRight{display:flex; justify-content:flex-end}
+    .lvLogo{color:var(--ink)}
+    .lvBody{
+      max-width:1280px;
+      margin:0 auto;
+      padding-bottom:26px;
+    }
+    .lvInput{
+      width:100%;
+      padding:16px 18px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:14px;
+      outline:none;
+      color:var(--ink);
+    }
+    .lvTrending{margin-top:14px}
+    .lvTrendTitle{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0 0 10px;
+      text-align:center;
+    }
+    .lvTrendChips{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .lvChip{
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      font-size:12px;
+      color:var(--ink);
+      padding:6px 4px;
+      border-radius:999px;
+      text-decoration:underline;
+      text-underline-offset:4px;
+      opacity:.9;
+    }
+    .lvChip:hover{opacity:1}
+    .lvMeta{
+      margin-top:16px;
+      font-size:12px;
+      color:var(--muted);
+      text-align:left;
+    }
+    .lvGrid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    .lvCard{
+      display:block;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .lvImg{
+      aspect-ratio: 4 / 5;
+      overflow:hidden;
+      background:#ddd;
+    }
+    .lvImg img{
+      width:100%;
       height:100%;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.01);
+      transition:transform .25s ease;
+    }
+    .lvCard:hover .lvImg img{transform:scale(1.05)}
+    .lvLabel{
+      padding:12px 14px 14px;
+      border-top:1px solid var(--line);
+      background:rgba(246,242,234,.55);
+    }
+    .lvLabel .cat{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0 0 6px;
+    }
+    .lvLabel .name{
+      margin:0;
+      font-size:13px;
+      font-weight:650;
+      letter-spacing:.02em;
+    }
+
+    /* ===== CONTACT MODAL ===== */
+    .modalWrap{
+      position:absolute;
+      inset:0;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:18px;
+    }
+    .modal{
+      width:min(920px, 100%);
       background:rgba(246,242,234,.98);
-      border-left:1px solid var(--line);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    }
+    .modalTop{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+    }
+    .modalTopLeft{display:flex; align-items:center; gap:10px}
+    .backLink{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+      background:transparent;
+      border:0;
+      cursor:pointer;
+      padding:0;
+    }
+    .modalBody{
+      padding:18px 16px 22px;
+      max-width:720px;
+      margin:0 auto;
+    }
+    .modalTitle{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .modalIntro{
+      margin:0 0 14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .contactList{display:flex; flex-direction:column; gap:10px}
+    .contactRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.70);
+    }
+    .contactLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width:0;
+    }
+    .contactIc{
+      width:30px;height:30px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+    }
+    .contactTxt{min-width:0}
+    .contactTxt b{
+      display:block;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .contactTxt span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .contactGo{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+      white-space:nowrap;
+    }
+    .modalDivider{height:1px;background:var(--line);margin:16px 0}
+    .modalSmall{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .modalSmall a{text-decoration:underline; text-underline-offset:4px}
+
+    /* ===== BAG LV panel ===== */
+    .drawer{
+      position:absolute;
+      top:0;
+      height:100%;
+      width:min(560px, 100%);
+      background:rgba(246,242,234,.98);
       padding:16px;
       overflow:auto;
+      color:var(--ink);
+      transition: transform .22s ease;
+      will-change: transform;
     }
+    .drawerRight{
+      right:0;
+      border-left:1px solid var(--line);
+      transform:translateX(100%);
+    }
+    .overlay.open .drawerRight{transform:translateX(0)}
     .sheetTop{
       display:flex;
       align-items:center;
@@ -211,53 +533,105 @@
       border-bottom:1px solid var(--line);
       margin-bottom:12px;
     }
-    .x{
-      width:36px; height:36px;
+    .bagTitle{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0;
+    }
+    .bagMeta{
+      margin:8px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .bagItems{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+    .bagRow{
+      display:grid;
+      grid-template-columns: 90px 1fr auto;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.70);
+    }
+    .bagImg{
+      width:90px;
+      aspect-ratio: 4 / 5;
+      border-radius:12px;
+      overflow:hidden;
+      background:#ddd;
+      border:1px solid var(--line);
+    }
+    .bagImg img{width:100%;height:100%;object-fit:cover;display:block}
+    .bagInfo b{display:block;font-size:13px}
+    .bagInfo span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+    .bagActions{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+    .removeBtn{
+      width:38px;height:38px;
       border-radius:999px;
       border:1px solid var(--line);
       background:transparent;
       cursor:pointer;
     }
-    .list{display:flex; flex-direction:column; gap:10px}
-    .rowItem{
+    .bagFooter{
+      margin-top:14px;
+      border-top:1px solid var(--line);
+      padding-top:14px;
       display:flex;
+      flex-direction:column;
       gap:10px;
-      align-items:center;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.6);
+    }
+    .bagTotal{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      color:var(--ink);
+    }
+    .bagCTA{
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:650;
+      font-size:13px;
+      border:1px solid var(--ink);
+      background:var(--ink);
+      color:#fff;
       cursor:pointer;
+      width:100%;
     }
-    .thumb{
-      width:56px; height:56px;
-      border-radius:12px;
-      overflow:hidden;
-      flex:none;
-      background:#ddd;
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .rowItem b{font-size:13px}
-    .rowItem span{font-size:12px;color:var(--muted)}
-    .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
+    /* ===== Responsive ===== */
     @media (max-width: 980px){
       .main{grid-template-columns:1fr}
       .media{position:relative; top:auto}
       .media img{height:56vh}
-      .hleft,.hright{min-width:auto}
+      .barSide{min-width:auto}
+      .contactBtn{display:none}
+      .lvGrid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:520px){
+      .lvGrid{grid-template-columns:1fr}
+      .modalWrap{padding:10px}
+      .modalBody{padding:14px 12px 16px}
+      .modalTop{padding:12px 12px}
+      .bagRow{grid-template-columns:70px 1fr auto}
+      .bagImg{width:70px}
     }
   </style>
 </head>
+
 <body>
 
-  <header class="header">
-    <div class="hleft">
+  <!-- HEADER -->
+  <header class="bar" id="bar">
+    <div class="barSide">
       <button class="iconBtn" id="backBtn" aria-label="Back">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M15 6 9 12l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
+
       <button class="iconBtn" id="searchBtn" aria-label="Search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
@@ -266,29 +640,33 @@
       </button>
     </div>
 
-    <div class="hcenter">
+    <div class="barMid">
       <div class="logo">BUILD A PLATE</div>
     </div>
 
-    <div class="hright">
-      <button class="iconBtn" id="loginBtn" aria-label="Login">
+    <div class="barSide" style="justify-content:flex-end">
+      <button class="contactBtn" id="contactBtn" type="button">Contact us</button>
+
+      <a class="iconBtn" href="login.html" aria-label="Login">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
           <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-      </button>
+      </a>
 
       <span class="iconWrap">
-        <button class="iconBtn" id="bagBtn" aria-label="Bag">
+        <button class="iconBtn" id="bagBtn" aria-label="Cart">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M6 8h12l-1 13H7L6 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
-        <span class="badge" id="bagCount" style="display:none">0</span>
+        <span class="badge" id="bagCount">0</span>
       </span>
     </div>
   </header>
+
+  <div class="topSpacer"></div>
 
   <div class="wrap">
     <div class="main">
@@ -304,14 +682,12 @@
 
           <div class="divider"></div>
 
-          <!-- Step 1 -->
           <p class="stepTitle">1. Välj paket</p>
           <div class="packs" id="packs"></div>
           <div class="summary" id="priceLine">Välj ett paket för att se pris.</div>
 
           <div class="divider"></div>
 
-          <!-- Step 2 -->
           <p class="stepTitle">2. Leverans</p>
           <div class="form">
             <div class="field">
@@ -343,7 +719,6 @@
 
           <div class="divider"></div>
 
-          <!-- Step 3 -->
           <p class="stepTitle">3. Betala</p>
           <div class="actions">
             <button class="btn soft" id="addBtn" type="button">Lägg i bag</button>
@@ -357,30 +732,111 @@
     </div>
   </div>
 
-  <!-- SEARCH OVERLAY -->
+  <!-- SEARCH (LV) -->
   <div class="overlay" id="searchOverlay">
-    <div class="sheet" role="dialog" aria-label="Search">
-      <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Search</b>
-        <button class="x" id="searchClose" aria-label="Close">✕</button>
+    <div class="searchFull" role="dialog" aria-label="Search">
+      <div class="lvTop">
+        <div></div>
+        <div class="lvTopMid"><div class="logo lvLogo">BUILD A PLATE</div></div>
+        <div class="lvTopRight"><button class="x" id="searchClose" aria-label="Close">✕</button></div>
       </div>
-      <input class="input" id="q" type="search" placeholder="Sök rätt..." autocomplete="off" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:14px;outline:none;" />
-      <div class="muted" id="searchCount"></div>
-      <div class="list" id="searchList"></div>
+
+      <div class="lvBody">
+        <input class="lvInput" id="q" type="search" placeholder="Sök..." autocomplete="off" />
+        <div class="lvTrending">
+          <div class="lvTrendTitle">Trending searches</div>
+          <div class="lvTrendChips" id="trendChips"></div>
+        </div>
+        <div class="lvMeta" id="searchCount"></div>
+        <div class="lvGrid" id="searchGrid"></div>
+      </div>
     </div>
   </div>
 
-  <!-- BAG OVERLAY -->
+  <!-- CONTACT MODAL -->
+  <div class="overlay" id="contactOverlay">
+    <div class="modalWrap" role="dialog" aria-label="Contact us">
+      <div class="modal">
+        <div class="modalTop">
+          <div class="modalTopLeft">
+            <button class="backLink" id="contactBack" type="button">Back</button>
+          </div>
+          <div class="lvTopMid"><div class="logo lvLogo">BUILD A PLATE</div></div>
+          <div class="lvTopRight"><button class="x" id="contactClose" aria-label="Close">✕</button></div>
+        </div>
+
+        <div class="modalBody">
+          <div class="modalTitle">Contact us</div>
+          <p class="modalIntro">Välj det som känns enklast. Vi svarar så snabbt vi kan.</p>
+
+          <div class="contactList">
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">📞</div>
+                <div class="contactTxt">
+                  <b>Telefon</b>
+                  <span>+46 70 000 00 00</span>
+                </div>
+              </div>
+              <a class="contactGo" href="tel:+46700000000">Call</a>
+            </div>
+
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">✉️</div>
+                <div class="contactTxt">
+                  <b>Email</b>
+                  <span>hello@buildaplate.se</span>
+                </div>
+              </div>
+              <a class="contactGo" href="mailto:hello@buildaplate.se">Email</a>
+            </div>
+
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">📷</div>
+                <div class="contactTxt">
+                  <b>Instagram</b>
+                  <span>@buildaplate</span>
+                </div>
+              </div>
+              <a class="contactGo" href="https://instagram.com/buildaplate" target="_blank" rel="noopener">Open</a>
+            </div>
+          </div>
+
+          <div class="modalDivider"></div>
+
+          <div class="modalSmall">
+            <span>Need help?</span>
+            <a href="index.html#ratter">Se rätter</a>
+            <a href="login.html">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAG (LV right panel) -->
   <div class="overlay" id="bagOverlay">
-    <div class="sheet" role="dialog" aria-label="Bag">
+    <div class="drawer drawerRight" role="dialog" aria-label="Bag">
       <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Bag</b>
+        <div>
+          <p class="bagTitle">Your bag</p>
+          <p class="bagMeta" id="bagMeta">—</p>
+        </div>
         <button class="x" id="bagClose" aria-label="Close">✕</button>
       </div>
 
       <div class="muted" id="bagEmpty">Din bag är tom.</div>
-      <div class="list" id="bagList"></div>
-      <p class="muted" style="margin-top:14px">Klicka en item för att öppna produkten.</p>
+      <div class="bagItems" id="bagItems"></div>
+
+      <div class="bagFooter" id="bagFooter" style="display:none">
+        <div class="bagTotal">
+          <span>Total</span>
+          <span id="bagTotal">—</span>
+        </div>
+        <button class="bagCTA" type="button" id="bagCTA">View your bag</button>
+      </div>
     </div>
   </div>
 
@@ -394,29 +850,37 @@
       plato: "#"
     };
 
-    // ===== Data =====
+    // ===== Data (måste matcha index) =====
     const DISHES = [
-      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
-      { id:"cacio", name:"Cacio e Pepe", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
-      { id:"vodka", name:"Vodka Pasta + burrata", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
+      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
+      { id:"cacio",   name:"Cacio e Pepe",          cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
+      { id:"vodka",   name:"Vodka Pasta + burrata", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
 
-      { id:"meatballs", name:"Köttbullar 2.0", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
-      { id:"steak", name:"Biff + chimichurri", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
-      { id:"salmon", name:"Lax + misosmör", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
+      { id:"meatballs", name:"Köttbullar 2.0",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
+      { id:"steak",     name:"Biff + chimichurri",  cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
+      { id:"salmon",    name:"Lax + misosmör",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
 
       { id:"temaki", name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?temaki,sushi" },
-      { id:"poke", name:"Poke Bowl", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
+      { id:"poke",   name:"Poke Bowl",                      cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
 
-      { id:"halloumi", name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
+      { id:"halloumi", name:"Halloumi bowl + chimichurri",  cat:"Veg",   img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
     ];
+
+    const TRENDING = ["Pasta", "Nordic", "Sushi", "Veg", "Tartufo", "Burrata"];
 
     const PACKS = [
-      { key:"duo", label:"Duo", people:2, price:399 },
-      { key:"par", label:"Par", people:2, price:449 },
-      { key:"trio", label:"Trio", people:3, price:499 },
-      { key:"squad", label:"Squad", people:4, price:599 },
-      { key:"plato", label:"Plato Mode", people:3, price:549 }
+      { key:"duo",   label:"Duo",       people:2, price:399 },
+      { key:"par",   label:"Par",       people:2, price:449 },
+      { key:"trio",  label:"Trio",      people:3, price:499 },
+      { key:"squad", label:"Squad",     people:4, price:599 },
+      { key:"plato", label:"Plato Mode",people:3, price:549 }
     ];
+
+    // ===== Sticky header =====
+    const bar = document.getElementById("bar");
+    function syncBar(){ bar.classList.toggle("scrolled", window.scrollY > 10); }
+    window.addEventListener("scroll", syncBar, { passive:true });
+    syncBar();
 
     // ===== Cart =====
     const CART_KEY = "bap_cart_v1";
@@ -449,11 +913,7 @@
     dishCat.textContent = dish.cat;
     dishImg.onerror = () => dishImg.src = "assets/hero.jpg";
 
-    // ===== UI =====
-    const packsEl = document.getElementById("packs");
-    const priceLine = document.getElementById("priceLine");
-    const orderBox = document.getElementById("orderBox");
-
+    // ===== Delivery form =====
     const nameEl = document.getElementById("name");
     const phoneEl = document.getElementById("phone");
     const methodEl = document.getElementById("method");
@@ -461,13 +921,18 @@
     const addressWrap = document.getElementById("addressWrap");
     const addressEl = document.getElementById("address");
 
-    let selectedPackKey = null;
-
     function syncAddress(){
       addressWrap.style.display = (methodEl.value === "leverans") ? "" : "none";
     }
     methodEl.addEventListener("change", () => { syncAddress(); updateOrderBox(); });
     [nameEl, phoneEl, datetimeEl, addressEl].forEach(el => el.addEventListener("input", updateOrderBox));
+
+    // ===== Packs =====
+    const packsEl = document.getElementById("packs");
+    const priceLine = document.getElementById("priceLine");
+    const orderBox = document.getElementById("orderBox");
+
+    let selectedPackKey = null;
 
     function renderPacks(){
       packsEl.innerHTML = "";
@@ -475,16 +940,13 @@
         const row = document.createElement("div");
         row.className = "pack";
         row.dataset.pack = p.key;
-
-        // Plato Mode är alltid 3, men du får välja den som egen option.
         row.innerHTML = `
           <div>
             <b>${p.label}</b><br/>
             <span>${p.people} personer</span>
           </div>
-          <div class="lock" id="p_${p.key}"></div>
+          <div class="lock"></div>
         `;
-
         row.onclick = () => selectPack(p.key);
         packsEl.appendChild(row);
       });
@@ -542,6 +1004,148 @@
       return true;
     }
 
+    // ===== Overlays utils =====
+    const searchOverlay = document.getElementById("searchOverlay");
+    const contactOverlay = document.getElementById("contactOverlay");
+    const bagOverlay = document.getElementById("bagOverlay");
+
+    function anyOpen(){
+      return searchOverlay.classList.contains("open") ||
+             contactOverlay.classList.contains("open") ||
+             bagOverlay.classList.contains("open");
+    }
+    function lockScroll(){ document.documentElement.style.overflow = "hidden"; }
+    function unlockScroll(){ if(!anyOpen()) document.documentElement.style.overflow = ""; }
+    function openOverlay(el){ el.classList.add("open"); lockScroll(); }
+    function closeOverlay(el){ el.classList.remove("open"); unlockScroll(); }
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key !== "Escape") return;
+      closeOverlay(searchOverlay);
+      closeOverlay(contactOverlay);
+      closeOverlay(bagOverlay);
+    });
+
+    // ===== Header buttons =====
+    document.getElementById("backBtn").onclick = () => { window.location.href = "index.html"; };
+
+    // Contact
+    document.getElementById("contactBtn").onclick = () => openOverlay(contactOverlay);
+    document.getElementById("contactClose").onclick = () => closeOverlay(contactOverlay);
+    document.getElementById("contactBack").onclick = () => closeOverlay(contactOverlay);
+    contactOverlay.addEventListener("click", (e) => { if(e.target === contactOverlay) closeOverlay(contactOverlay); });
+
+    // ===== Search overlay =====
+    const q = document.getElementById("q");
+    const searchCount = document.getElementById("searchCount");
+    const searchGrid = document.getElementById("searchGrid");
+    const trendChips = document.getElementById("trendChips");
+
+    function renderTrending(){
+      trendChips.innerHTML = "";
+      TRENDING.forEach(t => {
+        const b = document.createElement("button");
+        b.className = "lvChip";
+        b.type = "button";
+        b.textContent = t;
+        b.onclick = () => { q.value = t; renderSearch(t); q.focus(); };
+        trendChips.appendChild(b);
+      });
+    }
+
+    function renderSearch(text){
+      const qv = (text || "").trim().toLowerCase();
+      const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
+      searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
+      searchGrid.innerHTML = "";
+
+      list.slice(0, 30).forEach(d => {
+        const a = document.createElement("a");
+        a.className = "lvCard";
+        a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
+        a.innerHTML = `
+          <div class="lvImg"><img src="${d.img}" alt="${d.name}"></div>
+          <div class="lvLabel">
+            <p class="cat">${d.cat}</p>
+            <p class="name">${d.name}</p>
+          </div>
+        `;
+        const im = a.querySelector("img");
+        im.onerror = () => im.src = "assets/hero.jpg";
+        searchGrid.appendChild(a);
+      });
+    }
+
+    function openSearch(){
+      openOverlay(searchOverlay);
+      renderTrending();
+      q.value = "";
+      renderSearch("");
+      q.focus();
+    }
+
+    document.getElementById("searchBtn").onclick = openSearch;
+    document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
+    q.addEventListener("input", () => renderSearch(q.value));
+
+    // ===== Bag overlay =====
+    const bagItems = document.getElementById("bagItems");
+    const bagEmpty = document.getElementById("bagEmpty");
+    const bagFooter = document.getElementById("bagFooter");
+    const bagMeta = document.getElementById("bagMeta");
+    const bagTotalEl = document.getElementById("bagTotal");
+
+    function renderBag(){
+      const cart = getCart();
+      bagMeta.textContent = cart.length ? `${cart.length} items` : `0 items`;
+      bagEmpty.style.display = cart.length ? "none" : "block";
+      bagFooter.style.display = cart.length ? "block" : "none";
+      bagItems.innerHTML = "";
+
+      // Total: du har inte totalsumma i cart ännu (vi fixar senare).
+      bagTotalEl.textContent = "—";
+
+      cart.forEach((it, idx) => {
+        const row = document.createElement("div");
+        row.className = "bagRow";
+        row.innerHTML = `
+          <div class="bagImg"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
+          <div class="bagInfo">
+            <b>${it.name || "Rätt"}</b>
+            <span>${it.pack || "Ej vald"}</span>
+          </div>
+          <div class="bagActions">
+            <button class="removeBtn" type="button" aria-label="Remove">✕</button>
+          </div>
+        `;
+
+        row.querySelector("img").onerror = (e) => { e.target.src = "assets/hero.jpg"; };
+
+        row.addEventListener("click", (e) => {
+          if(e.target.tagName.toLowerCase() === "button") return;
+          window.location.href = `dish.html?id=${encodeURIComponent(it.id)}`;
+        });
+
+        row.querySelector("button").addEventListener("click", () => {
+          const next = getCart().filter((_, i) => i !== idx);
+          setCart(next);
+          renderBag();
+        });
+
+        bagItems.appendChild(row);
+      });
+
+      renderBagBadge();
+    }
+
+    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
+    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
+    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
+
+    document.getElementById("bagCTA").onclick = () => {
+      alert("Checkout kommer snart.");
+    };
+
     // ===== Actions =====
     document.getElementById("addBtn").onclick = () => {
       if(!selectedPackKey){
@@ -555,7 +1159,8 @@
         id: dish.id,
         name: dish.name,
         img: dish.img,
-        pack: `${p.label} (${p.people})`
+        pack: `${p.label} (${p.people})`,
+        price: p.price
       };
 
       // om samma rätt finns, byt ut
@@ -587,101 +1192,6 @@
       }
       window.open(link, "_blank");
     };
-
-    document.getElementById("backBtn").onclick = () => {
-      // går tillbaka till menyn i samma flik
-      window.location.href = "index.html";
-    };
-
-    document.getElementById("loginBtn").onclick = () => alert("Logga in kommer snart.");
-
-    // ===== Search overlay =====
-    const searchOverlay = document.getElementById("searchOverlay");
-    const q = document.getElementById("q");
-    const searchList = document.getElementById("searchList");
-    const searchCount = document.getElementById("searchCount");
-
-    function openOverlay(el){ el.classList.add("open"); }
-    function closeOverlay(el){ el.classList.remove("open"); }
-
-    function renderSearch(text){
-      const qv = (text || "").trim().toLowerCase();
-      const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
-      searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
-      searchList.innerHTML = "";
-
-      list.slice(0, 30).forEach(d => {
-        const row = document.createElement("div");
-        row.className = "rowItem";
-        row.innerHTML = `
-          <div class="thumb"><img src="${d.img}" alt=""></div>
-          <div style="flex:1">
-            <b>${d.name}</b><br/>
-            <span>${d.cat}</span>
-          </div>
-          <div style="color:rgba(11,15,13,.5)">→</div>
-        `;
-        row.onclick = () => { window.location.href = `dish.html?id=${encodeURIComponent(d.id)}`; };
-        const im = row.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-        searchList.appendChild(row);
-      });
-    }
-
-    document.getElementById("searchBtn").onclick = () => {
-      openOverlay(searchOverlay);
-      q.value = "";
-      renderSearch("");
-      q.focus();
-    };
-    document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
-    searchOverlay.addEventListener("click", (e) => { if(e.target === searchOverlay) closeOverlay(searchOverlay); });
-    q.addEventListener("input", () => renderSearch(q.value));
-
-    // ===== Bag overlay =====
-    const bagOverlay = document.getElementById("bagOverlay");
-    const bagList = document.getElementById("bagList");
-    const bagEmpty = document.getElementById("bagEmpty");
-
-    function renderBag(){
-      const cart = getCart();
-      bagEmpty.style.display = cart.length ? "none" : "block";
-      bagList.innerHTML = "";
-
-      cart.forEach((it, idx) => {
-        const row = document.createElement("div");
-        row.className = "rowItem";
-        row.innerHTML = `
-          <div class="thumb"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
-          <div style="flex:1">
-            <b>${it.name}</b><br/>
-            <span>${it.pack || "Ej vald"}</span>
-          </div>
-          <button class="x" type="button" aria-label="Remove">✕</button>
-        `;
-
-        row.addEventListener("click", (e) => {
-          if(e.target.tagName.toLowerCase() === "button") return;
-          window.location.href = `dish.html?id=${encodeURIComponent(it.id)}`;
-        });
-
-        row.querySelector("button").addEventListener("click", () => {
-          const next = getCart().filter((_, i) => i !== idx);
-          setCart(next);
-          renderBag();
-        });
-
-        const im = row.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-        bagList.appendChild(row);
-      });
-
-      renderBagBadge();
-    }
-
-    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
-    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
-    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
 
     // ===== Start =====
     syncAddress();
