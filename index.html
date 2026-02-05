@@ -14,9 +14,9 @@
       --line:rgba(11,15,13,.12);
       --accent:#0F2A22;
 
-      --gap:2px;          /* mindre mellanrum */
-      --pad:12px;         /* mindre padding */
-      --barH:52px;        /* tunn topbar */
+      --gap:2px;
+      --pad:12px;
+      --barH:52px;
     }
 
     *{box-sizing:border-box}
@@ -32,7 +32,7 @@
     a{color:inherit;text-decoration:none}
     button{font-family:inherit}
 
-    /* TOP BAR */
+    /* TOP BAR (TOPP: transparent, SCROLL: vit) */
     .bar{
       position:fixed;
       top:0; left:0; right:0;
@@ -42,10 +42,19 @@
       align-items:center;
       justify-content:space-between;
       padding:0 var(--pad);
+
+      background:transparent;
+      color:#fff;
+      border-bottom:0;
+      backdrop-filter:none;
+    }
+    .bar.scrolled{
       background:rgba(246,242,234,.92);
+      color:var(--ink);
       border-bottom:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
+
     .barSide{display:flex; align-items:center; gap:10px; min-width:180px}
     .barMid{flex:1; display:flex; justify-content:center}
     .logo{
@@ -56,6 +65,15 @@
       user-select:none;
       white-space:nowrap;
     }
+
+    .contact{
+      font-size:12px;
+      letter-spacing:.02em;
+      opacity:.92;
+      white-space:nowrap;
+    }
+    .contact:hover{text-decoration:underline}
+
     .iconBtn{
       width:36px; height:36px;
       display:inline-flex;
@@ -66,7 +84,9 @@
       cursor:pointer;
       border-radius:999px;
     }
-    .iconBtn:hover{background:rgba(11,15,13,.06)}
+    .iconBtn:hover{background:rgba(255,255,255,.10)}
+    .bar.scrolled .iconBtn:hover{background:rgba(11,15,13,.06)}
+
     .iconWrap{position:relative; display:inline-flex}
     .badge{
       position:absolute;
@@ -86,7 +106,7 @@
       height:100vh;
       min-height:640px;
       background:#000;
-      margin-top:var(--barH);
+      margin-top:0;
       overflow:hidden;
     }
     .hero video,
@@ -96,7 +116,7 @@
       object-fit:cover;
       display:block;
     }
-    .hero img{display:none} /* fallback visas bara om video failar */
+    .hero img{display:none}
 
     .hero::after{
       content:"";
@@ -156,6 +176,7 @@
       align-items:flex-end;
       justify-content:space-between;
       gap:10px;
+      scroll-margin-top:72px;
     }
     .title{
       margin:0;
@@ -260,6 +281,7 @@
       border-left:1px solid var(--line);
       padding:16px;
       overflow:auto;
+      color:var(--ink);
     }
     .sheetTop{
       display:flex;
@@ -276,6 +298,7 @@
       border:1px solid var(--line);
       background:transparent;
       cursor:pointer;
+      color:var(--ink);
     }
     .input{
       width:100%;
@@ -285,6 +308,7 @@
       background:#fff;
       font-size:14px;
       outline:none;
+      color:var(--ink);
     }
     .list{display:flex; flex-direction:column; gap:10px; margin-top:12px}
     .rowItem{
@@ -326,6 +350,7 @@
       .headline{font-size:34px}
       .grid{grid-template-columns:repeat(2,1fr)}
       .barSide{min-width:auto}
+      .contact{display:none}
     }
     @media (max-width:520px){
       .grid{grid-template-columns:1fr}
@@ -356,6 +381,8 @@
     </div>
 
     <div class="barSide" style="justify-content:flex-end">
+      <a class="contact" href="mailto:hello@buildaplate.se">Contact us</a>
+
       <button class="iconBtn" id="loginBtn" aria-label="Login">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
@@ -385,7 +412,7 @@
     <div class="heroText">
       <p class="kicker">Västmanlands län</p>
       <h1 class="headline">Bygg rätten. Tillsammans.</h1>
-      <p class="sub">Inga priser här. Klicka en rätt för att välja Duo, Par, Trio, Squad eller Plato Mode.</p>
+      <p class="sub">Klicka en rätt för att välja Duo, Par, Trio, Squad eller Plato Mode.</p>
       <div class="actions">
         <button class="btn primary" id="goRatter">Se rätter</button>
         <button class="btn" id="openSearch2">Sök</button>
@@ -472,7 +499,15 @@
     const y = document.getElementById("y");
     y.textContent = new Date().getFullYear();
 
-    // Video fallback: undvik svart hero
+    // ===== BAR: transparent uppe, vit när du scrollar =====
+    const bar = document.querySelector(".bar");
+    function syncBar(){
+      bar.classList.toggle("scrolled", window.scrollY > 20);
+    }
+    window.addEventListener("scroll", syncBar, { passive:true });
+    syncBar();
+
+    // ===== Video fallback (undvik svart hero) =====
     const v = document.getElementById("heroVideo");
     const heroImg = document.getElementById("heroImg");
     function showFallback(){
@@ -483,16 +518,14 @@
     v.addEventListener("stalled", showFallback);
     v.addEventListener("abort", showFallback);
     v.addEventListener("emptied", () => { if(!v.currentSrc) showFallback(); });
-    // om fil saknas, vissa browsers triggar inte error direkt
     setTimeout(() => { if(!v.currentSrc) showFallback(); }, 800);
 
-    // Scroll
+    // ===== Scroll =====
     document.getElementById("goRatter").onclick = () => {
       document.getElementById("ratter").scrollIntoView({behavior:"smooth"});
     };
-    document.getElementById("openSearch2").onclick = () => openOverlay(searchOverlay);
 
-    // Cart
+    // ===== Cart =====
     const CART_KEY = "bap_cart_v1";
     function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
     function setCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderBagBadge(); }
@@ -504,7 +537,7 @@
     }
     renderBagBadge();
 
-    // Filters
+    // ===== Filters =====
     const filterBar = document.getElementById("filterBar");
     function renderFilters(){
       filterBar.innerHTML = "";
@@ -518,7 +551,7 @@
       });
     }
 
-    // Grid
+    // ===== Grid =====
     const grid = document.getElementById("grid");
     const resultMeta = document.getElementById("resultMeta");
     function matches(d){ return active === "Alla" || d.cat === active; }
@@ -550,7 +583,7 @@
       });
     }
 
-    // Overlays
+    // ===== Overlays =====
     const menuOverlay = document.getElementById("menuOverlay");
     const searchOverlay = document.getElementById("searchOverlay");
     const bagOverlay = document.getElementById("bagOverlay");
@@ -562,7 +595,12 @@
     document.getElementById("menuClose").onclick = () => closeOverlay(menuOverlay);
     menuOverlay.onclick = (e) => { if(e.target === menuOverlay) closeOverlay(menuOverlay); };
 
+    const q = document.getElementById("q");
+    const searchList = document.getElementById("searchList");
+    const searchCount = document.getElementById("searchCount");
+
     document.getElementById("searchBtn").onclick = () => { openOverlay(searchOverlay); q.value=""; renderSearch(""); q.focus(); };
+    document.getElementById("openSearch2").onclick = () => { openOverlay(searchOverlay); q.value=""; renderSearch(""); q.focus(); };
     document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
     searchOverlay.onclick = (e) => { if(e.target === searchOverlay) closeOverlay(searchOverlay); };
 
@@ -572,7 +610,7 @@
 
     document.getElementById("loginBtn").onclick = () => alert("Logga in kommer snart.");
 
-    // Menu cats
+    // ===== Menu cats =====
     const menuCats = document.getElementById("menuCats");
     function renderMenuCats(){
       menuCats.innerHTML = "";
@@ -597,11 +635,7 @@
       });
     }
 
-    // Search
-    const q = document.getElementById("q");
-    const searchList = document.getElementById("searchList");
-    const searchCount = document.getElementById("searchCount");
-
+    // ===== Search =====
     function renderSearch(text){
       const qv = (text || "").trim().toLowerCase();
       const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
@@ -628,7 +662,7 @@
     }
     q.oninput = () => renderSearch(q.value);
 
-    // Bag
+    // ===== Bag =====
     const bagList = document.getElementById("bagList");
     const bagEmpty = document.getElementById("bagEmpty");
 
@@ -668,7 +702,7 @@
       renderBagBadge();
     }
 
-    // Start
+    // ===== Start =====
     renderFilters();
     renderGrid();
   </script>
