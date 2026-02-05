@@ -10,13 +10,11 @@
       --ink:#0B0F0D;
       --muted:rgba(11,15,13,.62);
       --line:rgba(11,15,13,.12);
-      --card:#FFFFFF;
       --accent:#0F2A22;
 
-      --radius:16px;
+      --headerH:58px;
       --max:1280px;
 
-      --headerH:58px;
       --chipBg:rgba(255,255,255,.70);
       --chipBd:rgba(11,15,13,.14);
 
@@ -77,27 +75,27 @@
     }
     .topLink:hover{background:rgba(11,15,13,.06)}
 
-    /* ===== Hero ===== */
+    /* ===== HERO (tillbaks som “gamla”: fullbredd, ingen stor rund kort) ===== */
     .hero{
+      margin-top:0;
+      height:min(62vh, 560px);
       position:relative;
-      border-radius:22px;
       overflow:hidden;
-      margin-top:14px;
-      height:min(68vh, 640px);
       background:#0b0f0d;
-      box-shadow: var(--shadow);
     }
     .heroMedia{
       position:absolute; inset:0;
-      background: radial-gradient(1200px 500px at 30% 30%, rgba(255,255,255,.10), rgba(0,0,0,.55)),
-                  linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.62));
+      background: radial-gradient(1200px 520px at 30% 30%, rgba(255,255,255,.10), rgba(0,0,0,.55)),
+                  linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.66));
     }
     .heroInner{
       position:relative;
       height:100%;
       display:flex;
       align-items:flex-end;
-      padding:26px;
+      padding:22px 18px;
+      max-width:var(--max);
+      margin:0 auto;
     }
     .heroKicker{
       font-size:11px;
@@ -108,17 +106,17 @@
     }
     .heroTitle{
       margin:0;
-      font-size:44px;
+      font-size:48px;
       line-height:1.02;
       letter-spacing:-.02em;
       color:#fff;
-      max-width:740px;
+      max-width:760px;
     }
     .heroSub{
       margin:10px 0 0;
       font-size:13px;
       color:rgba(255,255,255,.78);
-      max-width:620px;
+      max-width:640px;
     }
     .heroActions{
       display:flex; gap:10px; flex-wrap:wrap;
@@ -145,7 +143,7 @@
     /* ===== Section header ===== */
     .sectionTop{
       display:flex; align-items:flex-end; justify-content:space-between;
-      margin:18px 0 10px;
+      margin:16px 0 10px;
       gap:12px;
     }
     .sectionTitle{
@@ -160,7 +158,7 @@
       color:var(--muted);
     }
 
-    /* ===== Quick chips (top filter row) ===== */
+    /* ===== Quick chips ===== */
     .chips{
       display:flex; flex-wrap:wrap; gap:8px;
       padding:10px 0 12px;
@@ -212,7 +210,6 @@
       background-image:url("assets/plate-bg.png");
       background-size:cover;
       background-position:center;
-      filter:saturate(.98) contrast(1.02);
     }
     .dishImg{
       position:absolute;
@@ -251,7 +248,7 @@
     }
     .dot{opacity:.55}
 
-    /* ===== LV-like overlays (Search, Menu, Bag) ===== */
+    /* ===== LV overlays ===== */
     .overlay{
       position:fixed;
       inset:0;
@@ -261,7 +258,7 @@
     }
     .overlay.open{display:block}
 
-    /* Search overlay – LV style */
+    /* Search overlay – LV style (SAME AS BEFORE) */
     .searchPanel{
       position:absolute; inset:0;
       background:#fff;
@@ -438,12 +435,6 @@
       border-color:rgba(11,15,13,.90);
       color:#fff;
     }
-    .smallNote{
-      font-size:12px;
-      color:rgba(11,15,13,.55);
-      margin-top:10px;
-      line-height:1.35;
-    }
 
     /* Bag overlay (right) */
     .sheet{
@@ -499,44 +490,6 @@
     .rowItem span{font-size:12px;color:var(--muted)}
     .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
-    /* ===== Footer ===== */
-    footer{
-      margin-top:26px;
-      border-top:1px solid var(--line);
-      padding:22px 0 0;
-      color:rgba(11,15,13,.70);
-    }
-    .footGrid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:14px;
-    }
-    .footTitle{
-      font-size:11px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      margin:0 0 10px;
-      color:rgba(11,15,13,.70);
-    }
-    .footLink{
-      display:block;
-      padding:6px 0;
-      font-size:13px;
-      color:rgba(11,15,13,.70);
-    }
-    .footLink:hover{color:#0B0F0D}
-    .footBottom{
-      margin-top:16px;
-      padding:14px 0 0;
-      border-top:1px solid var(--line);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:12px;
-      color:rgba(11,15,13,.55);
-    }
-
     @media (max-width: 1200px){
       .grid, .searchGrid{grid-template-columns: repeat(3, 1fr)}
       .cardMedia{height:240px}
@@ -545,14 +498,12 @@
     @media (max-width: 860px){
       .hleft,.hright{min-width:auto}
       .grid, .searchGrid{grid-template-columns: repeat(2, 1fr)}
-      .heroTitle{font-size:34px}
+      .heroTitle{font-size:36px}
       .cardMedia{height:230px}
       .sMedia{height:240px}
-      .footGrid{grid-template-columns: repeat(2, 1fr)}
     }
     @media (max-width: 520px){
       .grid, .searchGrid{grid-template-columns: 1fr}
-      .hero{height:min(72vh, 620px)}
       .heroTitle{font-size:30px}
     }
   </style>
@@ -602,25 +553,23 @@
     </div>
   </header>
 
-  <div class="wrap">
-
-    <!-- ===== Hero ===== -->
-    <section class="hero" aria-label="Hero">
-      <div class="heroMedia"></div>
-      <div class="heroInner">
-        <div>
-          <p class="heroKicker">VÄSTMANLANDS LÄN</p>
-          <h1 class="heroTitle">Bygg rätten. Tillsammans.</h1>
-          <p class="heroSub">Välj en rätt. Välj Duo, Par, Trio, Squad eller Plato Mode. Premium känsla. Enkelt flöde.</p>
-          <div class="heroActions">
-            <button class="btn primary" id="scrollToDishes">Se rätter</button>
-            <button class="btn" id="openSearchFromHero">Sök</button>
-          </div>
+  <!-- ===== HERO (old fullwidth style) ===== -->
+  <section class="hero" aria-label="Hero">
+    <div class="heroMedia"></div>
+    <div class="heroInner">
+      <div>
+        <p class="heroKicker">VÄSTMANLANDS LÄN</p>
+        <h1 class="heroTitle">Bygg rätten. Tillsammans.</h1>
+        <p class="heroSub">Välj en rätt. Välj Duo, Par, Trio, Squad eller Plato Mode. Premium känsla. Enkelt flöde.</p>
+        <div class="heroActions">
+          <button class="btn primary" id="scrollToDishes">Se rätter</button>
+          <button class="btn" id="openSearchFromHero">Sök</button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Dishes ===== -->
+  <div class="wrap">
     <div class="sectionTop" id="dishesTop">
       <h2 class="sectionTitle">Rätter</h2>
       <div class="count" id="countLine">0 rätter</div>
@@ -629,46 +578,6 @@
     <div class="chips" id="chipRow"></div>
 
     <div class="grid" id="grid"></div>
-
-    <!-- ===== Footer ===== -->
-    <footer>
-      <div class="footGrid">
-        <div>
-          <p class="footTitle">Need help</p>
-          <a class="footLink" href="help.html">Help Center</a>
-          <a class="footLink" href="help.html#faq">FAQ</a>
-          <a class="footLink" href="help.html#delivery">Delivery</a>
-          <a class="footLink" href="help.html#payment">Payment</a>
-        </div>
-        <div>
-          <p class="footTitle">Care</p>
-          <a class="footLink" href="contact.html">Contact us</a>
-          <a class="footLink" href="contact.html#instagram">Instagram</a>
-          <a class="footLink" href="help.html#allergens">Allergens</a>
-          <a class="footLink" href="help.html#terms">Terms</a>
-        </div>
-        <div>
-          <p class="footTitle">Build a plate</p>
-          <a class="footLink" href="index.html">Home</a>
-          <a class="footLink" href="index.html#dishesTop">Dishes</a>
-          <a class="footLink" href="login.html">Login</a>
-          <a class="footLink" href="contact.html">Contact</a>
-        </div>
-        <div>
-          <p class="footTitle">Region</p>
-          <a class="footLink" href="help.html#region">Västmanlands län</a>
-          <a class="footLink" href="help.html#hours">Opening hours</a>
-          <a class="footLink" href="help.html#returns">Returns</a>
-          <a class="footLink" href="help.html#privacy">Privacy</a>
-        </div>
-      </div>
-
-      <div class="footBottom">
-        <div>© BUILD A PLATE</div>
-        <div>Premium experience. Simple flow.</div>
-      </div>
-    </footer>
-
   </div>
 
   <!-- ===== MENU DRAWER OVERLAY ===== -->
@@ -708,20 +617,10 @@
         <p class="drawerLabel">Sort</p>
         <div class="optGrid" id="menuSort"></div>
       </div>
-
-      <div class="drawerBlock">
-        <p class="drawerLabel">Quick links</p>
-        <div class="optGrid">
-          <a class="opt" href="contact.html">Contact us</a>
-          <a class="opt" href="help.html">Help Center</a>
-          <a class="opt" href="login.html">Login</a>
-        </div>
-        <div class="smallNote">Leverans i Västmanlands län. Premium flöde. Inga priser i listan.</div>
-      </div>
     </div>
   </div>
 
-  <!-- ===== SEARCH OVERLAY (LV STYLE) ===== -->
+  <!-- ===== SEARCH OVERLAY (keep LV) ===== -->
   <div class="overlay" id="searchOverlay" aria-hidden="true">
     <div class="searchPanel" role="dialog" aria-label="Search">
       <div class="searchTop">
@@ -769,13 +668,8 @@
   </div>
 
   <script>
-    // =========================
-    // Data (40 rätter – placeholder)
-    // Byt "img" till dina riktiga dish-bilder senare.
-    // =========================
-
+    // ===== DATA (40 rätter) =====
     const DISHES = [
-      // Pasta
       { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", diet:["Premium"], time:"25 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"cacio", name:"Cacio e Pepe", cat:"Pasta", diet:["Classic"], time:"20 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"vodka", name:"Vodka Pasta + burrata", cat:"Pasta", diet:["Premium"], time:"25 min", spice:"Medium", occasion:["Date night"], img:"assets/dish-placeholder.png" },
@@ -785,7 +679,6 @@
       { id:"lasagna", name:"Lasagna Bianca", cat:"Pasta", diet:["Premium"], time:"40 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"carbonara", name:"Carbonara Classica", cat:"Pasta", diet:["Classic"], time:"20 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
 
-      // Nordic
       { id:"meatballs", name:"Köttbullar 2.0", cat:"Nordic", diet:["Classic"], time:"35 min", spice:"Mild", occasion:["Family"], img:"assets/dish-placeholder.png" },
       { id:"steak", name:"Biff + chimichurri", cat:"Nordic", diet:["Premium"], time:"30 min", spice:"Medium", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"salmon", name:"Lax + misosmör", cat:"Nordic", diet:["Premium"], time:"25 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
@@ -795,7 +688,6 @@
       { id:"shrimp", name:"Räkor + aioli", cat:"Nordic", diet:["Classic"], time:"15 min", spice:"Mild", occasion:["Lunch"], img:"assets/dish-placeholder.png" },
       { id:"potato", name:"Potatisgratäng + rosmarin", cat:"Nordic", diet:["Veg"], time:"35 min", spice:"Mild", occasion:["Family"], img:"assets/dish-placeholder.png" },
 
-      // Sushi
       { id:"temaki", name:"Temaki Kit (tillagat protein)", cat:"Sushi", diet:["Premium"], time:"20 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"poke", name:"Poke Bowl", cat:"Sushi", diet:["Classic"], time:"15 min", spice:"Mild", occasion:["Lunch"], img:"assets/dish-placeholder.png" },
       { id:"sashimi", name:"Sashimi Selection", cat:"Sushi", diet:["Premium"], time:"15 min", spice:"Mild", occasion:["Date night"], img:"assets/dish-placeholder.png" },
@@ -805,7 +697,6 @@
       { id:"crispy", name:"Crispy Rice + Salmon", cat:"Sushi", diet:["Premium"], time:"25 min", spice:"Medium", occasion:["Date night"], img:"assets/dish-placeholder.png" },
       { id:"vegsushi", name:"Veg Sushi Set", cat:"Sushi", diet:["Veg"], time:"20 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
 
-      // Veg
       { id:"halloumi", name:"Halloumi bowl + chimichurri", cat:"Veg", diet:["Veg"], time:"15 min", spice:"Mild", occasion:["Lunch"], img:"assets/dish-placeholder.png" },
       { id:"misoeggplant", name:"Miso Eggplant", cat:"Veg", diet:["Veg","Premium"], time:"25 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"cauliflower", name:"Roasted Cauliflower + tahini", cat:"Veg", diet:["Veg"], time:"25 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
@@ -815,7 +706,6 @@
       { id:"tofu", name:"Crispy Tofu + sesame", cat:"Veg", diet:["Veg"], time:"20 min", spice:"Medium", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"risotto", name:"Mushroom Risotto", cat:"Veg", diet:["Veg","Premium"], time:"35 min", spice:"Mild", occasion:["Date night"], img:"assets/dish-placeholder.png" },
 
-      // Premium extras
       { id:"lobster", name:"Lobster Pasta", cat:"Pasta", diet:["Premium"], time:"35 min", spice:"Mild", occasion:["Date night"], img:"assets/dish-placeholder.png" },
       { id:"wagyu", name:"Wagyu + truffle jus", cat:"Nordic", diet:["Premium"], time:"35 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
       { id:"tuna", name:"Bluefin Tuna Bowl", cat:"Sushi", diet:["Premium"], time:"15 min", spice:"Mild", occasion:["Dinner"], img:"assets/dish-placeholder.png" },
@@ -826,12 +716,7 @@
       { id:"steakpepper", name:"Steak + pepper sauce", cat:"Nordic", diet:["Premium"], time:"30 min", spice:"Medium", occasion:["Dinner"], img:"assets/dish-placeholder.png" }
     ];
 
-    // Placeholder image: om du inte har den ännu, skapa den filen i assets.
-    // assets/dish-placeholder.png (en enkel transparent/neutral bild funkar)
-
-    // =========================
-    // Filters (chips + menu)
-    // =========================
+    // ===== Filters =====
     const CHIP_FILTERS = [
       { key:"all", label:"Alla" },
       { key:"Pasta", label:"Pasta" },
@@ -853,28 +738,12 @@
       sort: ["Featured","Newest","A–Z"]
     };
 
-    let state = {
-      chip: "all",
-      cat: "Alla",
-      diet: null,
-      occasion: null,
-      time: null,
-      spice: null,
-      sort: "Featured"
-    };
+    let state = { chip:"all", cat:"Alla", diet:null, occasion:null, time:null, spice:null, sort:"Featured" };
 
-    // =========================
-    // Cart
-    // =========================
+    // ===== Cart badge =====
     const CART_KEY = "bap_cart_v2";
-    function getCart(){
-      try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
-      catch { return []; }
-    }
-    function setCart(items){
-      localStorage.setItem(CART_KEY, JSON.stringify(items));
-      renderBagBadge();
-    }
+    function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]")}catch{return[]} }
+    function setCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderBagBadge(); }
     function renderBagBadge(){
       const n = getCart().length;
       const el = document.getElementById("bagCount");
@@ -883,9 +752,7 @@
     }
     renderBagBadge();
 
-    // =========================
-    // Render chips
-    // =========================
+    // ===== Chips render =====
     const chipRow = document.getElementById("chipRow");
     function renderChips(){
       chipRow.innerHTML = "";
@@ -898,9 +765,7 @@
       });
     }
 
-    // =========================
-    // Menu options
-    // =========================
+    // ===== Menu options render =====
     function mkOpt(text, active, onClick){
       const el = document.createElement("div");
       el.className = "opt" + (active ? " active" : "");
@@ -908,47 +773,42 @@
       el.onclick = onClick;
       return el;
     }
-
     function renderMenu(){
       const cats = document.getElementById("menuCats");
       const diet = document.getElementById("menuDiet");
-      const occ = document.getElementById("menuOccasion");
+      const occ  = document.getElementById("menuOccasion");
       const time = document.getElementById("menuTime");
-      const spice = document.getElementById("menuSpice");
+      const spice= document.getElementById("menuSpice");
       const sort = document.getElementById("menuSort");
 
       cats.innerHTML = "";
-      MENU.cats.forEach(v => cats.appendChild(mkOpt(v, state.cat === v, () => { state.cat = v; applyAndRender(); renderMenu(); })));
+      MENU.cats.forEach(v => cats.appendChild(mkOpt(v, state.cat === v, () => { state.cat=v; applyAndRender(); renderMenu(); })));
 
       diet.innerHTML = "";
-      MENU.diet.forEach(v => diet.appendChild(mkOpt(v, state.diet === v, () => { state.diet = (state.diet === v ? null : v); applyAndRender(); renderMenu(); })));
+      MENU.diet.forEach(v => diet.appendChild(mkOpt(v, state.diet === v, () => { state.diet=(state.diet===v?null:v); applyAndRender(); renderMenu(); })));
 
       occ.innerHTML = "";
-      MENU.occasion.forEach(v => occ.appendChild(mkOpt(v, state.occasion === v, () => { state.occasion = (state.occasion === v ? null : v); applyAndRender(); renderMenu(); })));
+      MENU.occasion.forEach(v => occ.appendChild(mkOpt(v, state.occasion === v, () => { state.occasion=(state.occasion===v?null:v); applyAndRender(); renderMenu(); })));
 
       time.innerHTML = "";
-      MENU.time.forEach(v => time.appendChild(mkOpt(v, state.time === v, () => { state.time = (state.time === v ? null : v); applyAndRender(); renderMenu(); })));
+      MENU.time.forEach(v => time.appendChild(mkOpt(v, state.time === v, () => { state.time=(state.time===v?null:v); applyAndRender(); renderMenu(); })));
 
       spice.innerHTML = "";
-      MENU.spice.forEach(v => spice.appendChild(mkOpt(v, state.spice === v, () => { state.spice = (state.spice === v ? null : v); applyAndRender(); renderMenu(); })));
+      MENU.spice.forEach(v => spice.appendChild(mkOpt(v, state.spice === v, () => { state.spice=(state.spice===v?null:v); applyAndRender(); renderMenu(); })));
 
       sort.innerHTML = "";
-      MENU.sort.forEach(v => sort.appendChild(mkOpt(v, state.sort === v, () => { state.sort = v; applyAndRender(); renderMenu(); })));
+      MENU.sort.forEach(v => sort.appendChild(mkOpt(v, state.sort === v, () => { state.sort=v; applyAndRender(); renderMenu(); })));
     }
 
-    // =========================
-    // Filtering logic
-    // =========================
+    // ===== Filter logic =====
     function matchChip(d){
       if(state.chip === "all") return true;
       if(state.chip === "Premium") return (d.diet || []).includes("Premium");
       if(state.chip === "Spicy") return (d.diet || []).includes("Spicy") || d.spice === "Hot";
       if(state.chip === "15 min") return d.time === "15 min";
       if(state.chip === "Date night") return (d.occasion || []).includes("Date night");
-      // category chips
       return d.cat === state.chip;
     }
-
     function matchMenu(d){
       if(state.cat && state.cat !== "Alla"){
         if(state.cat === "Premium"){
@@ -963,32 +823,17 @@
       if(state.spice && d.spice !== state.spice) return false;
       return true;
     }
-
     function applySort(list){
       const out = list.slice();
-      if(state.sort === "A–Z"){
-        out.sort((a,b) => a.name.localeCompare(b.name, "sv"));
-      }
-      if(state.sort === "Newest"){
-        // ingen riktig datumdata ännu, men vi gör tvärtom på id så det känns "nytt"
-        out.sort((a,b) => (b.id).localeCompare(a.id));
-      }
+      if(state.sort === "A–Z") out.sort((a,b)=>a.name.localeCompare(b.name,"sv"));
+      if(state.sort === "Newest") out.sort((a,b)=>(b.id).localeCompare(a.id));
       return out;
     }
+    function getVisible(){ return applySort(DISHES.filter(matchChip).filter(matchMenu)); }
 
-    function getVisible(){
-      const filtered = DISHES
-        .filter(matchChip)
-        .filter(matchMenu);
-      return applySort(filtered);
-    }
-
-    // =========================
-    // Render grid
-    // =========================
+    // ===== Render grid =====
     const grid = document.getElementById("grid");
     const countLine = document.getElementById("countLine");
-
     function renderGrid(){
       const list = getVisible();
       countLine.textContent = `${list.length} rätter`;
@@ -1012,23 +857,14 @@
             </div>
           </div>
         `;
-
-        el.onclick = () => {
-          window.location.href = `dish.html?id=${encodeURIComponent(d.id)}`;
-        };
-
+        el.onclick = () => { window.location.href = `dish.html?id=${encodeURIComponent(d.id)}`; };
         const im = el.querySelector("img");
-        im.onerror = () => {
-          im.style.display = "none";
-        };
-
+        im.onerror = () => { im.style.display = "none"; };
         grid.appendChild(el);
       });
     }
 
-    // =========================
-    // Search overlay – LV grid
-    // =========================
+    // ===== Search overlay (LV grid) =====
     const searchOverlay = document.getElementById("searchOverlay");
     const q = document.getElementById("q");
     const searchGrid = document.getElementById("searchGrid");
@@ -1065,10 +901,8 @@
           </div>
         `;
         el.onclick = () => { window.location.href = `dish.html?id=${encodeURIComponent(d.id)}`; };
-
         const im = el.querySelector("img");
         im.onerror = () => { im.style.display = "none"; };
-
         searchGrid.appendChild(el);
       });
     }
@@ -1081,7 +915,6 @@
     };
     document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
 
-    // trending tags
     document.querySelectorAll(".trend").forEach(t => {
       t.addEventListener("click", () => {
         const val = t.getAttribute("data-q") || "";
@@ -1090,29 +923,15 @@
         q.focus();
       });
     });
-
     q.addEventListener("input", () => renderSearch(q.value));
 
-    // ESC to close
-    document.addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        closeOverlay(searchOverlay);
-        closeOverlay(menuOverlay);
-        closeOverlay(bagOverlay);
-      }
-    });
-
-    // =========================
-    // Menu drawer
-    // =========================
+    // ===== Menu drawer =====
     const menuOverlay = document.getElementById("menuOverlay");
     document.getElementById("menuBtn").onclick = () => openOverlay(menuOverlay);
     document.getElementById("menuClose").onclick = () => closeOverlay(menuOverlay);
     menuOverlay.addEventListener("click", (e) => { if(e.target === menuOverlay) closeOverlay(menuOverlay); });
 
-    // =========================
-    // Bag overlay
-    // =========================
+    // ===== Bag overlay =====
     const bagOverlay = document.getElementById("bagOverlay");
     const bagList = document.getElementById("bagList");
     const bagEmpty = document.getElementById("bagEmpty");
@@ -1133,21 +952,17 @@
           </div>
           <button class="x" type="button" aria-label="Remove">✕</button>
         `;
-
         row.addEventListener("click", (e) => {
           if(e.target.tagName.toLowerCase() === "button") return;
           window.location.href = `dish.html?id=${encodeURIComponent(it.id)}`;
         });
-
         row.querySelector("button").addEventListener("click", () => {
           const next = getCart().filter((_, i) => i !== idx);
           setCart(next);
           renderBag();
         });
-
         const im = row.querySelector("img");
         im.onerror = () => { im.style.display = "none"; };
-
         bagList.appendChild(row);
       });
 
@@ -1158,14 +973,10 @@
     document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
     bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
 
-    // =========================
-    // Login
-    // =========================
+    // ===== Login =====
     document.getElementById("loginBtn").onclick = () => { window.location.href = "login.html"; };
 
-    // =========================
-    // Hero actions
-    // =========================
+    // ===== Hero actions =====
     document.getElementById("scrollToDishes").onclick = () => {
       document.getElementById("dishesTop").scrollIntoView({behavior:"smooth", block:"start"});
     };
@@ -1176,15 +987,21 @@
       setTimeout(() => q.focus(), 50);
     };
 
-    // =========================
-    // Apply & render
-    // =========================
+    // ===== ESC close =====
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        closeOverlay(searchOverlay);
+        closeOverlay(menuOverlay);
+        closeOverlay(bagOverlay);
+      }
+    });
+
+    // ===== Apply & render =====
     function applyAndRender(){
       renderChips();
       renderGrid();
     }
 
-    // Start
     renderChips();
     renderMenu();
     renderGrid();
