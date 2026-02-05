@@ -4,40 +4,280 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Contact us • BUILD A PLATE</title>
+
   <style>
-    :root{--bg:#F6F2EA;--ink:#0B0F0D;--muted:rgba(11,15,13,.62);--line:rgba(11,15,13,.12)}
+    :root{
+      --bg:#F6F2EA;
+      --ink:#0B0F0D;
+      --muted:rgba(11,15,13,.62);
+      --line:rgba(11,15,13,.12);
+    }
     *{box-sizing:border-box}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink)}
-    a{color:inherit}
-    .wrap{max-width:900px;margin:0 auto;padding:18px 16px 50px}
-    .top{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:18px}
-    .logo{letter-spacing:.22em;font-weight:700;font-size:12px;text-transform:uppercase}
-    .k{margin:0 0 8px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-    h1{margin:0 0 10px;font-size:28px;letter-spacing:-.02em}
-    p{margin:0 0 10px;color:var(--muted);line-height:1.55}
-    .card{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.65);padding:16px}
-    .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
-    .pill{border:1px solid var(--line);border-radius:999px;padding:10px 12px;background:#fff}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit}
+    :focus-visible{outline:2px solid rgba(11,15,13,.35); outline-offset:2px; border-radius:10px}
+
+    /* LV-like overlay */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(11,15,13,.55);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .panel{
+      width:min(920px, 100%);
+      background:rgba(246,242,234,.98);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    }
+
+    .top{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(246,242,234,.98);
+    }
+    .topLeft{display:flex; gap:10px; align-items:center}
+    .topMid{display:flex; justify-content:center}
+    .topRight{display:flex; justify-content:flex-end}
+
+    .logo{
+      letter-spacing:.22em;
+      font-weight:700;
+      font-size:12px;
+      text-transform:uppercase;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .back{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+ aware. add underline
+    }
+    .x{
+      width:38px;height:38px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:transparent;
+      cursor:pointer;
+      color:var(--ink);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+    }
+
+    .body{
+      padding:18px 16px 22px;
+      max-width:720px;
+      margin:0 auto;
+    }
+
+    .title{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      text-align:left;
+    }
+
+    .intro{
+      margin:0 0 14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.70);
+    }
+
+    .left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .ic{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+    }
+
+    .txt{min-width:0}
+    .txt b{
+      display:block;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .txt span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .go{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+      white-space:nowrap;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:16px 0;
+    }
+
+    .smallLinks{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .smallLinks a{
+      text-decoration:underline;
+      text-underline-offset:4px;
+    }
+
+    @media (max-width:520px){
+      .overlay{padding:10px}
+      .body{padding:14px 12px 16px}
+      .top{padding:12px 12px}
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="logo">BUILD A PLATE</div>
-      <a href="index.html">Back</a>
-    </div>
+  <div class="overlay" role="dialog" aria-label="Contact us">
+    <div class="panel">
+      <div class="top">
+        <div class="topLeft">
+          <a class="back" href="index.html">Back</a>
+        </div>
 
-    <p class="k">Contact</p>
-    <h1>Contact us</h1>
-    <p>Skicka ett mail eller ring. Vi svarar så snabbt vi kan.</p>
+        <div class="topMid">
+          <div class="logo">BUILD A PLATE</div>
+        </div>
 
-    <div class="card">
-      <div class="row">
-        <div class="pill">Email: <a href="mailto:hello@buildaplate.se">hello@buildaplate.se</a></div>
-        <div class="pill">Telefon: <a href="tel:+46700000000">+46 70 000 00 00</a></div>
+        <div class="topRight">
+          <button class="x" type="button" aria-label="Close" id="closeBtn">✕</button>
+        </div>
       </div>
-      <p style="margin-top:12px">Område: Västmanlands län</p>
+
+      <div class="body">
+        <div class="title">Contact us</div>
+        <p class="intro">Välj det som känns enklast. Vi svarar så snabbt vi kan.</p>
+
+        <div class="list">
+          <div class="row">
+            <div class="left">
+              <div class="ic">📞</div>
+              <div class="txt">
+                <b>Telefon</b>
+                <span>+46 70 000 00 00</span>
+              </div>
+            </div>
+            <a class="go" href="tel:+46700000000">Call</a>
+          </div>
+
+          <div class="row">
+            <div class="left">
+              <div class="ic">✉️</div>
+              <div class="txt">
+                <b>Email</b>
+                <span>hello@buildaplate.se</span>
+              </div>
+            </div>
+            <a class="go" href="mailto:hello@buildaplate.se">Email</a>
+          </div>
+
+          <div class="row">
+            <div class="left">
+              <div class="ic">📷</div>
+              <div class="txt">
+                <b>Instagram</b>
+                <span>@buildaplate</span>
+              </div>
+            </div>
+            <a class="go" href="https://instagram.com/buildaplate" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="smallLinks">
+          <span>Need help?</span>
+          <a href="index.html#ratter">Se rätter</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    // Close button goes back
+    document.getElementById("closeBtn").onclick = () => {
+      window.location.href = "index.html";
+    };
+
+    // ESC goes back
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") window.location.href = "index.html";
+    });
+
+    // Click outside panel goes back
+    document.querySelector(".overlay").addEventListener("click", (e) => {
+      if(e.target.classList.contains("overlay")) window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
