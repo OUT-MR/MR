@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recipe • BUILD A PLATE</title>
+  <link rel="stylesheet" href="assets/app.css" />
+</head>
+
+<body data-page="recipe">
+  <header class="bar scrolled" id="bar" style="position:sticky;top:0">
+    <div class="barSide">
+      <button class="iconBtn" id="backToDish" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M15 6 9 12l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button class="iconBtn" id="searchBtn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="barMid">
+      <div class="logo">BUILD A PLATE</div>
+    </div>
+
+    <div class="barSide" style="justify-content:flex-end">
+      <a class="contactLink" href="help.html">Need help</a>
+
+      <span class="iconWrap">
+        <button class="iconBtn" id="bagBtn" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M6 8h12l-1 13H7L6 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <span class="badge" id="bagCount">0</span>
+      </span>
+    </div>
+  </header>
+
+  <div class="wrap" style="padding-top:12px">
+    <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:start">
+      <div class="panel" style="position:sticky;top:78px">
+        <div class="studio" style="aspect-ratio:auto;height:min(78vh,760px);border-radius:14px">
+          <img id="rImg" src="assets/hero.jpg" alt="Recipe">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="pad">
+          <p class="kick" id="rCat">Kategori</p>
+          <h1 class="h1" id="rName">Rätt</h1>
+          <p class="desc" id="rDesc">—</p>
+
+          <div class="divider"></div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="panel" style="box-shadow:none;background:rgba(255,255,255,.6)"><div class="pad"><div class="kick">Time</div><div id="rTime">—</div></div></div>
+            <div class="panel" style="box-shadow:none;background:rgba(255,255,255,.6)"><div class="pad"><div class="kick">Level</div><div id="rLevel">—</div></div></div>
+            <div class="panel" style="box-shadow:none;background:rgba(255,255,255,.6)"><div class="pad"><div class="kick">Portions</div><div id="rPortions">—</div></div></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="stepTitle">Ingredienser</p>
+          <ul id="ingredients" style="margin:0;padding-left:18px;line-height:1.7;color:rgba(11,15,13,.82)"></ul>
+
+          <div class="divider"></div>
+
+          <p class="stepTitle">Så lagar du</p>
+          <ol id="steps" style="margin:0;padding-left:18px;line-height:1.7;color:rgba(11,15,13,.82)"></ol>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer" style="border-top:0;padding-left:0;padding-right:0">
+      <div class="copyLine" style="max-width:none">
+        <div><a class="fLink" href="help.html">Need help</a></div>
+        <div><a class="fLink" href="contact.html">Contact us</a></div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="overlay" id="searchOverlay">
+    <div class="sheet right" role="dialog" aria-label="Search">
+      <div class="sheetTop">
+        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Search</b>
+        <button class="x" id="searchClose" aria-label="Close">✕</button>
+      </div>
+      <input class="input" id="q" type="search" placeholder="Sök rätt..." autocomplete="off" />
+      <div class="muted" id="searchCount"></div>
+      <div class="list" id="searchList"></div>
+    </div>
+  </div>
+
+  <!-- BAG OVERLAY -->
+  <div class="overlay" id="bagOverlay">
+    <div class="sheet right" role="dialog" aria-label="Cart">
+      <div class="sheetTop">
+        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Bag</b>
+        <button class="x" id="bagClose" aria-label="Close">✕</button>
+      </div>
+      <div class="muted" id="bagEmpty">Din bag är tom.</div>
+      <div class="list" id="bagList"></div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
