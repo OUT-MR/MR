@@ -3,287 +3,384 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BUILD A PLATE – Menu</title>
+  <title>BUILD A PLATE</title>
   <style>
     :root{
-      --bg:#F6F2EA;
-      --card:#FFFFFF;
-      --ink:#0F2A22;
-      --muted:#4A5A55;
-      --line:#DDD5C8;
-      --radius:22px;
-      --shadow: 0 12px 26px rgba(0,0,0,.07);
-      --max:1160px;
+      --bg:#F6F2EA; --card:#fff; --ink:#0F2A22; --muted:#4A5A55; --line:#DDD5C8;
+      --radius:22px; --shadow:0 12px 26px rgba(0,0,0,.07); --max:980px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-      line-height:1.35;
-    }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:14px 14px 70px}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink);line-height:1.35}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding:14px 14px 70px}
 
     .nav{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:10px 12px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      position:sticky;
-      top:10px;
-      z-index:50;
+      background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow);
+      padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+      position:sticky; top:10px; z-index:50;
     }
-    .brand{display:flex; align-items:center; gap:10px; flex:none}
-    .mark{
-      width:40px; height:40px;
-      border:2px solid var(--ink);
-      border-radius:999px;
-      position:relative;
-      flex:none;
-    }
-    .mark:after{
-      content:"";
-      position:absolute;
-      width:11px; height:11px;
-      border:2px solid var(--ink);
-      border-left:0; border-bottom:0;
-      right:7px; top:7px;
-      transform:rotate(45deg);
-      border-radius:2px;
-    }
-    .name{font-weight:850; letter-spacing:.06em; font-size:13px}
-    .tag{font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+    .brand{display:flex;align-items:center;gap:10px}
+    .mark{width:40px;height:40px;border:2px solid var(--ink);border-radius:999px;position:relative;flex:none}
+    .mark:after{content:"";position:absolute;width:11px;height:11px;border:2px solid var(--ink);border-left:0;border-bottom:0;right:7px;top:7px;transform:rotate(45deg);border-radius:2px}
+    .name{font-weight:850;letter-spacing:.06em;font-size:13px}
+    .tag{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
-    .search{
-      flex:1;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      background:#fff;
-      min-width:160px;
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);
+      padding:9px 12px;border-radius:999px;font-weight:750;font-size:13px;background:var(--card);
+      cursor:pointer;white-space:nowrap;
     }
-    .mag{
-      width:18px; height:18px;
-      border:2px solid var(--muted);
-      border-radius:999px;
-      position:relative;
-      flex:none;
-      opacity:.7;
-    }
-    .mag:after{
-      content:"";
-      position:absolute;
-      width:9px; height:2px;
-      background:var(--muted);
-      right:-7px; bottom:-2px;
-      transform:rotate(45deg);
-      border-radius:2px;
-      opacity:.7;
-    }
-    .search input{
-      width:100%;
-      border:0;
-      outline:none;
-      font-size:14px;
-      background:transparent;
-      color:var(--ink);
-    }
+    .btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:none}
+    .btn.ghost{background:transparent;box-shadow:none}
 
-    .panel{
-      margin-top:12px;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
+    .panel{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
     .pad{padding:18px}
-    h1{margin:0 0 6px; font-size:28px; letter-spacing:-.02em}
-    .mini{margin:0; color:var(--muted); font-size:13px}
+    .heroImg{width:100%;height:320px;object-fit:cover;display:block}
+    h1{margin:0 0 6px;font-size:28px;letter-spacing:-.02em}
+    .mini{margin:0;color:var(--muted);font-size:13px}
 
-    .filters{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .filter{
-      border:1px solid var(--line);
-      background:transparent;
-      color:var(--ink);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      cursor:pointer;
-    }
-    .filter.active{
-      background:var(--ink);
-      border-color:var(--ink);
-      color:#fff;
-    }
+    .stepsTop{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .dots{display:flex;gap:8px;flex-wrap:wrap}
+    .dot{border:1px solid var(--line);border-radius:999px;padding:8px 10px;font-size:13px;color:var(--muted);background:transparent}
+    .dot.active{border-color:var(--ink);color:var(--ink)}
+    .dot.done{background:rgba(15,42,34,.06);color:var(--ink)}
 
-    .grid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
+    .stack{display:flex;flex-direction:column;gap:10px}
+    .pack{
+      border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;align-items:center;justify-content:space-between;
+      gap:10px;cursor:pointer;background:transparent;
     }
-    .dish{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      overflow:hidden;
-      background:var(--card);
-      box-shadow:var(--shadow);
-      display:block;
-    }
-    .dish img{
-      width:100%;
-      height:260px;
-      object-fit:cover;
-      display:block;
-    }
-    .dish .content{
-      padding:12px 14px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .dish h3{margin:0; font-size:15px}
-    .dish .cat{font-size:12px; color:var(--muted)}
+    .pack strong{font-size:14px}
+    .pack small{color:var(--muted)}
+    .pack.active{border-color:var(--ink);box-shadow:0 0 0 2px rgba(15,42,34,.08) inset}
 
-    .footer{
-      margin-top:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:13px;
-      padding-top:14px;
-      border-top:1px solid var(--line);
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:220px}
+    label{font-size:12px;color:var(--muted)}
+    input, select{
+      padding:12px 12px;border-radius:14px;border:1px solid var(--line);
+      background:#fff;font-size:14px;outline:none;
     }
 
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
+    .summary{
+      padding:12px;border-radius:16px;border:1px dashed var(--line);
+      color:var(--muted);font-size:13px;white-space:pre-wrap;
     }
+    .note{
+      margin-top:10px;padding:12px;border-radius:16px;border:1px dashed var(--line);
+      color:var(--muted);font-size:13px;
+    }
+    .footer{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;padding-top:14px;border-top:1px solid var(--line)}
+    @media (max-width:720px){.heroImg{height:240px}.nav{position:static}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="nav">
-      <a class="brand" href="#">
+      <a class="brand" href="index.html" target="_blank" rel="noopener">
         <div class="mark" aria-hidden="true"></div>
         <div>
           <div class="name">BUILD A PLATE</div>
           <div class="tag">Plate by plate.</div>
         </div>
       </a>
-
-      <div class="search" role="search">
-        <div class="mag" aria-hidden="true"></div>
-        <input id="searchInput" type="search" placeholder="Sök efter en rätt..." autocomplete="off" />
-      </div>
+      <button class="btn ghost" id="closeBtn" type="button">Stäng</button>
     </header>
 
-    <section class="panel pad">
-      <h1>Rätter</h1>
-      <p class="mini">Klicka en rätt. Den öppnas i ett nytt fönster.</p>
+    <section class="panel">
+      <img id="dishImg" class="heroImg" src="" alt="Rätt" />
+      <div class="pad">
+        <h1 id="dishName">Rätt</h1>
+        <p id="dishCat" class="mini"></p>
+      </div>
+    </section>
 
-      <div class="filters" id="filterBar"></div>
-      <div class="grid" id="dishGrid"></div>
+    <section class="panel pad" id="checkout">
+      <div class="stepsTop">
+        <div class="dots" id="dots"></div>
+        <div class="dot active" id="stepTitle">Steg 1 av 3</div>
+      </div>
+
+      <!-- STEP 1: Paket -->
+      <div class="stack" id="step1">
+        <div class="summary" id="s1">Välj paket.</div>
+
+        <div class="pack" data-pack="duo">
+          <div><strong>Duo</strong><br/><small>2 personer</small></div>
+          <div><strong>399</strong></div>
+        </div>
+
+        <div class="pack" data-pack="par">
+          <div><strong>Par</strong><br/><small>2 personer</small></div>
+          <div><strong>449</strong></div>
+        </div>
+
+        <div class="pack" data-pack="trio">
+          <div><strong>Trio</strong><br/><small>3 personer</small></div>
+          <div><strong>499</strong></div>
+        </div>
+
+        <div class="pack" data-pack="squad">
+          <div><strong>Squad</strong><br/><small>4 personer</small></div>
+          <div><strong>599</strong></div>
+        </div>
+
+        <div class="pack" data-pack="plato">
+          <div><strong>Plato Mode</strong><br/><small>Endast 3 personer</small></div>
+          <div><strong>549</strong></div>
+        </div>
+
+        <div class="row">
+          <button class="btn ghost" id="toMenu" type="button">Till menyn</button>
+          <button class="btn primary" id="to2" type="button">Nästa</button>
+        </div>
+
+        <div class="note">
+          Plato Mode = kommunikationsutmaning för 3. Säkerhet: ingen blindfold nära kniv eller värme.
+        </div>
+      </div>
+
+      <!-- STEP 2: Leverans -->
+      <div class="stack" id="step2" style="display:none">
+        <div class="summary" id="s2">Fyll i leverans.</div>
+
+        <div class="row">
+          <div class="field">
+            <label>Namn</label>
+            <input id="name" type="text" placeholder="Ditt namn" />
+          </div>
+          <div class="field">
+            <label>Telefon</label>
+            <input id="phone" type="text" placeholder="+46..." />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Leverans eller hämtning</label>
+            <select id="method">
+              <option value="leverans">Leverans</option>
+              <option value="hamtning">Hämtning</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Datum och tid</label>
+            <input id="datetime" type="text" placeholder="t.ex. Lör 18:00" />
+          </div>
+        </div>
+
+        <div class="field" id="addressWrap">
+          <label>Adress (för leverans)</label>
+          <input id="address" type="text" placeholder="Gata, postnummer, ort" />
+        </div>
+
+        <div class="note">Område: Västmanlands län.</div>
+
+        <div class="row">
+          <button class="btn ghost" id="back1" type="button">Tillbaka</button>
+          <button class="btn primary" id="to3" type="button">Nästa</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Betala -->
+      <div class="stack" id="step3" style="display:none">
+        <div class="summary" id="final">—</div>
+
+        <div class="row">
+          <button class="btn ghost" id="back2" type="button">Tillbaka</button>
+          <button class="btn ghost" id="copy" type="button">Kopiera order</button>
+          <button class="btn primary" id="pay" type="button">Gå till betalning</button>
+        </div>
+
+        <div class="note">
+          Betalning öppnas i ny flik. Spara kvitto. Din ordertext finns i “Kopiera order”.
+        </div>
+      </div>
     </section>
 
     <footer class="footer">
       <div>© <span id="y"></span> BUILD A PLATE</div>
-      <div>Leverans: Västmanlands län</div>
+      <button class="btn ghost" id="menuBtn2" type="button">Till menyn</button>
     </footer>
   </div>
 
   <script>
+    // Byt till dina riktiga Stripe Payment Links
+    const PAY_LINKS = {
+      duo:   "#",
+      par:   "#",
+      trio:  "#",
+      squad: "#",
+      plato: "#"
+    };
+
+    const PACKS = {
+      duo:   { label:"Duo", people:2, price:399 },
+      par:   { label:"Par", people:2, price:449 },
+      trio:  { label:"Trio", people:3, price:499 },
+      squad: { label:"Squad", people:4, price:599 },
+      plato: { label:"Plato Mode", people:3, price:549 }
+    };
+
     const DISHES = [
       { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,truffle" },
-      { id:"cacio",   name:"Cacio e Pepe",            cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
-      { id:"vodka",   name:"Vodka Pasta + burrata",   cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
-      { id:"meatballs",name:"Köttbullar 2.0",         cat:"Nordic",img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
-      { id:"steak",   name:"Biff + chimichurri",      cat:"Nordic",img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
-      { id:"salmon",  name:"Lax + misosmör",          cat:"Nordic",img:"https://source.unsplash.com/1200x800/?salmon,miso" },
+      { id:"cacio",   name:"Cacio e Pepe", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,cheese" },
+      { id:"vodka",   name:"Vodka Pasta + burrata", cat:"Pasta", img:"https://source.unsplash.com/1200x800/?pasta,burrata" },
+      { id:"meatballs",name:"Köttbullar 2.0", cat:"Nordic", img:"https://source.unsplash.com/1200x800/?meatballs,swedish" },
+      { id:"steak",   name:"Biff + chimichurri", cat:"Nordic", img:"https://source.unsplash.com/1200x800/?steak,chimichurri" },
+      { id:"salmon",  name:"Lax + misosmör", cat:"Nordic", img:"https://source.unsplash.com/1200x800/?salmon,miso" },
       { id:"temaki",  name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1200x800/?temaki,sushi" },
-      { id:"poke",    name:"Poke Bowl",               cat:"Sushi", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
+      { id:"poke",    name:"Poke Bowl", cat:"Sushi", img:"https://source.unsplash.com/1200x800/?poke,bowl" },
       { id:"halloumi",name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1200x800/?halloumi,salad" }
     ];
 
-    const FILTERS = ["Alla","Pasta","Nordic","Sushi","Veg"];
-    let active = "Alla";
+    const qs = new URLSearchParams(location.search);
+    const id = qs.get("id");
+    const dish = DISHES.find(d => d.id === id) || DISHES[0];
 
     const y = document.getElementById("y");
-    const filterBar = document.getElementById("filterBar");
-    const grid = document.getElementById("dishGrid");
-    const searchInput = document.getElementById("searchInput");
+    const dishImg = document.getElementById("dishImg");
+    const dishName = document.getElementById("dishName");
+    const dishCat = document.getElementById("dishCat");
+
+    const dots = document.getElementById("dots");
+    const stepTitle = document.getElementById("stepTitle");
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+
+    const to2 = document.getElementById("to2");
+    const to3 = document.getElementById("to3");
+    const back1 = document.getElementById("back1");
+    const back2 = document.getElementById("back2");
+
+    const nameEl = document.getElementById("name");
+    const phoneEl = document.getElementById("phone");
+    const methodEl = document.getElementById("method");
+    const datetimeEl = document.getElementById("datetime");
+    const addressWrap = document.getElementById("addressWrap");
+    const addressEl = document.getElementById("address");
+
+    const final = document.getElementById("final");
+    const copyBtn = document.getElementById("copy");
+    const payBtn = document.getElementById("pay");
+
+    let step = 1;
+    let packKey = null;
 
     y.textContent = new Date().getFullYear();
+    dishImg.src = dish.img;
+    dishName.textContent = dish.name;
+    dishCat.textContent = dish.cat;
+    dishImg.onerror = () => dishImg.src = "https://source.unsplash.com/1200x800/?minimal,food";
 
-    function renderFilters(){
-      filterBar.innerHTML = "";
-      FILTERS.forEach(f => {
-        const b = document.createElement("button");
-        b.className = "filter" + (f === active ? " active" : "");
-        b.type = "button";
-        b.textContent = f;
-        b.onclick = () => { active = f; renderFilters(); renderGrid(); };
-        filterBar.appendChild(b);
+    function renderDots(){
+      const labels = ["Paket","Leverans","Betala"];
+      dots.innerHTML = "";
+      for(let i=1;i<=3;i++){
+        const el = document.createElement("div");
+        el.className = "dot" + (i === step ? " active" : "") + (i < step ? " done" : "");
+        el.textContent = `${i}. ${labels[i-1]}`;
+        dots.appendChild(el);
+      }
+      stepTitle.textContent = `Steg ${step} av 3`;
+    }
+
+    function showStep(){
+      step1.style.display = step === 1 ? "" : "none";
+      step2.style.display = step === 2 ? "" : "none";
+      step3.style.display = step === 3 ? "" : "none";
+      renderDots();
+    }
+
+    function syncAddress(){
+      addressWrap.style.display = (methodEl.value === "leverans") ? "" : "none";
+    }
+
+    function choosePack(key){
+      packKey = key;
+      document.querySelectorAll(".pack").forEach(p => {
+        p.classList.toggle("active", p.getAttribute("data-pack") === key);
       });
     }
 
-    function matches(d){
-      const q = (searchInput.value || "").trim().toLowerCase();
-      const okText = !q || d.name.toLowerCase().includes(q);
-      const okCat = active === "Alla" || d.cat === active;
-      return okText && okCat;
+    function orderText(){
+      const p = packKey ? PACKS[packKey] : null;
+      const method = methodEl.value === "leverans" ? "Leverans" : "Hämtning";
+      const address = methodEl.value === "leverans" ? (addressEl.value.trim() || "—") : "—";
+      return [
+        `Rätt: ${dish.name}`,
+        `Paket: ${p ? p.label : "—"} (${p ? p.people : "—"})`,
+        `Pris: ${p ? p.price : "—"}`,
+        `Namn: ${nameEl.value.trim() || "—"}`,
+        `Telefon: ${phoneEl.value.trim() || "—"}`,
+        `Datum/tid: ${datetimeEl.value.trim() || "—"}`,
+        `Metod: ${method}`,
+        `Adress: ${address}`,
+        `Område: Västmanlands län`
+      ].join("\n");
     }
 
-    function renderGrid(){
-      const list = DISHES.filter(matches);
-      grid.innerHTML = "";
-
-      list.forEach(d => {
-        const a = document.createElement("a");
-        a.className = "dish";
-        a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
-        a.target = "_blank";
-        a.rel = "noopener";
-
-        a.innerHTML = `
-          <img src="${d.img}" alt="${d.name}">
-          <div class="content">
-            <div>
-              <h3>${d.name}</h3>
-              <div class="cat">${d.cat}</div>
-            </div>
-            <div class="cat">Öppna →</div>
-          </div>
-        `;
-        const img = a.querySelector("img");
-        img.onerror = () => img.src = "https://source.unsplash.com/1200x800/?minimal,food";
-
-        grid.appendChild(a);
-      });
+    function canStep2(){ return !!packKey; }
+    function canStep3(){
+      if(!canStep2()) return false;
+      if(!nameEl.value.trim()) return false;
+      if(!phoneEl.value.trim()) return false;
+      if(!datetimeEl.value.trim()) return false;
+      if(methodEl.value === "leverans" && !addressEl.value.trim()) return false;
+      return true;
     }
 
-    searchInput.addEventListener("input", renderGrid);
+    document.querySelectorAll(".pack").forEach(p => {
+      p.addEventListener("click", () => choosePack(p.getAttribute("data-pack")));
+    });
 
-    renderFilters();
-    renderGrid();
+    to2.addEventListener("click", () => {
+      if(!canStep2()){ alert("Välj paket först."); return; }
+      step = 2; showStep();
+    });
+
+    back1.addEventListener("click", () => { step = 1; showStep(); });
+
+    methodEl.addEventListener("change", syncAddress);
+
+    to3.addEventListener("click", () => {
+      if(!canStep3()){
+        alert("Fyll i namn, telefon, datum/tid och adress (om leverans).");
+        return;
+      }
+      final.textContent = orderText();
+      step = 3; showStep();
+    });
+
+    back2.addEventListener("click", () => { step = 2; showStep(); });
+
+    [nameEl, phoneEl, datetimeEl, addressEl].forEach(el => el.addEventListener("input", () => {
+      if(step === 3) final.textContent = orderText();
+    }));
+
+    copyBtn.addEventListener("click", async () => {
+      const text = orderText();
+      try{ await navigator.clipboard.writeText(text); alert("Kopierat."); }
+      catch{ alert("Kunde inte kopiera. Markera och kopiera manuellt."); }
+    });
+
+    payBtn.addEventListener("click", () => {
+      if(!canStep3()){ alert("Fyll i allt först."); return; }
+      const link = PAY_LINKS[packKey] || "#";
+      if(link === "#"){ alert("Lägg in din Stripe Payment Link i PAY_LINKS för detta paket."); return; }
+      window.open(link, "_blank");
+    });
+
+    function goMenu(){ window.open("index.html", "_blank"); }
+    document.getElementById("toMenu").addEventListener("click", goMenu);
+    document.getElementById("menuBtn2").addEventListener("click", goMenu);
+
+    document.getElementById("closeBtn").addEventListener("click", () => window.close());
+
+    syncAddress();
+    renderDots();
+    showStep();
   </script>
 </body>
 </html>
