@@ -1,710 +1,700 @@
-<!doctype html>
-<html lang="sv">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BUILD A PLATE</title>
-  <meta name="description" content="Bygg rätten. Tillsammans. Plate by plate." />
+import { useEffect, useMemo, useState } from "react";
 
-  <style>
-    :root{
-      --bg:#F6F2EA;
-      --ink:#0B0F0D;
-      --muted:rgba(11,15,13,.62);
-      --line:rgba(11,15,13,.12);
-      --accent:#0F2A22;
+type Product = {
+  id: string;
+  title: string;
+  category: string;
+  priceSek: number;
+  image: string;
+  description: string;
+};
 
-      --gap:2px;
-      --pad:12px;
-      --barH:52px;
-    }
+const PRODUCTS: Product[] = [
+  {
+    id: "tagliatelle-al-tartufo",
+    title: "Tagliatelle al Tartufo",
+    category: "Pasta",
+    priceSek: 179,
+    image:
+      "https://images.unsplash.com/photo-1526318896980-cf78c088247c?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Krämig tryffelpasta med rik smak. Perfekt för en lyxig middag.",
+  },
+  {
+    id: "cacio-e-pepe",
+    title: "Cacio e Pepe",
+    category: "Pasta",
+    priceSek: 149,
+    image:
+      "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Klassisk romersk pasta med pecorino och svartpeppar. Ren smak.",
+  },
+  {
+    id: "vodka-pasta-burrata",
+    title: "Vodka Pasta + burrata",
+    category: "Pasta",
+    priceSek: 189,
+    image:
+      "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Tomat-vodkasås med burrata. Krämigt, syrligt, balanserat.",
+  },
+  {
+    id: "kottbullar-2",
+    title: "Köttbullar 2.0",
+    category: "Nordic",
+    priceSek: 169,
+    image:
+      "https://images.unsplash.com/photo-1604909052601-0b67e5b22f84?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Nordiska köttbullar med uppgraderad smak och toppingval.",
+  },
+  {
+    id: "biff-chimichurri",
+    title: "Biff + chimichurri",
+    category: "Nordic",
+    priceSek: 219,
+    image:
+      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Saftig biff med chimichurri. Enkel servering, stark upplevelse.",
+  },
+  {
+    id: "poke-bowl",
+    title: "Poke Bowl",
+    category: "Sushi",
+    priceSek: 179,
+    image:
+      "https://images.unsplash.com/photo-1543353071-087092ec393a?auto=format&fit=crop&w=1600&q=80",
+    description:
+      "Fräscha råvaror, tydlig struktur. Välj protein och toppings.",
+  },
+];
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    a{color:inherit;text-decoration:none}
-    button{font-family:inherit}
+const MODES = ["Duo", "Par", "Trio", "Squad", "Plato Mode"] as const;
 
-    /* TOP BAR (TOPP: transparent, SCROLL: vit) */
-    .bar{
-      position:fixed;
-      top:0; left:0; right:0;
-      height:var(--barH);
-      z-index:60;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 var(--pad);
+export default function IndexPage() {
+  const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-      background:transparent;
-      color:#fff;
-      border-bottom:0;
-      backdrop-filter:none;
-    }
-    .bar.scrolled{
-      background:rgba(246,242,234,.92);
-      color:var(--ink);
-      border-bottom:1px solid var(--line);
-      backdrop-filter: blur(10px);
-    }
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
-    .barSide{display:flex; align-items:center; gap:10px; min-width:180px}
-    .barMid{flex:1; display:flex; justify-content:center}
-    .logo{
-      letter-spacing:.22em;
-      font-weight:700;
-      font-size:12px;
-      text-transform:uppercase;
-      user-select:none;
-      white-space:nowrap;
-    }
+  const [view, setView] = useState<"home" | "product">("home");
+  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
 
-    .contact{
-      font-size:12px;
-      letter-spacing:.02em;
-      opacity:.92;
-      white-space:nowrap;
-    }
-    .contact:hover{text-decoration:underline}
+  // sticky + scroll state
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    .iconBtn{
-      width:36px; height:36px;
-      display:inline-flex;
-      align-items:center; justify-content:center;
-      border:0;
-      background:transparent;
-      color:inherit;
-      cursor:pointer;
-      border-radius:999px;
-    }
-    .iconBtn:hover{background:rgba(255,255,255,.10)}
-    .bar.scrolled .iconBtn:hover{background:rgba(11,15,13,.06)}
+  const isWhiteHeader = scrolled || hovered || menuOpen || searchOpen;
 
-    .iconWrap{position:relative; display:inline-flex}
-    .badge{
-      position:absolute;
-      transform: translate(10px,-10px);
-      background:var(--accent);
-      color:#fff;
-      font-size:11px;
-      padding:2px 6px;
-      border-radius:999px;
-      border:2px solid rgba(246,242,234,.92);
-      display:none;
-    }
+  const openProduct = (p: Product) => {
+    setActiveProduct(p);
+    setView("product");
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  };
 
-    /* HERO */
-    .hero{
-      position:relative;
-      height:100vh;
-      min-height:640px;
-      background:#000;
-      margin-top:0;
-      overflow:hidden;
-    }
-    .hero video,
-    .hero img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .hero img{display:none}
+  const goHome = () => {
+    setView("home");
+    setActiveProduct(null);
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  };
 
-    .hero::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.26), rgba(0,0,0,.12) 45%, rgba(0,0,0,.38));
-      pointer-events:none;
-    }
-    .heroText{
-      position:absolute;
-      left:0; right:0;
-      bottom:28px;
-      padding:0 var(--pad);
-      z-index:2;
-      color:#fff;
-    }
-    .kicker{
-      margin:0 0 8px;
-      font-size:11px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      opacity:.92;
-    }
-    .headline{
-      margin:0 0 10px;
-      font-size:44px;
-      letter-spacing:-.02em;
-      line-height:1.06;
-      max-width:920px;
-    }
-    .sub{
-      margin:0 0 14px;
-      font-size:13px;
-      color:rgba(255,255,255,.86);
-      max-width:760px;
-    }
-    .actions{display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:650;
-      font-size:13px;
-      border:1px solid rgba(255,255,255,.30);
-      background:transparent;
-      color:#fff;
-      cursor:pointer;
-    }
-    .btn.primary{
-      background:#fff;
-      color:var(--ink);
-      border-color:#fff;
-    }
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Header
+        isWhite={isWhiteHeader}
+        onHoverChange={setHovered}
+        onOpenMenu={() => setMenuOpen(true)}
+        onOpenSearch={() => setSearchOpen(true)}
+        onLogoClick={goHome}
+      />
 
-    /* SECTION HEADER (tight) */
-    .sectionTop{
-      padding:12px var(--pad) 8px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-      scroll-margin-top:72px;
-    }
-    .title{
-      margin:0;
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-    }
-    .meta{
-      margin:0;
-      font-size:12px;
-      color:var(--muted);
-    }
+      <MenuDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
 
-    /* FILTERS */
-    .filters{
-      padding:0 var(--pad) 10px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .chip{
-      border:1px solid var(--line);
-      background:transparent;
-      color:var(--ink);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      cursor:pointer;
-    }
-    .chip.active{
-      background:var(--ink);
-      color:#fff;
-      border-color:var(--ink);
-    }
+      <SearchOverlay
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        items={PRODUCTS}
+        onSelect={(p) => {
+          setSearchOpen(false);
+          openProduct(p);
+        }}
+      />
 
-    /* FULL-BLEED GRID */
-    .bleed{
-      width:100vw;
-      margin-left:calc(50% - 50vw);
-      margin-right:calc(50% - 50vw);
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:var(--gap);
-      padding:0;
-      background:var(--bg);
-    }
-    .item{
-      display:block;
-      background:#fff;
-    }
-    .img{
-      width:100%;
-      aspect-ratio: 3 / 4;
-      overflow:hidden;
-      background:#ddd;
-    }
-    .img img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform:scale(1.01);
-      transition:transform .25s ease;
-    }
-    .item:hover .img img{transform:scale(1.05)}
-    .label{
-      padding:10px 12px 12px;
-      border-top:1px solid var(--line);
-      background:rgba(246,242,234,.55);
-    }
-    .label .cat{
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin:0 0 6px;
-    }
-    .label .name{
-      margin:0;
-      font-size:13px;
-      font-weight:650;
-      letter-spacing:.02em;
-    }
+      {/* PAGE CONTENT */}
+      {view === "home" ? (
+        <Home
+          products={PRODUCTS}
+          onOpenProduct={openProduct}
+          onOpenSearch={() => setSearchOpen(true)}
+        />
+      ) : (
+        <ProductPage
+          product={activeProduct}
+          onBack={goHome}
+          isWhiteHeader={isWhiteHeader}
+        />
+      )}
 
-    /* OVERLAYS */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(11,15,13,.55);
-      display:none;
-      z-index:80;
-    }
-    .overlay.open{display:block}
-    .sheet{
-      position:absolute;
-      top:0; right:0;
-      width:min(520px, 100%);
-      height:100%;
-      background:rgba(246,242,234,.98);
-      border-left:1px solid var(--line);
-      padding:16px;
-      overflow:auto;
-      color:var(--ink);
-    }
-    .sheetTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:6px 0 12px;
-      border-bottom:1px solid var(--line);
-      margin-bottom:12px;
-    }
-    .x{
-      width:36px; height:36px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:transparent;
-      cursor:pointer;
-      color:var(--ink);
-    }
-    .input{
-      width:100%;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-size:14px;
-      outline:none;
-      color:var(--ink);
-    }
-    .list{display:flex; flex-direction:column; gap:10px; margin-top:12px}
-    .rowItem{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.6);
-      cursor:pointer;
-    }
-    .thumb{
-      width:56px; height:56px;
-      border-radius:12px;
-      overflow:hidden;
-      flex:none;
-      background:#ddd;
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .rowItem b{font-size:13px}
-    .rowItem span{font-size:12px;color:var(--muted)}
-    .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
-
-    /* FOOT */
-    .foot{
-      padding:18px var(--pad) 40px;
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    @media (max-width:1100px){ .grid{grid-template-columns:repeat(3,1fr)} }
-    @media (max-width:820px){
-      .headline{font-size:34px}
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .barSide{min-width:auto}
-      .contact{display:none}
-    }
-    @media (max-width:520px){
-      .grid{grid-template-columns:1fr}
-      .hero{min-height:620px}
-    }
-  </style>
-</head>
-
-<body>
-  <!-- TOP BAR -->
-  <header class="bar">
-    <div class="barSide">
-      <button class="iconBtn" id="menuBtn" aria-label="Menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <button class="iconBtn" id="searchBtn" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
-          <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
+      <Footer />
     </div>
+  );
+}
 
-    <div class="barMid">
-      <div class="logo">BUILD A PLATE</div>
-    </div>
+/* ----------------------------- HEADER ----------------------------- */
 
-    <div class="barSide" style="justify-content:flex-end">
-      <a class="contact" href="mailto:hello@buildaplate.se">Contact us</a>
+function Header({
+  isWhite,
+  onHoverChange,
+  onOpenMenu,
+  onOpenSearch,
+  onLogoClick,
+}: {
+  isWhite: boolean;
+  onHoverChange: (v: boolean) => void;
+  onOpenMenu: () => void;
+  onOpenSearch: () => void;
+  onLogoClick: () => void;
+}) {
+  const textClass = isWhite ? "text-black" : "text-white";
+  const bgClass = isWhite ? "bg-white" : "bg-transparent";
+  const borderClass = isWhite ? "border-black/10" : "border-white/10";
 
-      <button class="iconBtn" id="loginBtn" aria-label="Login">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
-          <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
+  return (
+    <header
+      onMouseEnter={() => onHoverChange(true)}
+      onMouseLeave={() => onHoverChange(false)}
+      className={[
+        "fixed top-0 left-0 right-0 z-50",
+        "transition-colors duration-200",
+        bgClass,
+        "backdrop-blur-sm",
+        "border-b",
+        borderClass,
+      ].join(" ")}
+    >
+      <div className="h-16 px-4 sm:px-6 flex items-center justify-between">
+        {/* LEFT */}
+        <div className={["flex items-center gap-5", textClass].join(" ")}>
+          <button
+            onClick={onOpenMenu}
+            className="flex items-center gap-2 text-sm"
+            aria-label="Open menu"
+          >
+            <span className="text-xl leading-none">≡</span>
+            <span className="hidden sm:inline">Menu</span>
+          </button>
 
-      <span class="iconWrap">
-        <button class="iconBtn" id="bagBtn" aria-label="Bag">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8h12l-1 13H7L6 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+          <button
+            onClick={onOpenSearch}
+            className="flex items-center gap-2 text-sm"
+            aria-label="Open search"
+          >
+            <span className="text-lg leading-none">⌕</span>
+            <span className="hidden sm:inline">Search</span>
+          </button>
+        </div>
+
+        {/* CENTER LOGO */}
+        <button
+          onClick={onLogoClick}
+          className={[
+            "absolute left-1/2 -translate-x-1/2",
+            "tracking-[0.35em] text-sm sm:text-base font-medium",
+            textClass,
+          ].join(" ")}
+          aria-label="Go home"
+        >
+          BUILD A PLATE
         </button>
-        <span class="badge" id="bagCount">0</span>
-      </span>
-    </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <video id="heroVideo" autoplay muted loop playsinline poster="assets/hero.jpg">
-      <source src="assets/hero.mp4" type="video/mp4" />
-    </video>
-    <img id="heroImg" src="assets/hero.jpg" alt="" />
+        {/* RIGHT */}
+        <div className={["flex items-center gap-4", textClass].join(" ")}>
+          <button className="text-sm hover:opacity-70" aria-label="Contact us">
+            Contact us
+          </button>
 
-    <div class="heroText">
-      <p class="kicker">Västmanlands län</p>
-      <h1 class="headline">Bygg rätten. Tillsammans.</h1>
-      <p class="sub">Klicka en rätt för att välja Duo, Par, Trio, Squad eller Plato Mode.</p>
-      <div class="actions">
-        <button class="btn primary" id="goRatter">Se rätter</button>
-        <button class="btn" id="openSearch2">Sök</button>
+          <button className="p-2 rounded-full hover:bg-black/5" aria-label="Wishlist">
+            ♡
+          </button>
+
+          <button className="p-2 rounded-full hover:bg-black/5" aria-label="Login">
+            ⌂
+          </button>
+
+          <button className="relative p-2 rounded-full hover:bg-black/5" aria-label="Cart">
+            👜
+            <span
+              className={[
+                "absolute -top-1 -right-1",
+                "h-4 min-w-4 px-1 rounded-full text-[10px] grid place-items-center",
+                isWhite ? "bg-black text-white" : "bg-white text-black",
+              ].join(" ")}
+            >
+              0
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
-  </section>
+    </header>
+  );
+}
 
-  <!-- LIST -->
-  <div class="sectionTop" id="ratter">
-    <h2 class="title">Rätter</h2>
-    <p class="meta" id="resultMeta"></p>
-  </div>
+/* ----------------------------- HOME ----------------------------- */
 
-  <div class="filters" id="filterBar"></div>
+function Home({
+  products,
+  onOpenProduct,
+  onOpenSearch,
+}: {
+  products: Product[];
+  onOpenProduct: (p: Product) => void;
+  onOpenSearch: () => void;
+}) {
+  return (
+    <main className="pt-16">
+      {/* HERO VIDEO */}
+      <section className="relative h-[92vh] w-full overflow-hidden">
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1600&q=80"
+        >
+          {/* Byt till din egen video */}
+          <source
+            src="https://cdn.coverr.co/videos/coverr-chef-prepares-a-dish-9728/1080p.mp4"
+            type="video/mp4"
+          />
+        </video>
 
-  <div class="bleed">
-    <div class="grid" id="grid"></div>
-  </div>
+        <div className="absolute inset-0 bg-black/45" />
 
-  <footer class="foot">
-    <div>© <span id="y"></span> BUILD A PLATE</div>
-    <div>Plate by plate.</div>
-  </footer>
+        <div className="absolute left-0 right-0 bottom-10 px-4 sm:px-10">
+          <div className="max-w-6xl">
+            <div className="text-xs tracking-[0.35em] text-white/70 uppercase">
+              VÄSTMANLANDS LÄN
+            </div>
+            <h1 className="mt-3 text-4xl sm:text-6xl font-semibold">
+              Bygg rätten. Tillsammans.
+            </h1>
 
-  <!-- MENU OVERLAY -->
-  <div class="overlay" id="menuOverlay">
-    <div class="sheet" role="dialog" aria-label="Menu">
-      <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Menu</b>
-        <button class="x" id="menuClose" aria-label="Close">✕</button>
+            {/* OBS: här har vi INTE den meningen du ville ta bort */}
+            <p className="mt-3 text-white/70 text-sm max-w-xl">
+              Klicka en rätt för att välja Duo, Par, Trio, Squad eller Plato Mode.
+            </p>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => {
+                  const el = document.getElementById("products");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="rounded-full bg-white text-black px-5 py-2 text-sm hover:opacity-90"
+              >
+                Se rätter
+              </button>
+
+              <button
+                onClick={onOpenSearch}
+                className="rounded-full border border-white/40 px-5 py-2 text-sm hover:bg-white/10"
+              >
+                Sök
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FULLSCREEN IMAGES */}
+      <FullBleedImage
+        src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?auto=format&fit=crop&w=2000&q=80"
+        title="Seasonal drops"
+        subtitle="Limited recipes. Full screen."
+      />
+      <FullBleedImage
+        src="https://images.unsplash.com/photo-1543353071-087092ec393a?auto=format&fit=crop&w=2000&q=80"
+        title="Texture first"
+        subtitle="Clean layout. Strong product focus."
+      />
+
+      {/* PRODUCTS GRID (NO PRICES HERE) */}
+      <section id="products" className="bg-white text-black">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <div className="text-xs tracking-[0.3em] uppercase text-black/50">
+                Build a plate
+              </div>
+              <h2 className="mt-2 text-2xl sm:text-3xl font-semibold">
+                Välj en rätt
+              </h2>
+              <p className="mt-2 text-sm text-black/60 max-w-xl">
+                Pris visas först när du öppnar produkten.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => onOpenProduct(p)}
+                className="text-left group"
+              >
+                <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/5">
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="mt-4">
+                  <div className="text-sm font-medium">{p.title}</div>
+                  <div className="text-xs text-black/60 mt-1">{p.category}</div>
+                  {/* INGET pris här */}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function FullBleedImage({
+  src,
+  title,
+  subtitle,
+}: {
+  src: string;
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <section className="relative h-[92vh] w-full overflow-hidden">
+      <img src={src} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-black/45" />
+      <div className="absolute left-0 right-0 bottom-10 px-4 sm:px-10">
+        <div className="max-w-6xl">
+          <div className="text-xs tracking-[0.35em] text-white/70 uppercase">
+            BUILD A PLATE
+          </div>
+          <h3 className="mt-3 text-3xl sm:text-5xl font-semibold">{title}</h3>
+          <p className="mt-3 text-white/70 text-sm max-w-xl">{subtitle}</p>
+        </div>
       </div>
+    </section>
+  );
+}
 
-      <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Kategorier</b>
-      <div class="list" id="menuCats"></div>
+/* ----------------------------- PRODUCT PAGE ----------------------------- */
 
-      <p class="muted" style="margin-top:14px">Leverans i Västmanlands län. Ingen prenumeration.</p>
-    </div>
-  </div>
+function ProductPage({
+  product,
+  onBack,
+}: {
+  product: Product | null;
+  onBack: () => void;
+  isWhiteHeader: boolean;
+}) {
+  const [mode, setMode] = useState<(typeof MODES)[number]>("Duo");
 
-  <!-- SEARCH OVERLAY -->
-  <div class="overlay" id="searchOverlay">
-    <div class="sheet" role="dialog" aria-label="Search">
-      <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Search</b>
-        <button class="x" id="searchClose" aria-label="Close">✕</button>
+  if (!product) {
+    return (
+      <main className="pt-16 bg-white text-black min-h-screen">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16">
+          <button onClick={onBack} className="text-sm underline">
+            Tillbaka
+          </button>
+          <div className="mt-6">Ingen produkt vald.</div>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="pt-16 bg-white text-black min-h-screen">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        <button onClick={onBack} className="text-sm underline">
+          Tillbaka
+        </button>
+
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-black/5">
+            <img src={product.image} alt={product.title} className="h-full w-full object-cover" />
+          </div>
+
+          <div>
+            <div className="text-xs tracking-[0.3em] uppercase text-black/50">
+              {product.category}
+            </div>
+            <h1 className="mt-2 text-3xl sm:text-4xl font-semibold">
+              {product.title}
+            </h1>
+
+            <div className="mt-4 text-black/70 text-sm leading-6">
+              {product.description}
+            </div>
+
+            {/* PRICE ONLY HERE */}
+            <div className="mt-6 text-xl font-semibold">
+              {formatSEK(product.priceSek)}
+            </div>
+
+            {/* MODE SELECT */}
+            <div className="mt-8">
+              <div className="text-sm font-medium">Välj läge</div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {MODES.map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setMode(m)}
+                    className={[
+                      "rounded-full px-4 py-2 text-sm border transition",
+                      mode === m
+                        ? "border-black bg-black text-white"
+                        : "border-black/20 hover:border-black/50",
+                    ].join(" ")}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-8 flex gap-3">
+              <button className="rounded-full bg-black text-white px-6 py-3 text-sm hover:opacity-90">
+                Lägg i varukorg
+              </button>
+              <button className="rounded-full border border-black/20 px-6 py-3 text-sm hover:border-black/50">
+                Logga in
+              </button>
+            </div>
+
+            <div className="mt-6 text-xs text-black/60">
+              Vald: {mode}
+            </div>
+          </div>
+        </div>
       </div>
+    </main>
+  );
+}
 
-      <input class="input" id="q" type="search" placeholder="Sök rätt..." autocomplete="off" />
-      <div class="muted" id="searchCount"></div>
-      <div class="list" id="searchList"></div>
-    </div>
-  </div>
+/* ----------------------------- LEFT MENU DRAWER ----------------------------- */
 
-  <!-- BAG OVERLAY -->
-  <div class="overlay" id="bagOverlay">
-    <div class="sheet" role="dialog" aria-label="Bag">
-      <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Bag</b>
-        <button class="x" id="bagClose" aria-label="Close">✕</button>
-      </div>
+function MenuDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return;
 
-      <div class="muted" id="bagEmpty">Din bag är tom.</div>
-      <div class="list" id="bagList"></div>
-      <p class="muted" style="margin-top:14px">Klicka en item för att öppna produkten.</p>
-    </div>
-  </div>
-
-  <script>
-    const DISHES = [
-      { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
-      { id:"cacio", name:"Cacio e Pepe", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
-      { id:"vodka", name:"Vodka Pasta + burrata", cat:"Pasta", img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
-      { id:"meatballs", name:"Köttbullar 2.0", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
-      { id:"steak", name:"Biff + chimichurri", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
-      { id:"salmon", name:"Lax + misosmör", cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
-      { id:"temaki", name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?temaki,sushi" },
-      { id:"poke", name:"Poke Bowl", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
-      { id:"halloumi", name:"Halloumi bowl + chimichurri", cat:"Veg", img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
-    ];
-
-    const FILTERS = ["Alla","Pasta","Nordic","Sushi","Veg"];
-    let active = "Alla";
-
-    const y = document.getElementById("y");
-    y.textContent = new Date().getFullYear();
-
-    // ===== BAR: transparent uppe, vit när du scrollar =====
-    const bar = document.querySelector(".bar");
-    function syncBar(){
-      bar.classList.toggle("scrolled", window.scrollY > 20);
-    }
-    window.addEventListener("scroll", syncBar, { passive:true });
-    syncBar();
-
-    // ===== Video fallback (undvik svart hero) =====
-    const v = document.getElementById("heroVideo");
-    const heroImg = document.getElementById("heroImg");
-    function showFallback(){
-      try { v.style.display = "none"; } catch(e){}
-      heroImg.style.display = "block";
-    }
-    v.addEventListener("error", showFallback);
-    v.addEventListener("stalled", showFallback);
-    v.addEventListener("abort", showFallback);
-    v.addEventListener("emptied", () => { if(!v.currentSrc) showFallback(); });
-    setTimeout(() => { if(!v.currentSrc) showFallback(); }, 800);
-
-    // ===== Scroll =====
-    document.getElementById("goRatter").onclick = () => {
-      document.getElementById("ratter").scrollIntoView({behavior:"smooth"});
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
     };
+    document.addEventListener("keydown", onKey);
 
-    // ===== Cart =====
-    const CART_KEY = "bap_cart_v1";
-    function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
-    function setCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderBagBadge(); }
-    function renderBagBadge(){
-      const n = getCart().length;
-      const b = document.getElementById("bagCount");
-      b.style.display = n ? "inline-flex" : "none";
-      b.textContent = n;
-    }
-    renderBagBadge();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-    // ===== Filters =====
-    const filterBar = document.getElementById("filterBar");
-    function renderFilters(){
-      filterBar.innerHTML = "";
-      FILTERS.forEach(f => {
-        const b = document.createElement("button");
-        b.className = "chip" + (f === active ? " active" : "");
-        b.type = "button";
-        b.textContent = f;
-        b.onclick = () => { active = f; renderFilters(); renderGrid(); };
-        filterBar.appendChild(b);
-      });
-    }
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, onClose]);
 
-    // ===== Grid =====
-    const grid = document.getElementById("grid");
-    const resultMeta = document.getElementById("resultMeta");
-    function matches(d){ return active === "Alla" || d.cat === active; }
+  return (
+    <>
+      {/* overlay */}
+      <div
+        onClick={onClose}
+        className={[
+          "fixed inset-0 z-[90] bg-black/40 transition-opacity duration-200",
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+        ].join(" ")}
+      />
 
-    function renderGrid(){
-      const list = DISHES.filter(matches);
-      resultMeta.textContent = `${list.length} rätter`;
+      {/* drawer */}
+      <div
+        className={[
+          "fixed top-0 left-0 z-[95] h-screen w-[86vw] max-w-[420px] bg-white text-black",
+          "transition-transform duration-200",
+          open ? "translate-x-0" : "-translate-x-full",
+        ].join(" ")}
+      >
+        <div className="h-16 px-5 flex items-center justify-between border-b border-black/10">
+          <div className="text-sm tracking-[0.3em] font-medium">MENU</div>
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-black/5" aria-label="Close menu">
+            ✕
+          </button>
+        </div>
 
-      grid.innerHTML = "";
-      list.forEach(d => {
-        const a = document.createElement("a");
-        a.className = "item";
-        a.href = `dish.html?id=${encodeURIComponent(d.id)}`;
-        a.target = "_blank";
-        a.rel = "noopener";
-
-        a.innerHTML = `
-          <div class="img"><img src="${d.img}" alt="${d.name}"></div>
-          <div class="label">
-            <p class="cat">${d.cat}</p>
-            <p class="name">${d.name}</p>
+        <div className="p-6 space-y-4">
+          <NavItem label="Nyheter" />
+          <NavItem label="Rätter" />
+          <NavItem label="Plato Mode" />
+          <NavItem label="Kontakt" />
+          <div className="pt-4 border-t border-black/10">
+            <NavItem label="Logga in" />
+            <NavItem label="Varukorg" />
           </div>
-        `;
+        </div>
+      </div>
+    </>
+  );
+}
 
-        const im = a.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
+function NavItem({ label }: { label: string }) {
+  return (
+    <button className="w-full text-left text-sm py-2 hover:opacity-70">
+      {label}
+    </button>
+  );
+}
 
-        grid.appendChild(a);
-      });
-    }
+/* ----------------------------- SEARCH OVERLAY (LV STYLE) ----------------------------- */
 
-    // ===== Overlays =====
-    const menuOverlay = document.getElementById("menuOverlay");
-    const searchOverlay = document.getElementById("searchOverlay");
-    const bagOverlay = document.getElementById("bagOverlay");
+function SearchOverlay({
+  open,
+  onClose,
+  items,
+  onSelect,
+}: {
+  open: boolean;
+  onClose: () => void;
+  items: Product[];
+  onSelect: (p: Product) => void;
+}) {
+  const [q, setQ] = useState("");
 
-    function openOverlay(el){ el.classList.add("open"); }
-    function closeOverlay(el){ el.classList.remove("open"); }
+  useEffect(() => {
+    if (!open) return;
 
-    document.getElementById("menuBtn").onclick = () => { renderMenuCats(); openOverlay(menuOverlay); };
-    document.getElementById("menuClose").onclick = () => closeOverlay(menuOverlay);
-    menuOverlay.onclick = (e) => { if(e.target === menuOverlay) closeOverlay(menuOverlay); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
 
-    const q = document.getElementById("q");
-    const searchList = document.getElementById("searchList");
-    const searchCount = document.getElementById("searchCount");
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-    document.getElementById("searchBtn").onclick = () => { openOverlay(searchOverlay); q.value=""; renderSearch(""); q.focus(); };
-    document.getElementById("openSearch2").onclick = () => { openOverlay(searchOverlay); q.value=""; renderSearch(""); q.focus(); };
-    document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
-    searchOverlay.onclick = (e) => { if(e.target === searchOverlay) closeOverlay(searchOverlay); };
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      setQ("");
+    };
+  }, [open, onClose]);
 
-    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
-    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
-    bagOverlay.onclick = (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); };
+  const filtered = useMemo(() => {
+    const s = q.trim().toLowerCase();
+    if (!s) return items;
+    return items.filter((x) =>
+      (x.title + " " + x.category).toLowerCase().includes(s)
+    );
+  }, [q, items]);
 
-    document.getElementById("loginBtn").onclick = () => alert("Logga in kommer snart.");
+  if (!open) return null;
 
-    // ===== Menu cats =====
-    const menuCats = document.getElementById("menuCats");
-    function renderMenuCats(){
-      menuCats.innerHTML = "";
-      FILTERS.forEach(f => {
-        const row = document.createElement("div");
-        row.className = "rowItem";
-        row.innerHTML = `
-          <div style="flex:1">
-            <b>${f}</b><br/>
-            <span>${f === "Alla" ? "Alla rätter" : "Filter"}</span>
+  return (
+    <div className="fixed inset-0 z-[100] bg-white text-black">
+      <div className="sticky top-0 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-8">
+          <div className="relative flex items-center justify-center">
+            <div className="tracking-[0.35em] text-sm font-medium">
+              BUILD A PLATE
+            </div>
+
+            <button
+              onClick={onClose}
+              className="absolute right-0 top-0 p-2 rounded-full hover:bg-black/5"
+              aria-label="Close search"
+            >
+              ✕
+            </button>
           </div>
-          <div style="color:rgba(11,15,13,.5)">→</div>
-        `;
-        row.onclick = () => {
-          active = f;
-          renderFilters();
-          renderGrid();
-          closeOverlay(menuOverlay);
-          document.getElementById("ratter").scrollIntoView({behavior:"smooth"});
-        };
-        menuCats.appendChild(row);
-      });
-    }
 
-    // ===== Search =====
-    function renderSearch(text){
-      const qv = (text || "").trim().toLowerCase();
-      const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
-
-      searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
-      searchList.innerHTML = "";
-
-      list.slice(0, 30).forEach(d => {
-        const row = document.createElement("div");
-        row.className = "rowItem";
-        row.innerHTML = `
-          <div class="thumb"><img src="${d.img}" alt=""></div>
-          <div style="flex:1">
-            <b>${d.name}</b><br/>
-            <span>${d.cat}</span>
+          <div className="mt-6">
+            <input
+              autoFocus
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Sök rätt..."
+              className="w-full rounded-full border border-black/20 px-6 py-4 text-base outline-none focus:border-black"
+            />
           </div>
-          <div style="color:rgba(11,15,13,.5)">→</div>
-        `;
-        row.onclick = () => window.open(`dish.html?id=${encodeURIComponent(d.id)}`, "_blank", "noopener");
-        const im = row.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-        searchList.appendChild(row);
-      });
-    }
-    q.oninput = () => renderSearch(q.value);
 
-    // ===== Bag =====
-    const bagList = document.getElementById("bagList");
-    const bagEmpty = document.getElementById("bagEmpty");
-
-    function renderBag(){
-      const cart = getCart();
-      bagEmpty.style.display = cart.length ? "none" : "block";
-      bagList.innerHTML = "";
-
-      cart.forEach((it, idx) => {
-        const row = document.createElement("div");
-        row.className = "rowItem";
-        row.innerHTML = `
-          <div class="thumb"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
-          <div style="flex:1">
-            <b>${it.name || "Rätt"}</b><br/>
-            <span>${it.pack || "Ej vald"}</span>
+          <div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-black/60">
+            <span className="uppercase tracking-widest">Trending searches</span>
+            {MODES.map((m) => (
+              <button
+                key={m}
+                onClick={() => setQ(m)}
+                className="hover:text-black"
+              >
+                {m}
+              </button>
+            ))}
           </div>
-          <button class="x" type="button" aria-label="Remove">✕</button>
-        `;
 
-        row.onclick = (e) => {
-          if(e.target.tagName.toLowerCase() === "button") return;
-          window.open(`dish.html?id=${encodeURIComponent(it.id)}`, "_blank", "noopener");
-        };
+          <div className="mt-6 border-b border-black/10" />
+        </div>
+      </div>
 
-        row.querySelector("button").onclick = () => {
-          const next = getCart().filter((_, i) => i !== idx);
-          setCart(next);
-          renderBag();
-        };
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        <div className="text-xs text-black/60 mb-4">
+          {filtered.length} träffar
+        </div>
 
-        const im = row.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-        bagList.appendChild(row);
-      });
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => onSelect(p)}
+              className="text-left rounded-2xl border border-black/10 p-4 hover:border-black/30"
+            >
+              <div className="aspect-[4/3] rounded-xl overflow-hidden bg-black/5 mb-4">
+                <img src={p.image} alt={p.title} className="h-full w-full object-cover" />
+              </div>
+              <div className="font-medium">{p.title}</div>
+              <div className="text-sm text-black/60">{p.category}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      renderBagBadge();
-    }
+/* ----------------------------- FOOTER ----------------------------- */
 
-    // ===== Start =====
-    renderFilters();
-    renderGrid();
-  </script>
-</body>
-</html>
+function Footer() {
+  return (
+    <footer className="bg-black text-white/70">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 text-sm">
+        <div className="tracking-[0.35em] text-white/60 text-xs uppercase">
+          BUILD A PLATE
+        </div>
+        <div className="mt-3">Contact us</div>
+      </div>
+    </footer>
+  );
+}
+
+/* ----------------------------- HELPERS ----------------------------- */
+
+function formatSEK(value: number) {
+  return new Intl.NumberFormat("sv-SE", {
+    style: "currency",
+    currency: "SEK",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
