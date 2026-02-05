@@ -17,7 +17,6 @@
       --gap:2px;
       --pad:12px;
       --barH:52px;
-      --max:1200px;
     }
 
     *{box-sizing:border-box}
@@ -34,7 +33,7 @@
     button{font-family:inherit}
     :focus-visible{outline:2px solid rgba(11,15,13,.35); outline-offset:2px; border-radius:10px}
 
-    /* HEADER (LV-like: transparent on top, white on hover, white+sticky on scroll) */
+    /* HEADER */
     .bar{
       position:fixed;
       top:0; left:0; right:0;
@@ -77,13 +76,18 @@
       white-space:nowrap;
     }
 
-    .contact{
+    .contactBtn{
       font-size:12px;
       letter-spacing:.02em;
       opacity:.92;
       white-space:nowrap;
+      background:transparent;
+      border:0;
+      color:inherit;
+      cursor:pointer;
+      padding:0;
     }
-    .contact:hover{text-decoration:underline}
+    .contactBtn:hover{text-decoration:underline}
 
     .iconBtn{
       width:36px; height:36px;
@@ -127,7 +131,7 @@
       object-fit:cover;
       display:block;
     }
-    .hero img{display:none} /* fallback when video fails */
+    .hero img{display:none}
 
     .hero::after{
       content:"";
@@ -181,7 +185,7 @@
       border-color:#fff;
     }
 
-    /* SECTION HEADER */
+    /* SECTION */
     .sectionTop{
       padding:12px var(--pad) 8px;
       display:flex;
@@ -224,7 +228,7 @@
       border-color:var(--ink);
     }
 
-    /* FULL-BLEED GRID */
+    /* GRID */
     .bleed{
       width:100vw;
       margin-left:calc(50% - 50vw);
@@ -237,7 +241,7 @@
       padding:0;
       background:var(--bg);
     }
-    .item{display:block; background:#fff}
+    .item{display:block;background:#fff}
     .img{
       width:100%;
       aspect-ratio: 3 / 4;
@@ -272,7 +276,7 @@
       letter-spacing:.02em;
     }
 
-    /* OVERLAYS (base for drawers) */
+    /* OVERLAYS base */
     .overlay{
       position:fixed;
       inset:0;
@@ -287,7 +291,7 @@
       position:absolute;
       top:0;
       height:100%;
-      width:min(520px, 100%);
+      width:min(560px, 100%);
       background:rgba(246,242,234,.98);
       padding:16px;
       overflow:auto;
@@ -318,12 +322,16 @@
       margin-bottom:12px;
     }
     .x{
-      width:36px; height:36px;
+      width:38px; height:38px;
       border-radius:999px;
       border:1px solid var(--line);
       background:transparent;
       cursor:pointer;
       color:var(--ink);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
     }
 
     .list{display:flex; flex-direction:column; gap:10px; margin-top:12px}
@@ -331,10 +339,10 @@
       display:flex;
       gap:10px;
       align-items:center;
-      padding:10px;
+      padding:12px;
       border-radius:14px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.6);
+      background:rgba(255,255,255,.70);
       cursor:pointer;
     }
     .thumb{
@@ -349,10 +357,8 @@
     .rowItem span{font-size:12px;color:var(--muted)}
     .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
-    /* ===== LV SEARCH (NO DIM) ===== */
-    #searchOverlay{
-      background:rgba(246,242,234,.98); /* no dark dim */
-    }
+    /* ===== LV SEARCH (white, no dim) ===== */
+    #searchOverlay{background:rgba(246,242,234,.98)}
     #searchOverlay .searchFull{
       position:absolute;
       inset:0;
@@ -437,23 +443,21 @@
       text-align:left;
     }
 
-    /* BIG RESULTS like LV */
     .lvGrid{
       margin-top:12px;
       display:grid;
       grid-template-columns: repeat(4, 1fr);
-      gap:10px;               /* more air */
-      background:transparent;
+      gap:10px;
     }
     .lvCard{
       display:block;
       background:#fff;
       border:1px solid var(--line);
-      border-radius:16px;     /* premium corners */
+      border-radius:16px;
       overflow:hidden;
     }
     .lvImg{
-      aspect-ratio: 4 / 5;    /* taller, feels bigger */
+      aspect-ratio: 4 / 5;
       overflow:hidden;
       background:#ddd;
     }
@@ -485,18 +489,184 @@
       letter-spacing:.02em;
     }
 
-    /* FOOT */
-    .foot{
-      padding:18px var(--pad) 40px;
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      font-size:12px;
+    /* ===== CONTACT MODAL (LV simple) ===== */
+    .modalWrap{
+      position:absolute;
+      inset:0;
       display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:18px;
+    }
+    .modal{
+      width:min(920px, 100%);
+      background:rgba(246,242,234,.98);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    }
+    .modalTop{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+    }
+    .modalTopLeft{display:flex; align-items:center; gap:10px}
+    .backLink{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+    }
+    .modalBody{
+      padding:18px 16px 22px;
+      max-width:720px;
+      margin:0 auto;
+    }
+    .modalTitle{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .modalIntro{
+      margin:0 0 14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .contactList{display:flex; flex-direction:column; gap:10px}
+    .contactRow{
+      display:flex;
+      align-items:center;
       justify-content:space-between;
       gap:10px;
+      padding:12px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.70);
+    }
+    .contactLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width:0;
+    }
+    .contactIc{
+      width:30px;height:30px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+    }
+    .contactTxt{min-width:0}
+    .contactTxt b{
+      display:block;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .contactTxt span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .contactGo{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:underline;
+      text-underline-offset:4px;
+      white-space:nowrap;
+    }
+    .modalDivider{height:1px;background:var(--line);margin:16px 0}
+    .modalSmall{
+      display:flex;
+      gap:14px;
       flex-wrap:wrap;
+      align-items:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .modalSmall a{text-decoration:underline; text-underline-offset:4px}
+
+    /* ===== BAG LV ===== */
+    .bagTitle{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0;
+    }
+    .bagMeta{
+      margin:8px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .bagItems{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+    .bagRow{
+      display:grid;
+      grid-template-columns: 90px 1fr auto;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.70);
+    }
+    .bagImg{
+      width:90px;
+      aspect-ratio: 4 / 5;
+      border-radius:12px;
+      overflow:hidden;
+      background:#ddd;
+      border:1px solid var(--line);
+    }
+    .bagImg img{width:100%;height:100%;object-fit:cover;display:block}
+    .bagInfo b{display:block;font-size:13px}
+    .bagInfo span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+    .bagActions{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+    .removeBtn{
+      width:38px;height:38px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:transparent;
+      cursor:pointer;
+    }
+    .bagFooter{
+      margin-top:14px;
+      border-top:1px solid var(--line);
+      padding-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .bagTotal{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      color:var(--ink);
+    }
+    .bagCTA{
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:650;
+      font-size:13px;
+      border:1px solid var(--ink);
+      background:var(--ink);
+      color:#fff;
+      cursor:pointer;
+      width:100%;
     }
 
+    /* RESPONSIVE */
     @media (min-width: 1400px){
       .grid{grid-template-columns:repeat(5,1fr)}
       .lvGrid{grid-template-columns:repeat(5,1fr)}
@@ -510,7 +680,7 @@
       .grid{grid-template-columns:repeat(2,1fr)}
       .lvGrid{grid-template-columns:repeat(2,1fr)}
       .barSide{min-width:auto}
-      .contact{display:none}
+      .contactBtn{display:none}
     }
     @media (max-width:520px){
       .grid{grid-template-columns:1fr}
@@ -518,6 +688,11 @@
       .hero{min-height:620px}
       .lvTop{grid-template-columns: 1fr auto auto}
       .lvTopMid{justify-content:flex-start}
+      .modalWrap{padding:10px}
+      .modalBody{padding:14px 12px 16px}
+      .modalTop{padding:12px 12px}
+      .bagRow{grid-template-columns:70px 1fr auto}
+      .bagImg{width:70px}
     }
   </style>
 </head>
@@ -544,7 +719,7 @@
     </div>
 
     <div class="barSide" style="justify-content:flex-end">
-      <a class="contact" href="contact.html">Contact us</a>
+      <button class="contactBtn" id="contactBtn" type="button">Contact us</button>
 
       <a class="iconBtn" href="login.html" aria-label="Login">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -595,11 +770,6 @@
     <div class="grid" id="grid"></div>
   </div>
 
-  <footer class="foot">
-    <div>© <span id="y"></span> BUILD A PLATE</div>
-    <div>Plate by plate.</div>
-  </footer>
-
   <!-- MENU DRAWER -->
   <div class="overlay" id="menuOverlay">
     <div class="drawer drawerLeft" role="dialog" aria-label="Menu">
@@ -615,7 +785,7 @@
     </div>
   </div>
 
-  <!-- SEARCH (LV, white page, no dim) -->
+  <!-- SEARCH (LV) -->
   <div class="overlay" id="searchOverlay">
     <div class="searchFull" role="dialog" aria-label="Search">
       <div class="lvTop">
@@ -638,17 +808,90 @@
     </div>
   </div>
 
-  <!-- CART DRAWER -->
+  <!-- CONTACT MODAL (LV) -->
+  <div class="overlay" id="contactOverlay">
+    <div class="modalWrap" role="dialog" aria-label="Contact us">
+      <div class="modal">
+        <div class="modalTop">
+          <div class="modalTopLeft">
+            <button class="backLink" id="contactBack" type="button">Back</button>
+          </div>
+          <div class="lvTopMid"><div class="logo lvLogo">BUILD A PLATE</div></div>
+          <div class="lvTopRight"><button class="x" id="contactClose" aria-label="Close">✕</button></div>
+        </div>
+
+        <div class="modalBody">
+          <div class="modalTitle">Contact us</div>
+          <p class="modalIntro">Välj det som känns enklast. Vi svarar så snabbt vi kan.</p>
+
+          <div class="contactList">
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">📞</div>
+                <div class="contactTxt">
+                  <b>Telefon</b>
+                  <span>+46 70 000 00 00</span>
+                </div>
+              </div>
+              <a class="contactGo" href="tel:+46700000000">Call</a>
+            </div>
+
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">✉️</div>
+                <div class="contactTxt">
+                  <b>Email</b>
+                  <span>hello@buildaplate.se</span>
+                </div>
+              </div>
+              <a class="contactGo" href="mailto:hello@buildaplate.se">Email</a>
+            </div>
+
+            <div class="contactRow">
+              <div class="contactLeft">
+                <div class="contactIc">📷</div>
+                <div class="contactTxt">
+                  <b>Instagram</b>
+                  <span>@buildaplate</span>
+                </div>
+              </div>
+              <a class="contactGo" href="https://instagram.com/buildaplate" target="_blank" rel="noopener">Open</a>
+            </div>
+          </div>
+
+          <div class="modalDivider"></div>
+
+          <div class="modalSmall">
+            <span>Need help?</span>
+            <a href="#ratter" onclick="document.getElementById('contactOverlay').classList.remove('open')">Se rätter</a>
+            <a href="login.html">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAG (LV right panel) -->
   <div class="overlay" id="bagOverlay">
-    <div class="drawer drawerRight" role="dialog" aria-label="Cart">
+    <div class="drawer drawerRight" role="dialog" aria-label="Bag">
       <div class="sheetTop">
-        <b style="letter-spacing:.14em;text-transform:uppercase;font-size:12px">Cart</b>
+        <div>
+          <p class="bagTitle">Your bag</p>
+          <p class="bagMeta" id="bagMeta">—</p>
+        </div>
         <button class="x" id="bagClose" aria-label="Close">✕</button>
       </div>
 
-      <div class="muted" id="bagEmpty">Din cart är tom.</div>
-      <div class="list" id="bagList"></div>
-      <p class="muted" style="margin-top:14px">Klicka en item för att öppna produkten.</p>
+      <div class="muted" id="bagEmpty">Din bag är tom.</div>
+      <div class="bagItems" id="bagItems"></div>
+
+      <div class="bagFooter" id="bagFooter" style="display:none">
+        <div class="bagTotal">
+          <span>Total</span>
+          <span id="bagTotal">—</span>
+        </div>
+        <button class="bagCTA" type="button" id="bagCTA">View your bag</button>
+      </div>
     </div>
   </div>
 
@@ -669,9 +912,6 @@
     let active = "Alla";
 
     const TRENDING = ["Pasta", "Nordic", "Sushi", "Veg", "Tartufo", "Burrata"];
-
-    // Year
-    document.getElementById("y").textContent = new Date().getFullYear();
 
     // Sticky header
     const bar = document.getElementById("bar");
@@ -701,14 +941,24 @@
     const menuOverlay = document.getElementById("menuOverlay");
     const searchOverlay = document.getElementById("searchOverlay");
     const bagOverlay = document.getElementById("bagOverlay");
+    const contactOverlay = document.getElementById("contactOverlay");
 
-    function openOverlay(el){ el.classList.add("open"); document.documentElement.style.overflow = "hidden"; }
-    function closeOverlay(el){
-      el.classList.remove("open");
-      if(!menuOverlay.classList.contains("open") && !searchOverlay.classList.contains("open") && !bagOverlay.classList.contains("open")){
-        document.documentElement.style.overflow = "";
-      }
+    function anyOpen(){
+      return menuOverlay.classList.contains("open") ||
+             searchOverlay.classList.contains("open") ||
+             bagOverlay.classList.contains("open") ||
+             contactOverlay.classList.contains("open");
     }
+
+    function lockScroll(){
+      document.documentElement.style.overflow = "hidden";
+    }
+    function unlockScroll(){
+      if(!anyOpen()) document.documentElement.style.overflow = "";
+    }
+
+    function openOverlay(el){ el.classList.add("open"); lockScroll(); }
+    function closeOverlay(el){ el.classList.remove("open"); unlockScroll(); }
 
     // ESC closes
     window.addEventListener("keydown", (e) => {
@@ -716,6 +966,7 @@
       closeOverlay(menuOverlay);
       closeOverlay(searchOverlay);
       closeOverlay(bagOverlay);
+      closeOverlay(contactOverlay);
     });
 
     // Menu drawer
@@ -755,7 +1006,6 @@
     function renderSearch(text){
       const qv = (text || "").trim().toLowerCase();
       const list = DISHES.filter(d => !qv || d.name.toLowerCase().includes(qv) || d.cat.toLowerCase().includes(qv));
-
       searchCount.textContent = list.length ? `${list.length} träffar` : "Inga träffar";
       searchGrid.innerHTML = "";
 
@@ -777,10 +1027,11 @@
     }
     q.addEventListener("input", () => renderSearch(q.value));
 
-    // Cart drawer
-    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
-    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
-    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
+    // Contact modal open/close
+    document.getElementById("contactBtn").onclick = () => openOverlay(contactOverlay);
+    document.getElementById("contactClose").onclick = () => closeOverlay(contactOverlay);
+    document.getElementById("contactBack").onclick = () => closeOverlay(contactOverlay);
+    contactOverlay.addEventListener("click", (e) => { if(e.target === contactOverlay) closeOverlay(contactOverlay); });
 
     // Cart storage
     const CART_KEY = "bap_cart_v1";
@@ -793,6 +1044,11 @@
       b.textContent = n;
     }
     renderBagBadge();
+
+    // Bag open/close
+    document.getElementById("bagBtn").onclick = () => { renderBag(); openOverlay(bagOverlay); };
+    document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
+    bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
 
     // Filters
     const filterBar = document.getElementById("filterBar");
@@ -816,8 +1072,8 @@
     function renderGrid(){
       const list = DISHES.filter(matches);
       resultMeta.textContent = `${list.length} rätter`;
-
       grid.innerHTML = "";
+
       list.forEach(d => {
         const a = document.createElement("a");
         a.className = "item";
@@ -860,26 +1116,38 @@
       });
     }
 
-    // Cart list
-    const bagList = document.getElementById("bagList");
+    // Bag render (LV)
+    const bagItems = document.getElementById("bagItems");
     const bagEmpty = document.getElementById("bagEmpty");
+    const bagFooter = document.getElementById("bagFooter");
+    const bagMeta = document.getElementById("bagMeta");
+    const bagTotalEl = document.getElementById("bagTotal");
 
     function renderBag(){
       const cart = getCart();
+      bagMeta.textContent = cart.length ? `${cart.length} items` : `0 items`;
       bagEmpty.style.display = cart.length ? "none" : "block";
-      bagList.innerHTML = "";
+      bagFooter.style.display = cart.length ? "block" : "none";
+      bagItems.innerHTML = "";
+
+      // total: du har inte priser i cart ännu. Vi visar placeholder.
+      bagTotalEl.textContent = "—";
 
       cart.forEach((it, idx) => {
         const row = document.createElement("div");
-        row.className = "rowItem";
+        row.className = "bagRow";
         row.innerHTML = `
-          <div class="thumb"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
-          <div style="flex:1">
-            <b>${it.name || "Rätt"}</b><br/>
+          <div class="bagImg"><img src="${it.img || "assets/hero.jpg"}" alt=""></div>
+          <div class="bagInfo">
+            <b>${it.name || "Rätt"}</b>
             <span>${it.pack || "Ej vald"}</span>
           </div>
-          <button class="x" type="button" aria-label="Remove">✕</button>
+          <div class="bagActions">
+            <button class="removeBtn" type="button" aria-label="Remove">✕</button>
+          </div>
         `;
+
+        row.querySelector("img").onerror = (e) => { e.target.src = "assets/hero.jpg"; };
 
         row.addEventListener("click", (e) => {
           if(e.target.tagName.toLowerCase() === "button") return;
@@ -892,14 +1160,15 @@
           renderBag();
         });
 
-        const im = row.querySelector("img");
-        im.onerror = () => im.src = "assets/hero.jpg";
-
-        bagList.appendChild(row);
+        bagItems.appendChild(row);
       });
 
       renderBagBadge();
     }
+
+    document.getElementById("bagCTA").onclick = () => {
+      alert("Checkout kommer snart.");
+    };
 
     // Start
     renderFilters();
