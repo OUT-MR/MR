@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Help center • BUILD A PLATE</title>
+  <link rel="stylesheet" href="assets/app.css" />
+</head>
+
+<body data-page="help">
+  <header class="bar scrolled" id="bar" style="position:sticky;top:0">
+    <div class="barSide">
+      <a class="iconBtn" href="index.html" aria-label="Home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="barMid"><div class="logo">HELP CENTER</div></div>
+    <div class="barSide" style="justify-content:flex-end">
+      <a class="contactLink" href="contact.html">Contact us</a>
+    </div>
+  </header>
+
+  <div class="wrap" style="padding-top:14px">
+    <div class="panel">
+      <div class="pad">
+        <p class="kick">Need help</p>
+        <h1 class="h1">Skriv din fråga</h1>
+        <p class="desc">Sök i FAQ eller skicka en fråga direkt.</p>
+
+        <div class="divider"></div>
+
+        <input class="input" id="helpQ" type="search" placeholder="Sök: leverans, pris, allergier..." />
+      </div>
+    </div>
+
+    <div class="divider" id="faq"></div>
+
+    <div class="list" id="faqList" style="gap:12px"></div>
+
+    <div class="divider"></div>
+
+    <div class="panel">
+      <div class="pad">
+        <p class="kick">Contact</p>
+        <h2 class="h1" style="font-size:22px">Skicka en fråga</h2>
+
+        <form id="helpForm" class="formGrid">
+          <div class="field">
+            <label>Namn</label>
+            <input class="input" required placeholder="Ditt namn">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input class="input" type="email" required placeholder="din@email.com">
+          </div>
+
+          <div class="field full">
+            <label>Vad behöver du hjälp med?</label>
+            <textarea class="textarea" required placeholder="Skriv tydligt. Vad hände, vilken rätt, vilken tid?"></textarea>
+          </div>
+
+          <div class="field full">
+            <button class="btn2 primary" type="submit">Skicka</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer" style="padding-left:0;padding-right:0">
+      <div class="copyLine" style="max-width:none">
+        <div>© <span id="y"></span> BUILD A PLATE</div>
+        <div><a class="fLink" href="index.html">Back to shop</a></div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
