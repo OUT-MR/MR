@@ -33,7 +33,7 @@
     button{font-family:inherit}
     :focus-visible{outline:2px solid rgba(11,15,13,.35); outline-offset:2px; border-radius:10px}
 
-    /* ===== HEADER (same as index) ===== */
+    /* HEADER */
     .bar{
       position:fixed;
       top:0; left:0; right:0;
@@ -115,7 +115,7 @@
       display:none;
     }
 
-    /* ===== PAGE ===== */
+    /* PAGE */
     .topSpacer{height:calc(var(--barH) + 12px)}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px 60px}
     .main{
@@ -125,7 +125,6 @@
       margin-top:12px;
       align-items:start;
     }
-
     .media{
       border-radius:var(--radius);
       overflow:hidden;
@@ -149,7 +148,6 @@
       overflow:hidden;
     }
     .pad{padding:16px}
-
     .kicker{
       margin:0 0 8px;
       font-size:12px;
@@ -164,7 +162,6 @@
       line-height:1.08;
     }
     .desc{margin:0; color:var(--muted); font-size:13px}
-
     .divider{height:1px; background:var(--line); margin:14px 0}
 
     .stepTitle{
@@ -244,7 +241,7 @@
       background:rgba(255,255,255,.60);
     }
 
-    /* ===== OVERLAYS base ===== */
+    /* OVERLAYS */
     .overlay{
       position:fixed;
       inset:0;
@@ -267,7 +264,7 @@
       font-size:16px;
     }
 
-    /* ===== LV SEARCH (white overlay) ===== */
+    /* LV SEARCH */
     #searchOverlay{background:rgba(246,242,234,.98)}
     #searchOverlay .searchFull{
       position:absolute;
@@ -393,7 +390,7 @@
       letter-spacing:.02em;
     }
 
-    /* ===== CONTACT MODAL ===== */
+    /* CONTACT MODAL */
     .modalWrap{
       position:absolute;
       inset:0;
@@ -505,7 +502,7 @@
     }
     .modalSmall a{text-decoration:underline; text-underline-offset:4px}
 
-    /* ===== BAG LV panel ===== */
+    /* BAG LV */
     .drawer{
       position:absolute;
       top:0;
@@ -601,7 +598,6 @@
       width:100%;
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 980px){
       .main{grid-template-columns:1fr}
       .media{position:relative; top:auto}
@@ -622,8 +618,6 @@
 </head>
 
 <body>
-
-  <!-- HEADER -->
   <header class="bar" id="bar">
     <div class="barSide">
       <button class="iconBtn" id="backBtn" aria-label="Back">
@@ -732,7 +726,6 @@
     </div>
   </div>
 
-  <!-- SEARCH (LV) -->
   <div class="overlay" id="searchOverlay">
     <div class="searchFull" role="dialog" aria-label="Search">
       <div class="lvTop">
@@ -753,7 +746,6 @@
     </div>
   </div>
 
-  <!-- CONTACT MODAL -->
   <div class="overlay" id="contactOverlay">
     <div class="modalWrap" role="dialog" aria-label="Contact us">
       <div class="modal">
@@ -816,7 +808,6 @@
     </div>
   </div>
 
-  <!-- BAG (LV right panel) -->
   <div class="overlay" id="bagOverlay">
     <div class="drawer drawerRight" role="dialog" aria-label="Bag">
       <div class="sheetTop">
@@ -841,57 +832,41 @@
   </div>
 
   <script>
-    // ===== Stripe Payment Links (lägg in dina riktiga) =====
-    const PAY_LINKS = {
-      duo:   "#",
-      par:   "#",
-      trio:  "#",
-      squad: "#",
-      plato: "#"
-    };
+    const PAY_LINKS = { duo:"#", par:"#", trio:"#", squad:"#", plato:"#"};
 
-    // ===== Data (måste matcha index) =====
     const DISHES = [
       { id:"truffle", name:"Tagliatelle al Tartufo", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,truffle" },
       { id:"cacio",   name:"Cacio e Pepe",          cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,cheese" },
       { id:"vodka",   name:"Vodka Pasta + burrata", cat:"Pasta",  img:"https://source.unsplash.com/1600x2000/?pasta,burrata" },
-
       { id:"meatballs", name:"Köttbullar 2.0",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?meatballs,swedish" },
       { id:"steak",     name:"Biff + chimichurri",  cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?steak,chimichurri" },
       { id:"salmon",    name:"Lax + misosmör",      cat:"Nordic", img:"https://source.unsplash.com/1600x2000/?salmon,miso" },
-
       { id:"temaki", name:"Temaki Kit (tillagat protein)", cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?temaki,sushi" },
       { id:"poke",   name:"Poke Bowl",                      cat:"Sushi", img:"https://source.unsplash.com/1600x2000/?poke,bowl" },
-
       { id:"halloumi", name:"Halloumi bowl + chimichurri",  cat:"Veg",   img:"https://source.unsplash.com/1600x2000/?halloumi,salad" }
     ];
 
-    const TRENDING = ["Pasta", "Nordic", "Sushi", "Veg", "Tartufo", "Burrata"];
+    const TRENDING = ["Pasta","Nordic","Sushi","Veg","Tartufo","Burrata"];
 
     const PACKS = [
-      { key:"duo",   label:"Duo",       people:2, price:399 },
-      { key:"par",   label:"Par",       people:2, price:449 },
-      { key:"trio",  label:"Trio",      people:3, price:499 },
-      { key:"squad", label:"Squad",     people:4, price:599 },
-      { key:"plato", label:"Plato Mode",people:3, price:549 }
+      { key:"duo",   label:"Duo",        people:2, price:399 },
+      { key:"par",   label:"Par",        people:2, price:449 },
+      { key:"trio",  label:"Trio",       people:3, price:499 },
+      { key:"squad", label:"Squad",      people:4, price:599 },
+      { key:"plato", label:"Plato Mode", people:3, price:549 }
     ];
 
-    // ===== Sticky header =====
+    // Sticky header
     const bar = document.getElementById("bar");
     function syncBar(){ bar.classList.toggle("scrolled", window.scrollY > 10); }
     window.addEventListener("scroll", syncBar, { passive:true });
     syncBar();
 
-    // ===== Cart =====
+    // Cart
     const CART_KEY = "bap_cart_v1";
-    function getCart(){
-      try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
-      catch { return []; }
-    }
-    function setCart(items){
-      localStorage.setItem(CART_KEY, JSON.stringify(items));
-      renderBagBadge();
-    }
+    function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
+    function setCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderBagBadge(); }
+
     function renderBagBadge(){
       const n = getCart().length;
       const el = document.getElementById("bagCount");
@@ -900,7 +875,15 @@
     }
     renderBagBadge();
 
-    // ===== Resolve dish =====
+    function calcTotal(cart){
+      const nums = cart.map(it => Number(it && it.price));
+      const hasAnyPrice = nums.some(n => Number.isFinite(n) && n > 0);
+      if(!hasAnyPrice) return { hasPrice:false, total:0 };
+      const total = nums.reduce((s,n)=> s + (Number.isFinite(n) ? n : 0), 0);
+      return { hasPrice:true, total: Math.round(total) };
+    }
+
+    // Dish resolve
     const qs = new URLSearchParams(location.search);
     const id = qs.get("id");
     const dish = DISHES.find(d => d.id === id) || DISHES[0];
@@ -913,7 +896,11 @@
     dishCat.textContent = dish.cat;
     dishImg.onerror = () => dishImg.src = "assets/hero.jpg";
 
-    // ===== Delivery form =====
+    // UI refs
+    const packsEl = document.getElementById("packs");
+    const priceLine = document.getElementById("priceLine");
+    const orderBox = document.getElementById("orderBox");
+
     const nameEl = document.getElementById("name");
     const phoneEl = document.getElementById("phone");
     const methodEl = document.getElementById("method");
@@ -921,18 +908,13 @@
     const addressWrap = document.getElementById("addressWrap");
     const addressEl = document.getElementById("address");
 
+    let selectedPackKey = null;
+
     function syncAddress(){
       addressWrap.style.display = (methodEl.value === "leverans") ? "" : "none";
     }
     methodEl.addEventListener("change", () => { syncAddress(); updateOrderBox(); });
     [nameEl, phoneEl, datetimeEl, addressEl].forEach(el => el.addEventListener("input", updateOrderBox));
-
-    // ===== Packs =====
-    const packsEl = document.getElementById("packs");
-    const priceLine = document.getElementById("priceLine");
-    const orderBox = document.getElementById("orderBox");
-
-    let selectedPackKey = null;
 
     function renderPacks(){
       packsEl.innerHTML = "";
@@ -991,9 +973,7 @@
       ].join("\n");
     }
 
-    function updateOrderBox(){
-      orderBox.textContent = buildOrderText();
-    }
+    function updateOrderBox(){ orderBox.textContent = buildOrderText(); }
 
     function validForPay(){
       if(!selectedPackKey) return false;
@@ -1004,7 +984,7 @@
       return true;
     }
 
-    // ===== Overlays utils =====
+    // Overlays
     const searchOverlay = document.getElementById("searchOverlay");
     const contactOverlay = document.getElementById("contactOverlay");
     const bagOverlay = document.getElementById("bagOverlay");
@@ -1026,16 +1006,15 @@
       closeOverlay(bagOverlay);
     });
 
-    // ===== Header buttons =====
+    // Header actions
     document.getElementById("backBtn").onclick = () => { window.location.href = "index.html"; };
 
-    // Contact
     document.getElementById("contactBtn").onclick = () => openOverlay(contactOverlay);
     document.getElementById("contactClose").onclick = () => closeOverlay(contactOverlay);
     document.getElementById("contactBack").onclick = () => closeOverlay(contactOverlay);
     contactOverlay.addEventListener("click", (e) => { if(e.target === contactOverlay) closeOverlay(contactOverlay); });
 
-    // ===== Search overlay =====
+    // Search
     const q = document.getElementById("q");
     const searchCount = document.getElementById("searchCount");
     const searchGrid = document.getElementById("searchGrid");
@@ -1088,7 +1067,7 @@
     document.getElementById("searchClose").onclick = () => closeOverlay(searchOverlay);
     q.addEventListener("input", () => renderSearch(q.value));
 
-    // ===== Bag overlay =====
+    // Bag
     const bagItems = document.getElementById("bagItems");
     const bagEmpty = document.getElementById("bagEmpty");
     const bagFooter = document.getElementById("bagFooter");
@@ -1102,8 +1081,8 @@
       bagFooter.style.display = cart.length ? "block" : "none";
       bagItems.innerHTML = "";
 
-      // Total: du har inte totalsumma i cart ännu (vi fixar senare).
-      bagTotalEl.textContent = "—";
+      const t = calcTotal(cart);
+      bagTotalEl.textContent = t.hasPrice ? `${t.total} SEK` : "—";
 
       cart.forEach((it, idx) => {
         const row = document.createElement("div");
@@ -1146,7 +1125,7 @@
       alert("Checkout kommer snart.");
     };
 
-    // ===== Actions =====
+    // Actions
     document.getElementById("addBtn").onclick = () => {
       if(!selectedPackKey){
         alert("Välj paket först.");
@@ -1163,7 +1142,6 @@
         price: p.price
       };
 
-      // om samma rätt finns, byt ut
       const next = cart.filter(x => x.id !== dish.id);
       next.push(item);
       setCart(next);
@@ -1193,7 +1171,7 @@
       window.open(link, "_blank");
     };
 
-    // ===== Start =====
+    // Start
     syncAddress();
     renderPacks();
     updateOrderBox();
