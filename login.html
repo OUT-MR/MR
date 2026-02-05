@@ -4,39 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login • BUILD A PLATE</title>
-  <style>
-    :root{--bg:#F6F2EA;--ink:#0B0F0D;--muted:rgba(11,15,13,.62);--line:rgba(11,15,13,.12)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink)}
-    .wrap{max-width:520px;margin:0 auto;padding:18px 16px 50px}
-    a{color:inherit}
-    .top{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:18px}
-    .logo{letter-spacing:.22em;font-weight:700;font-size:12px;text-transform:uppercase}
-    h1{margin:0 0 10px;font-size:26px;letter-spacing:-.02em}
-    p{margin:0 0 12px;color:var(--muted);line-height:1.55}
-    .card{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.65);padding:16px}
-    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
-    input{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:14px;outline:none}
-    .btn{margin-top:12px;border-radius:999px;padding:10px 14px;font-weight:650;font-size:13px;border:1px solid var(--line);background:var(--ink);color:#fff;cursor:pointer}
-  </style>
+  <link rel="stylesheet" href="assets/app.css" />
 </head>
-<body>
-  <div class="wrap">
-    <div class="top">
-      <div class="logo">BUILD A PLATE</div>
-      <a href="index.html">Back</a>
+
+<body data-page="login">
+  <header class="bar scrolled" id="bar" style="position:sticky;top:0">
+    <div class="barSide">
+      <a class="iconBtn" href="index.html" aria-label="Home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="barMid"><div class="logo">LOGIN</div></div>
+    <div class="barSide" style="justify-content:flex-end">
+      <a class="contactLink" href="help.html">Need help</a>
+    </div>
+  </header>
+
+  <div class="wrap" style="padding-top:14px;max-width:700px">
+    <div class="panel">
+      <div class="pad">
+        <p class="kick">Account</p>
+        <h1 class="h1">Logga in</h1>
+        <p class="desc">Demo nu. Koppla riktig login senare.</p>
+
+        <div class="divider"></div>
+
+        <form id="loginForm" class="formGrid">
+          <div class="field full">
+            <label>Email</label>
+            <input class="input" type="email" required placeholder="din@email.com">
+          </div>
+          <div class="field full">
+            <label>Lösenord</label>
+            <input class="input" type="password" required placeholder="••••••••">
+          </div>
+          <div class="field full">
+            <button class="btn2 primary" type="submit">Logga in</button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <h1>Login</h1>
-    <p>Det här är en placeholder. Vi kopplar riktig inloggning senare.</p>
-
-    <div class="card">
-      <label>Email</label>
-      <input type="email" placeholder="you@email.com" />
-      <label>Password</label>
-      <input type="password" placeholder="••••••••" />
-      <button class="btn" type="button" onclick="alert('Kommer snart.')">Continue</button>
-    </div>
+    <footer class="footer" style="padding-left:0;padding-right:0">
+      <div class="copyLine" style="max-width:none">
+        <div>© <span id="y"></span> BUILD A PLATE</div>
+        <div><a class="fLink" href="index.html">Back</a></div>
+      </div>
+    </footer>
   </div>
+
+  <script src="assets/app.js"></script>
 </body>
 </html>
