@@ -36,17 +36,20 @@
 
     /* ===== Header (LV-ish) ===== */
     .header{
-      position:sticky;
+      position:fixed;
       top:0;
+      left:0;
+      right:0;
       z-index:60;
       display:flex;
       align-items:center;
       justify-content:space-between;
       padding:14px 18px;
-      background:var(--panel);
-      border-bottom:1px solid var(--line);
-      backdrop-filter: blur(10px);
-      transition: background .18s ease, border-color .18s ease;
+      background:transparent;
+      border-bottom:1px solid transparent;
+      backdrop-filter:none;
+      color:#fff;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, backdrop-filter .18s ease;
     }
     .hleft,.hright{display:flex; align-items:center; gap:14px; min-width:220px}
     .hcenter{display:flex; align-items:center; justify-content:center; flex:1}
@@ -60,34 +63,25 @@
       width:36px;height:36px;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:999px;
       display:inline-flex;align-items:center;justify-content:center;
     }
-    .iconBtn:hover{background:rgba(11,15,13,.06)}
+    .iconBtn:hover{background:rgba(255,255,255,.10)}
     .iconWrap{position:relative; display:inline-flex}
     .badge{
       position:absolute; transform:translate(10px,-10px);
       background:var(--accent); color:#fff; font-size:11px; padding:2px 6px; border-radius:999px;
-      border:2px solid var(--panel);
+      border:2px solid rgba(246,242,234,.92);
       display:none;
     }
     .topLink{
       font-size:12px;
       letter-spacing:.16em;
       text-transform:uppercase;
-      color:rgba(11,15,13,.7);
+      color:rgba(255,255,255,.88);
       padding:8px 10px;
       border-radius:999px;
     }
-    .topLink:hover{background:rgba(11,15,13,.06)}
+    .topLink:hover{background:rgba(255,255,255,.10)}
 
-    /* ===== NYTT: Transparent header överst + vit vid scroll / overlay ===== */
-    body.is-top .header{
-      background:transparent;
-      border-bottom-color:transparent;
-      backdrop-filter:none;
-    }
-    body.is-top .topLink{color:rgba(255,255,255,.88)}
-    body.is-top .header{color:#fff}
-    body.is-top .iconBtn:hover{background:rgba(255,255,255,.10)}
-
+    /* Header blir vit (som LV) när du scrollar, hovrar headern, eller overlay är öppen */
     body.header-solid .header{
       background:var(--panel);
       border-bottom-color:var(--line);
@@ -96,53 +90,48 @@
     }
     body.header-solid .topLink{color:rgba(11,15,13,.7)}
     body.header-solid .iconBtn:hover{background:rgba(11,15,13,.06)}
+    body.header-solid .topLink:hover{background:rgba(11,15,13,.06)}
+    body.header-solid .badge{border-color:var(--panel)}
 
-    /* ===== Hero: VIDEO ===== */
+    /* ===== Hero (LV full-bleed video) ===== */
     .hero{
-      margin:0 auto 18px;
-      border-radius:0;
+      position:relative;
+      height:100vh;
+      min-height:560px;
       overflow:hidden;
       background:#0b0f0d;
-      position:relative;
-      min-height:520px;
-      box-shadow:none;
     }
-
     .heroVideo{
       position:absolute;
       inset:0;
       width:100%;
       height:100%;
       object-fit:cover;
-      transform: scale(1.02);
+      transform:scale(1.02);
     }
-
     .hero::before{
       content:"";
       position:absolute; inset:0;
       background:
-        radial-gradient(1200px 500px at 30% 60%, rgba(255,255,255,.08), transparent 60%),
-        linear-gradient(135deg, rgba(255,255,255,.06), transparent 45%),
-        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.55));
+        radial-gradient(1200px 520px at 30% 60%, rgba(255,255,255,.08), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.58));
       pointer-events:none;
     }
-
     .heroInner{
       position:relative;
-      padding:94px 28px 40px;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:96px 18px 42px;
+      height:100%;
       display:flex;
       align-items:flex-end;
       justify-content:flex-start;
-      gap:18px;
-      min-height:520px;
-      max-width:var(--max);
-      margin:0 auto;
     }
     .heroKicker{
       letter-spacing:.18em;
       text-transform:uppercase;
       font-size:11px;
-      color:rgba(255,255,255,.7);
+      color:rgba(255,255,255,.72);
       margin:0 0 10px;
     }
     .heroTitle{
@@ -155,7 +144,7 @@
     }
     .heroDesc{
       margin:0 0 18px;
-      color:rgba(255,255,255,.75);
+      color:rgba(255,255,255,.78);
       font-size:13px;
       max-width:560px;
     }
@@ -169,6 +158,7 @@
       background:transparent;
       color:#fff;
       cursor:pointer;
+      transition: transform .12s ease;
     }
     .btn.primary{
       background:#fff;
@@ -177,6 +167,11 @@
     }
     .btn:hover{transform: translateY(-1px)}
     .btn:active{transform: translateY(0)}
+
+    /* Space under fixed header so content doesn't hide */
+    .afterHero{
+      padding-top:22px;
+    }
 
     /* ===== Section header ===== */
     .sectionTop{
@@ -323,7 +318,7 @@
     }
     .fLink:hover{text-decoration:underline}
 
-    /* ===== Overlays ===== */
+    /* ===== Overlays (Menu + Search + Bag) ===== */
     .overlay{
       position:fixed;
       inset:0;
@@ -365,6 +360,7 @@
       cursor:pointer;
     }
 
+    /* LV-ish search layout */
     .searchBrand{
       text-align:center;
       font-weight:820;
@@ -435,6 +431,7 @@
     .sCat{margin:6px 0 0; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:rgba(11,15,13,.55)}
     .muted{color:var(--muted); font-size:13px; margin:10px 0 0}
 
+    /* Menu list */
     .menuList{display:flex; flex-direction:column; gap:10px}
     .menuItem{
       display:flex;
@@ -457,7 +454,7 @@
       .cardMedia{ height:340px; }
       .searchGrid{grid-template-columns: repeat(2, 1fr);}
       .hleft,.hright{min-width:auto}
-      .heroInner{padding-top:86px}
+      .heroInner{padding-top:92px}
     }
     @media (max-width: 860px){
       .heroTitle{font-size:36px}
@@ -468,13 +465,13 @@
     @media (max-width: 520px){
       .grid{ grid-template-columns: 1fr; row-gap:22px; }
       .cardMedia{ height:320px; }
-      .heroInner{padding:74px 20px 30px; min-height:520px}
+      .heroInner{padding:82px 18px 30px}
       .heroTitle{font-size:30px}
       .searchGrid{grid-template-columns:1fr;}
     }
   </style>
 </head>
-<body class="is-top">
+<body>
 
   <!-- Header -->
   <header class="header" id="siteHeader">
@@ -519,11 +516,13 @@
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero (full-bleed video like LV) -->
   <section class="hero" id="top">
-    <video class="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg">
+    <!-- Lägg din video här: assets/hero.mp4 -->
+    <video class="heroVideo" autoplay muted loop playsinline preload="metadata">
       <source src="assets/hero.mp4" type="video/mp4" />
     </video>
+
     <div class="heroInner">
       <div>
         <p class="heroKicker">Västmanlands län</p>
@@ -537,7 +536,7 @@
     </div>
   </section>
 
-  <div class="wrap">
+  <div class="wrap afterHero">
     <!-- Section header -->
     <div class="sectionTop" id="dishes">
       <div>
@@ -622,8 +621,9 @@
   </div>
 
   <script>
-    /* ===== Header state: transparent on top, solid on scroll / overlays ===== */
+    // ===== Header behavior (LV): transparent at top, solid on scroll/hover/overlay =====
     const bodyEl = document.body;
+    const headerEl = document.getElementById("siteHeader");
     const menuOverlay = document.getElementById("menuOverlay");
     const searchOverlay = document.getElementById("searchOverlay");
     const bagOverlay = document.getElementById("bagOverlay");
@@ -634,16 +634,24 @@
         || bagOverlay.classList.contains("open");
     }
 
-    function updateHeaderState(){
-      const isTop = window.scrollY <= 8;
-      bodyEl.classList.toggle("is-top", isTop && !anyOverlayOpen());
-      bodyEl.classList.toggle("header-solid", !isTop || anyOverlayOpen());
+    function setHeaderSolid(isSolid){
+      bodyEl.classList.toggle("header-solid", !!isSolid);
     }
 
-    window.addEventListener("scroll", updateHeaderState, {passive:true});
+    function updateHeaderFromScroll(){
+      const solid = window.scrollY > 8 || anyOverlayOpen();
+      setHeaderSolid(solid);
+    }
 
-    /* ===== Data (40 rätter) ===== */
+    // Hover on header should also make it solid (LV feel)
+    headerEl.addEventListener("mouseenter", () => setHeaderSolid(true));
+    headerEl.addEventListener("mouseleave", () => updateHeaderFromScroll());
+
+    window.addEventListener("scroll", updateHeaderFromScroll, { passive:true });
+
+    // ===== Data (40 rätter) =====
     const DISHES = [
+      // Pasta
       { id:"tagliatelle-truffle", name:"Tagliatelle al Tartufo", cat:"Pasta", tags:["pasta","premium","date night"], img:"assets/dishes/tagliatelle-truffle.png" },
       { id:"cacio-pepe", name:"Cacio e Pepe", cat:"Pasta", tags:["pasta","15 min"], img:"assets/dishes/cacio-pepe.png" },
       { id:"vodka-burrata", name:"Vodka Pasta + burrata", cat:"Pasta", tags:["pasta","date night"], img:"assets/dishes/vodka-burrata.png" },
@@ -653,6 +661,7 @@
       { id:"spicy-arrabbiata", name:"Arrabbiata extra spicy", cat:"Pasta", tags:["pasta","spicy","15 min"], img:"assets/dishes/spicy-arrabbiata.png" },
       { id:"lemon-butter-shrimp", name:"Citronpasta + räkor", cat:"Pasta", tags:["pasta","premium"], img:"assets/dishes/lemon-butter-shrimp.png" },
 
+      // Nordic
       { id:"meatballs-20", name:"Köttbullar 2.0", cat:"Nordic", tags:["nordic","comfort"], img:"assets/dishes/meatballs-20.png" },
       { id:"steak-chimichurri", name:"Biff + chimichurri", cat:"Nordic", tags:["nordic","premium","date night"], img:"assets/dishes/steak-chimichurri.png" },
       { id:"salmon-miso", name:"Lax + misosmör", cat:"Nordic", tags:["nordic","15 min"], img:"assets/dishes/salmon-miso.png" },
@@ -662,6 +671,7 @@
       { id:"swedish-toast-scampi", name:"Toast skagen 2.0", cat:"Nordic", tags:["nordic","date night"], img:"assets/dishes/swedish-toast-scampi.png" },
       { id:"mushroom-barley", name:"Svamp + kornotto", cat:"Nordic", tags:["nordic","veg"], img:"assets/dishes/mushroom-barley.png" },
 
+      // Sushi
       { id:"temaki-kit", name:"Temaki Kit (tillagat protein)", cat:"Sushi", tags:["sushi","premium"], img:"assets/dishes/temaki-kit.png" },
       { id:"poke-bowl", name:"Poke Bowl", cat:"Sushi", tags:["sushi","15 min"], img:"assets/dishes/poke-bowl.png" },
       { id:"salmon-aburi", name:"Aburi salmon set", cat:"Sushi", tags:["sushi","premium","date night"], img:"assets/dishes/salmon-aburi.png" },
@@ -671,6 +681,7 @@
       { id:"sashimi-platter", name:"Sashimi platter", cat:"Sushi", tags:["sushi","premium"], img:"assets/dishes/sashimi-platter.png" },
       { id:"crunchy-shrimp-roll", name:"Crunchy shrimp roll", cat:"Sushi", tags:["sushi","spicy"], img:"assets/dishes/crunchy-shrimp-roll.png" },
 
+      // Veg
       { id:"halloumi-bowl", name:"Halloumi bowl + chimichurri", cat:"Veg", tags:["veg","15 min"], img:"assets/dishes/halloumi-bowl.png" },
       { id:"truffle-cauliflower", name:"Tryffelrostad blomkål", cat:"Veg", tags:["veg","premium"], img:"assets/dishes/truffle-cauliflower.png" },
       { id:"eggplant-miso", name:"Miso-aubergine + ris", cat:"Veg", tags:["veg","15 min"], img:"assets/dishes/eggplant-miso.png" },
@@ -680,6 +691,7 @@
       { id:"falafel-tahini", name:"Falafel + tahini", cat:"Veg", tags:["veg","15 min"], img:"assets/dishes/falafel-tahini.png" },
       { id:"mushroom-tacos", name:"Svamptacos + salsa verde", cat:"Veg", tags:["veg","spicy"], img:"assets/dishes/mushroom-tacos.png" },
 
+      // Premium
       { id:"lobster-roll", name:"Lobster roll (premium)", cat:"Premium", tags:["premium","date night"], img:"assets/dishes/lobster-roll.png" },
       { id:"wagyu-sando", name:"Wagyu sando", cat:"Premium", tags:["premium"], img:"assets/dishes/wagyu-sando.png" },
       { id:"duck-orange", name:"Anka + apelsinsås", cat:"Premium", tags:["premium"], img:"assets/dishes/duck-orange.png" },
@@ -690,6 +702,7 @@
       { id:"oyster-set", name:"Oyster set + mignonette", cat:"Premium", tags:["premium"], img:"assets/dishes/oyster-set.png" }
     ];
 
+    // ===== Filters / chips =====
     const FILTERS = [
       { key:"all", label:"Alla" },
       { key:"Pasta", label:"Pasta" },
@@ -705,6 +718,7 @@
 
     const TRENDING = ["premium", "date night", "spicy", "15 min", "pasta", "sushi"];
 
+    // ===== Cart =====
     const CART_KEY = "bap_cart_v1";
     function getCart(){
       try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
@@ -722,9 +736,11 @@
     }
     renderBagBadge();
 
+    // ===== State =====
     let activeFilter = "all";
     let qText = "";
 
+    // ===== Render chips =====
     const chipsEl = document.getElementById("chips");
     function renderChips(){
       chipsEl.innerHTML = "";
@@ -738,6 +754,7 @@
       });
     }
 
+    // ===== Filter logic =====
     function normalizeTag(t){ return (t || "").toString().trim().toLowerCase(); }
 
     function matchDish(d){
@@ -764,6 +781,7 @@
       return DISHES.filter(matchDish);
     }
 
+    // ===== Grid render =====
     const gridEl = document.getElementById("grid");
     const countEl = document.getElementById("count");
 
@@ -803,15 +821,18 @@
       });
     }
 
-    const menuList = document.getElementById("menuList");
+    // ===== Overlays helpers =====
     function openOverlay(el){
       el.classList.add("open");
-      updateHeaderState();
+      updateHeaderFromScroll();
     }
     function closeOverlay(el){
       el.classList.remove("open");
-      updateHeaderState();
+      updateHeaderFromScroll();
     }
+
+    // ===== Menu overlay =====
+    const menuList = document.getElementById("menuList");
 
     function renderMenu(){
       menuList.innerHTML = "";
@@ -856,6 +877,7 @@
     document.getElementById("menuClose").onclick = () => closeOverlay(menuOverlay);
     menuOverlay.addEventListener("click", (e) => { if(e.target === menuOverlay) closeOverlay(menuOverlay); });
 
+    // ===== Search overlay (LV) =====
     const q = document.getElementById("q");
     const searchCount = document.getElementById("searchCount");
     const searchGrid = document.getElementById("searchGrid");
@@ -924,6 +946,7 @@
     searchOverlay.addEventListener("click", (e) => { if(e.target === searchOverlay) closeOverlay(searchOverlay); });
     q.addEventListener("input", renderSearch);
 
+    // ===== Bag overlay =====
     const bagList = document.getElementById("bagList");
     const bagEmpty = document.getElementById("bagEmpty");
 
@@ -969,16 +992,19 @@
     document.getElementById("bagClose").onclick = () => closeOverlay(bagOverlay);
     bagOverlay.addEventListener("click", (e) => { if(e.target === bagOverlay) closeOverlay(bagOverlay); });
 
+    // ===== Scroll helpers =====
     document.getElementById("seeDishes").onclick = () => {
       document.getElementById("dishes").scrollIntoView({behavior:"smooth", block:"start"});
     };
 
+    // ===== Render all =====
     function renderAll(){
       renderChips();
       renderGrid();
     }
+
     renderAll();
-    updateHeaderState();
+    updateHeaderFromScroll();
   </script>
 </body>
 </html>
